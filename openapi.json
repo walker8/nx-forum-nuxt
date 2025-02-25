@@ -1,0 +1,6912 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "NX Forum API",
+    "description": "NX Forum 接口文档",
+    "contact": {
+      "name": "Walker",
+      "email": "nicholas199109@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8083/nx-forum",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/v1/uc/users/current": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "获取当前用户登录信息",
+        "operationId": "getCurrentUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["用户中心"],
+        "summary": "更新当前用户信息",
+        "operationId": "updateCurrentUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/users": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "查询用户",
+        "operationId": "queryUsersByAdmin",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "loginIp",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["用户中心"],
+        "summary": "更新用户",
+        "operationId": "updateUserByAdmin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["用户中心"],
+        "summary": "注册用户",
+        "operationId": "saveUserByAdmin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/users/{userId}/delete": {
+      "put": {
+        "tags": ["用户中心"],
+        "summary": "删除用户",
+        "operationId": "deleteUserByAdmin",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/users/batch/delete": {
+      "put": {
+        "tags": ["用户中心"],
+        "summary": "批量删除用户",
+        "operationId": "deleteUsersByAdmin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/roles": {
+      "get": {
+        "tags": ["角色管理"],
+        "summary": "查询角色列表",
+        "operationId": "queryRoles",
+        "parameters": [
+          {
+            "name": "roleName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "roleStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageRoleDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["角色管理"],
+        "summary": "修改角色",
+        "operationId": "edit",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleUpdateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["角色管理"],
+        "summary": "新增角色",
+        "operationId": "add",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleCreateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/permissions": {
+      "get": {
+        "tags": ["权限管理"],
+        "summary": "获取权限列表",
+        "operationId": "list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListPermissionDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["权限管理"],
+        "summary": "修改权限",
+        "operationId": "edit",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PermissionUpdateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["权限管理"],
+        "summary": "新增权限",
+        "operationId": "add",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PermissionCreateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/permissions/{permId}/enable": {
+      "put": {
+        "tags": ["权限管理"],
+        "summary": "启用权限",
+        "operationId": "enable",
+        "parameters": [
+          {
+            "name": "permId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/permissions/{permId}/disable": {
+      "put": {
+        "tags": ["权限管理"],
+        "summary": "禁用权限",
+        "operationId": "disable",
+        "parameters": [
+          {
+            "name": "permId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/threads/{threadId}": {
+      "put": {
+        "tags": ["主题帖"],
+        "summary": "更新帖子",
+        "operationId": "updateThread",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/notifications/clear": {
+      "put": {
+        "tags": ["消息通知中心"],
+        "summary": "清除当前用户的通知",
+        "operationId": "clearNotifications",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "reply"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/threads/batch/operation": {
+      "put": {
+        "tags": ["后台主题帖管理"],
+        "summary": "批量操作帖子",
+        "operationId": "operateThreadsByAdmin",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "operation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "notice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/pages/{pageId}": {
+      "put": {
+        "tags": ["后台自定义页面管理"],
+        "summary": "更新页面",
+        "operationId": "updatePage",
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomPageCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["后台自定义页面管理"],
+        "summary": "删除页面",
+        "operationId": "deletePage",
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/pages/{pageId}/content": {
+      "get": {
+        "tags": ["后台自定义页面管理"],
+        "summary": "获取页面内容",
+        "operationId": "getContent",
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["后台自定义页面管理"],
+        "summary": "保存页面内容",
+        "operationId": "saveContent",
+        "parameters": [
+          {
+            "name": "pageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/forums": {
+      "get": {
+        "tags": ["后台版块管理"],
+        "summary": "查询所有版块",
+        "operationId": "getAllForumByAdmin",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListForumItemVO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["后台版块管理"],
+        "summary": "更新版块",
+        "operationId": "updateForum",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForumCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["后台版块管理"],
+        "summary": "新建版块",
+        "operationId": "createForum",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForumCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/forums/default": {
+      "put": {
+        "tags": ["后台版块管理"],
+        "summary": "更新默认版块",
+        "operationId": "updateDefaultForum",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/forums/base": {
+      "put": {
+        "tags": ["后台版块管理"],
+        "summary": "更新版块基础信息",
+        "operationId": "updateBaseForum",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "nickName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iconName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "showMenu",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isSystem",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "menuOrder",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "createTime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "defaultForum",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/forum-access/batch": {
+      "put": {
+        "tags": ["后台版块权限管理"],
+        "summary": "批量更新版块权限",
+        "operationId": "batchUpdateForumAccess",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "enableForumAccess",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ForumAccessDTO"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/configs/website": {
+      "get": {
+        "tags": ["后台网站配置项"],
+        "summary": "获取网站基础信息",
+        "operationId": "getWebsiteBaseInfoByAdmin",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseWebsiteBaseInfoVO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["后台网站配置项"],
+        "summary": "更新网站基础信息",
+        "operationId": "updateWebsiteBaseInfoByAdmin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebsiteBaseInfoVO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/comments/replies/batch/operation": {
+      "put": {
+        "tags": ["后台回帖管理"],
+        "summary": "批量操作评论",
+        "operationId": "operateCommentRepliesByAdmin",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "operation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "notice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/comments/batch/operation": {
+      "put": {
+        "tags": ["后台回帖管理"],
+        "summary": "批量操作回复",
+        "operationId": "operateCommentsByAdmin",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "reason",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "operation",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "notice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/audits/sensitive-words": {
+      "get": {
+        "tags": ["后台审核设置"],
+        "summary": "获取敏感词配置",
+        "description": "获取系统当前设置的敏感词列表",
+        "operationId": "getAuditConfigSensitiveWords",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseAuditConfigSensitiveWordsDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["后台审核设置"],
+        "summary": "更新敏感词配置",
+        "description": "更新系统敏感词配置（全量更新）",
+        "operationId": "updateAuditConfigSensitiveWords",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditConfigSensitiveWordsDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/audits/black-white-users": {
+      "get": {
+        "tags": ["后台审核设置"],
+        "summary": "获取黑白名单配置",
+        "description": "获取用户黑白名单配置信息",
+        "operationId": "getAuditConfigBlackWhiteUsersVO",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseAuditConfigBlackWhiteUsersVO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["后台审核设置"],
+        "summary": "更新黑白名单配置",
+        "description": "更新用户黑白名单配置（全量更新）",
+        "operationId": "updateAuditConfigBlackWhiteUsers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuditConfigBlackWhiteUsersDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/like": {
+      "post": {
+        "tags": ["用户中心"],
+        "summary": "点赞/取消点赞",
+        "operationId": "toggleLike",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LikeCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseInteger"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/favorite": {
+      "post": {
+        "tags": ["用户中心"],
+        "summary": "收藏/取消收藏",
+        "operationId": "toggleFavorite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FavoriteCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseInteger"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/users": {
+      "post": {
+        "tags": ["用户中心"],
+        "summary": "用户注册",
+        "operationId": "saveUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/auth/verify-code/login": {
+      "post": {
+        "tags": ["认证中心"],
+        "summary": "验证码登录",
+        "operationId": "verifyCodeLogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyCodeLoginDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseUserResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/auth/reset-password": {
+      "post": {
+        "tags": ["认证中心"],
+        "summary": "验证码重置密码",
+        "operationId": "resetPasswordByVerifyCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/auth/phone/verify-code": {
+      "post": {
+        "tags": ["认证中心"],
+        "summary": "发送手机验证码",
+        "operationId": "sendPhoneVerifyCode",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "register"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/auth/logout": {
+      "post": {
+        "tags": ["认证中心"],
+        "summary": "登出系统",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/auth/login": {
+      "post": {
+        "tags": ["认证中心"],
+        "summary": "登录",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLoginDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseUserResp"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/auth/email/verify-code": {
+      "post": {
+        "tags": ["认证中心"],
+        "summary": "发送邮箱验证码",
+        "operationId": "sendEmailVerifyCode",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "register"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/user-roles": {
+      "post": {
+        "tags": ["用户角色管理"],
+        "summary": "分配用户角色",
+        "operationId": "assign",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRoleCreateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/sms/config": {
+      "get": {
+        "tags": ["短信服务管理"],
+        "summary": "获取短信配置",
+        "operationId": "getSmsConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseSmsConfigDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["短信服务管理"],
+        "summary": "更新短信配置",
+        "operationId": "updateSmsConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmsConfigDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/role-permissions": {
+      "post": {
+        "tags": ["角色权限管理"],
+        "summary": "分配角色权限",
+        "operationId": "assign",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RolePermissionCreateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/register/config": {
+      "get": {
+        "tags": ["注册配置管理"],
+        "summary": "获取注册配置",
+        "operationId": "getRegisterConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseRegisterConfigDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["注册配置管理"],
+        "summary": "更新注册配置",
+        "operationId": "updateRegisterConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterConfigDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/test": {
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "测试邮件发送",
+        "operationId": "testMail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MailTestCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/template/{type}": {
+      "get": {
+        "tags": ["邮件服务管理"],
+        "summary": "获取邮件模板",
+        "operationId": "getMailTemplate",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["VERIFY_CODE", "RESET_PASSWORD", "REGISTER_SUCCESS"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseMailTemplateDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "更新邮件模板",
+        "operationId": "updateMailTemplate",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["VERIFY_CODE", "RESET_PASSWORD", "REGISTER_SUCCESS"]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MailTemplateDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/template/test/verify-code": {
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "测试模板邮件发送 - 验证码",
+        "operationId": "testVerifyCodeMail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateTestCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/template/test/reset-password": {
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "测试模板邮件发送 - 重置密码",
+        "operationId": "testResetPasswordMail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateTestCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/template/test/register-success": {
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "测试模板邮件发送 - 注册成功",
+        "operationId": "testRegisterSuccessMail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateTestCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/smtp/config": {
+      "get": {
+        "tags": ["邮件服务管理"],
+        "summary": "获取SMTP配置",
+        "operationId": "getSmtpConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseMailConfigDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "更新SMTP配置",
+        "operationId": "updateSmtpConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MailConfigDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/domain/config": {
+      "get": {
+        "tags": ["邮件服务管理"],
+        "summary": "获取邮件域名黑白名单配置",
+        "operationId": "getDomainConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseEmailListConfigDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "更新邮件域名黑白名单配置",
+        "operationId": "updateDomainConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailListConfigDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/domain/blocked/{domain}": {
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "添加禁止的邮件域名",
+        "operationId": "addBlockedDomain",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["邮件服务管理"],
+        "summary": "移除禁止的邮件域名",
+        "operationId": "removeBlockedDomain",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/domain/allowed/{domain}": {
+      "post": {
+        "tags": ["邮件服务管理"],
+        "summary": "添加允许的邮件域名",
+        "operationId": "addAllowedDomain",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["邮件服务管理"],
+        "summary": "移除允许的邮件域名",
+        "operationId": "removeAllowedDomain",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/login/config": {
+      "get": {
+        "tags": ["登录配置管理"],
+        "summary": "获取登录配置",
+        "operationId": "getLoginConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseLoginConfigDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["登录配置管理"],
+        "summary": "更新登录配置",
+        "operationId": "updateLoginConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginConfigDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/threads": {
+      "get": {
+        "tags": ["主题帖"],
+        "summary": "查询版块下的帖子",
+        "operationId": "queryThreads",
+        "parameters": [
+          {
+            "name": "forumName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "authorName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["主题帖"],
+        "summary": "新增帖子",
+        "operationId": "createThread",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/threads/search": {
+      "post": {
+        "tags": ["主题帖"],
+        "summary": "根据关键词查询版块帖子",
+        "operationId": "queryThreadsByKeyword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ThreadQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/images/upload": {
+      "post": {
+        "tags": ["图片管理"],
+        "operationId": "upload",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/images/avatar/upload": {
+      "post": {
+        "tags": ["图片管理"],
+        "operationId": "uploadAvatar",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/comments": {
+      "get": {
+        "tags": ["评论管理"],
+        "summary": "查询帖子下的评论",
+        "operationId": "queryComments",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["评论管理"],
+        "summary": "新增评论",
+        "operationId": "createComment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/comments/{commentId}/replies": {
+      "get": {
+        "tags": ["评论管理"],
+        "summary": "查询评论下的回复",
+        "operationId": "queryCommentReplies",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["评论管理"],
+        "summary": "新增评论的回复",
+        "operationId": "createCommentReply",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentReplyCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/pages": {
+      "get": {
+        "tags": ["后台自定义页面管理"],
+        "summary": "分页查询页面",
+        "operationId": "queryPages",
+        "parameters": [
+          {
+            "name": "pageName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageCustomPageVO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["后台自定义页面管理"],
+        "summary": "创建页面",
+        "operationId": "createPage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomPageCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/bans": {
+      "get": {
+        "tags": ["用户禁言管理"],
+        "summary": "分页查询禁言记录",
+        "operationId": "queryBans",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageBanVO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["用户禁言管理"],
+        "summary": "禁言用户",
+        "operationId": "createBan",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BanCreateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/bans/unban": {
+      "post": {
+        "tags": ["用户禁言管理"],
+        "summary": "解除禁言",
+        "operationId": "unbanUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BanCreateCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/auth/user-roles/cancel": {
+      "post": {
+        "tags": ["用户权限后台管理"],
+        "summary": "删除版块里的用户角色",
+        "operationId": "cancel",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "roleKey",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/auth/user-roles/assign": {
+      "post": {
+        "tags": ["用户权限后台管理"],
+        "summary": "授权版块里的用户角色",
+        "operationId": "assign",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForumUserRoleCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/threads": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "查询用户帖子",
+        "operationId": "queryThreadsByUserId",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/likes": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "分页查询用户点赞的帖子",
+        "operationId": "queryThreadsByUserLikes",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageThreadVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/favorites": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "分页查询用户收藏的帖子",
+        "operationId": "queryThreadsByUserFavorites",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageThreadVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/comments": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "查询用户评论",
+        "operationId": "queryCommentsByUserId",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/users/{userId}/info": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "获取用户基本信息",
+        "operationId": "getUserInfo",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/users/username/{name}": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "根据名称模糊查询已注册的用户",
+        "operationId": "queryUsername",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListUserVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/users/username/check": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "检查用户名是否被禁止",
+        "operationId": "checkUsername",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/users/current/account": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "获取当前用户账号信息",
+        "operationId": "getCurrentUserAccount",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/auth/config": {
+      "get": {
+        "tags": ["认证中心"],
+        "summary": "获取认证配置",
+        "operationId": "getAuthConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseAuthConfigVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/user-roles/user/{userId}": {
+      "get": {
+        "tags": ["用户角色管理"],
+        "summary": "获取用户角色列表",
+        "description": "只返回未过期的角色",
+        "operationId": "listByUserId",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListUserRoleDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/user-roles/": {
+      "get": {
+        "tags": ["用户角色管理"],
+        "summary": "分页查询角色授权的用户列表",
+        "operationId": "queryUserRoles",
+        "parameters": [
+          {
+            "name": "pageNo",
+            "in": "query",
+            "description": "页码",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "页码",
+              "format": "int32",
+              "example": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页大小",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "每页大小",
+              "format": "int32",
+              "example": 10
+            },
+            "example": 10
+          },
+          {
+            "name": "roleKey",
+            "in": "query",
+            "description": "角色key",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "角色key"
+            }
+          },
+          {
+            "name": "roleScope",
+            "in": "query",
+            "description": "角色范围",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "角色范围"
+            }
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "用户名",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "用户名"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户id",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "用户id",
+              "format": "int64",
+              "example": 0
+            },
+            "example": 0
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageUserRoleVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/sms/test": {
+      "get": {
+        "tags": ["短信服务管理"],
+        "summary": "测试短信发送",
+        "operationId": "testSms",
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/roles/{roleId}": {
+      "get": {
+        "tags": ["角色管理"],
+        "summary": "获取角色详情",
+        "operationId": "getInfo",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseRoleDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["角色管理"],
+        "summary": "删除角色",
+        "operationId": "remove",
+        "parameters": [
+          {
+            "name": "roleId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/role-permissions/role/{roleKey}": {
+      "get": {
+        "tags": ["角色权限管理"],
+        "summary": "获取角色权限列表",
+        "operationId": "listByRoleKey",
+        "parameters": [
+          {
+            "name": "roleKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListRolePermissionPO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/permissions/{permId}": {
+      "get": {
+        "tags": ["权限管理"],
+        "summary": "获取权限详情",
+        "operationId": "getInfo",
+        "parameters": [
+          {
+            "name": "permId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponsePermissionDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["权限管理"],
+        "summary": "删除权限",
+        "operationId": "remove",
+        "parameters": [
+          {
+            "name": "permId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/permissions/role/{roleKey}": {
+      "get": {
+        "tags": ["权限管理"],
+        "summary": "获取角色的权限列表",
+        "operationId": "listByRoleKey",
+        "parameters": [
+          {
+            "name": "roleKey",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListPermissionDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/mail/domain/allowed": {
+      "get": {
+        "tags": ["邮件服务管理"],
+        "summary": "获取允许的邮件域名列表",
+        "operationId": "getAllowedDomains",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseSetString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/threads/view/{threadId}": {
+      "get": {
+        "tags": ["主题帖"],
+        "summary": "查询帖子-查看态",
+        "operationId": "getThreadForView",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/threads/hot": {
+      "get": {
+        "tags": ["主题帖"],
+        "summary": "获取热门帖子",
+        "operationId": "queryHotThreads",
+        "parameters": [
+          {
+            "name": "days",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 7
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/threads/edit/{threadId}": {
+      "get": {
+        "tags": ["主题帖"],
+        "summary": "查询帖子-编辑态",
+        "operationId": "getThreadForEdit",
+        "parameters": [
+          {
+            "name": "threadId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/pages/{pageCode}/content": {
+      "get": {
+        "tags": ["自定义页面"],
+        "operationId": "getContentByPageCode",
+        "parameters": [
+          {
+            "name": "pageCode",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/notifications": {
+      "get": {
+        "tags": ["消息通知中心"],
+        "summary": "查询帖子",
+        "operationId": "queryNotifications",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "reply"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/notifications/count": {
+      "get": {
+        "tags": ["消息通知中心"],
+        "summary": "查询当前用户的通知数量",
+        "operationId": "getNotificationCount",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/forums/menu": {
+      "get": {
+        "tags": ["版块"],
+        "summary": "获取版块菜单",
+        "operationId": "getForumShowMenu",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseForumMenuVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/forums/menu/user": {
+      "get": {
+        "tags": ["版块"],
+        "summary": "获取用户可显示的版块菜单",
+        "operationId": "getUserForumMenu",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListForumMenuItemVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/forums/info": {
+      "get": {
+        "tags": ["版块"],
+        "summary": "获取版块基础信息",
+        "operationId": "getForumInfoByName",
+        "parameters": [
+          {
+            "name": "forumName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseForumVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/configs/website": {
+      "get": {
+        "tags": ["网站配置项"],
+        "summary": "获取网站基础信息",
+        "operationId": "getWebsiteBaseInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseWebsiteBaseInfoVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/comments/{commentId}": {
+      "get": {
+        "tags": ["评论管理"],
+        "summary": "查询评论详情",
+        "operationId": "getCommentVOById",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/auth/permissions": {
+      "get": {
+        "tags": ["用户权限管理"],
+        "summary": "查询用户权限",
+        "operationId": "queryPermissions",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/threads": {
+      "get": {
+        "tags": ["后台主题帖管理"],
+        "summary": "查询帖子",
+        "operationId": "queryThreadsByAdmin",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "authorName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "ip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "auditStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "byte"
+            }
+          },
+          {
+            "name": "propertyType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "byte",
+              "default": "LTE="
+            }
+          },
+          {
+            "name": "deleted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/posts/auditing/count": {
+      "get": {
+        "tags": ["后台管理"],
+        "summary": "查询帖子审核数量",
+        "operationId": "getAuditingCount",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/images": {
+      "get": {
+        "tags": ["后台图片管理"],
+        "summary": "分页查询图片",
+        "operationId": "queryPage",
+        "parameters": [
+          {
+            "name": "imageType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "storageType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "createBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageImageVO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["后台图片管理"],
+        "summary": "批量删除图片",
+        "operationId": "deleteBatch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/forums/{forumId}": {
+      "get": {
+        "tags": ["后台版块管理"],
+        "summary": "获取版块信息",
+        "operationId": "getForumById",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseForumPO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["后台版块管理"],
+        "summary": "删除版块",
+        "operationId": "deleteForumById",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/forum-access/{forumId}": {
+      "get": {
+        "tags": ["后台版块权限管理"],
+        "summary": "获取版块权限配置",
+        "operationId": "getForumAccess",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListForumAccessDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["后台版块权限管理"],
+        "summary": "删除版块权限",
+        "operationId": "deleteForumAccess",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/comments": {
+      "get": {
+        "tags": ["后台回帖管理"],
+        "summary": "查询帖子",
+        "operationId": "queryCommentsByAdmin",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "authorName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "ip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "threadId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "auditStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "byte"
+            }
+          },
+          {
+            "name": "deleted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/comments/replies": {
+      "get": {
+        "tags": ["后台回帖管理"],
+        "summary": "查询帖子评论",
+        "operationId": "queryCommentRepliesByAdmin",
+        "parameters": [
+          {
+            "name": "forumId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "authorName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "ip",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "threadId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "auditStatus",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "byte"
+            }
+          },
+          {
+            "name": "deleted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/admin/auth/user-roles": {
+      "get": {
+        "tags": ["用户权限后台管理"],
+        "summary": "分页查询角色授权的用户列表",
+        "operationId": "queryUserRoles",
+        "parameters": [
+          {
+            "name": "pageNo",
+            "in": "query",
+            "description": "页码",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "页码",
+              "format": "int32",
+              "example": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页大小",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "每页大小",
+              "format": "int32",
+              "example": 10
+            },
+            "example": 10
+          },
+          {
+            "name": "roleKey",
+            "in": "query",
+            "description": "角色key",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "角色key"
+            }
+          },
+          {
+            "name": "userName",
+            "in": "query",
+            "description": "用户名",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "用户名"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "用户id",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "用户id",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "forumId",
+            "in": "query",
+            "description": "版块id",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "版块id",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageUserRoleVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/user-roles/{id}": {
+      "delete": {
+        "tags": ["用户角色管理"],
+        "summary": "取消用户角色",
+        "operationId": "cancel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/role-permissions/{id}": {
+      "delete": {
+        "tags": ["角色权限管理"],
+        "summary": "取消角色权限",
+        "operationId": "cancel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseString"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserVO": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "intro": {
+            "type": "string"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SingleResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "UserCmd": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int64"
+          },
+          "userName": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱"
+          },
+          "phone": {
+            "type": "string",
+            "description": "手机号码"
+          },
+          "verifyCode": {
+            "type": "string",
+            "description": "验证码"
+          },
+          "password": {
+            "type": "string",
+            "description": "密码"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像"
+          }
+        },
+        "description": "用户表单对象"
+      },
+      "RoleUpdateCmd": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roleName": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "roleStatus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "perms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SingleResponseString": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        }
+      },
+      "PermissionUpdateCmd": {
+        "type": "object",
+        "properties": {
+          "permId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "permName": {
+            "type": "string"
+          },
+          "permStatus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "perms": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "permType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "permOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ThreadCmd": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "dataType": {
+            "type": "string",
+            "enum": ["TEXT", "HTML", "MARKDOWN", "UBB"]
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "commentOrder": {
+            "type": "string",
+            "enum": ["TIME_ASC", "TIME_DESC", "HOT"]
+          }
+        },
+        "description": "帖子内容"
+      },
+      "CustomPageCmd": {
+        "required": ["accessLevel", "pageCode", "pageId", "pageName", "pageStatus"],
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "pageName": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "pageCode": {
+            "pattern": "^[a-z0-9-]{4,50}$",
+            "type": "string"
+          },
+          "pageStatus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "accessLevel": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SingleResponseVoid": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "ForumCmd": {
+        "type": "object",
+        "properties": {
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "shortBrief": {
+            "type": "string"
+          },
+          "brief": {
+            "type": "string"
+          },
+          "forumAccess": {
+            "type": "boolean"
+          },
+          "iconName": {
+            "type": "string"
+          },
+          "seoTitle": {
+            "type": "string"
+          },
+          "seoKeywords": {
+            "type": "string"
+          },
+          "seoContent": {
+            "type": "string"
+          },
+          "seoExt": {
+            "type": "string"
+          },
+          "backgroundImage": {
+            "type": "string"
+          },
+          "showMenu": {
+            "type": "boolean"
+          },
+          "menuOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ForumAccessDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "roleKey": {
+            "type": "string"
+          },
+          "roleName": {
+            "type": "string"
+          },
+          "perms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "remark": {
+            "type": "string"
+          }
+        }
+      },
+      "WebsiteBaseInfoVO": {
+        "type": "object",
+        "properties": {
+          "websiteName": {
+            "type": "string"
+          },
+          "websiteIntroduction": {
+            "type": "string"
+          },
+          "seoTitle": {
+            "type": "string"
+          },
+          "seoContent": {
+            "type": "string"
+          },
+          "seoKeywords": {
+            "type": "string"
+          }
+        }
+      },
+      "AuditConfigSensitiveWordsDTO": {
+        "type": "object",
+        "properties": {
+          "enableSensitiveWordsAudit": {
+            "type": "boolean"
+          },
+          "sensitiveWords": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AuditConfigBlackWhiteUsersDTO": {
+        "type": "object",
+        "properties": {
+          "whiteListUsers": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "blackListUsers": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "LikeCmd": {
+        "required": ["targetId", "targetType"],
+        "type": "object",
+        "properties": {
+          "targetType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "targetId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SingleResponseInteger": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "FavoriteCmd": {
+        "type": "object",
+        "properties": {
+          "threadId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isFavorite": {
+            "type": "boolean"
+          }
+        }
+      },
+      "VerifyCodeLoginDTO": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "description": "账号(手机号/邮箱)"
+          },
+          "code": {
+            "type": "string",
+            "description": "验证码"
+          },
+          "type": {
+            "type": "string",
+            "description": "账号类型(phone/email)"
+          }
+        },
+        "description": "验证码登录请求"
+      },
+      "SingleResponseUserResp": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserResp"
+          }
+        }
+      },
+      "UserResp": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "tokenType": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "token": {
+            "type": "string"
+          },
+          "tokenExpiresIn": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ResetPasswordDTO": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "description": "账号(手机号/邮箱)"
+          },
+          "code": {
+            "type": "string",
+            "description": "验证码"
+          },
+          "newPassword": {
+            "type": "string",
+            "description": "新密码"
+          },
+          "type": {
+            "type": "string",
+            "description": "账号类型(phone/email)"
+          }
+        },
+        "description": "验证码重置密码请求"
+      },
+      "UserLoginDTO": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "captchaCode": {
+            "type": "string"
+          }
+        }
+      },
+      "UserRoleCreateCmd": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "roleKey": {
+            "type": "string"
+          },
+          "roleScope": {
+            "type": "string"
+          },
+          "expireTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SmsConfigDTO": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string",
+            "description": "短信服务提供商",
+            "example": "ALIYUN"
+          },
+          "accessKeyId": {
+            "type": "string",
+            "description": "访问密钥ID",
+            "example": "LTAI4XXXXX"
+          },
+          "accessKeySecret": {
+            "type": "string",
+            "description": "访问密钥密码",
+            "example": "XXXXX"
+          },
+          "signName": {
+            "type": "string",
+            "description": "短信签名",
+            "example": "XXXXX"
+          },
+          "verifyCodeTemplateId": {
+            "type": "string",
+            "description": "验证码模板ID",
+            "example": "SMS_123456789"
+          },
+          "blacklist": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "手机号黑名单",
+            "items": {
+              "type": "string",
+              "description": "手机号黑名单"
+            }
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "是否启用",
+            "example": true
+          }
+        },
+        "description": "短信配置"
+      },
+      "RoleCreateCmd": {
+        "type": "object",
+        "properties": {
+          "roleName": {
+            "type": "string"
+          },
+          "roleKey": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "perms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "RolePermissionCreateCmd": {
+        "type": "object",
+        "properties": {
+          "roleKey": {
+            "type": "string"
+          },
+          "perms": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterConfigDTO": {
+        "type": "object",
+        "properties": {
+          "enableRegister": {
+            "type": "boolean",
+            "description": "是否开启注册功能"
+          },
+          "enableSmsRegister": {
+            "type": "boolean",
+            "description": "是否开启短信注册"
+          },
+          "enableEmailRegister": {
+            "type": "boolean",
+            "description": "是否开启邮箱注册"
+          },
+          "enableRegisterCaptcha": {
+            "type": "boolean",
+            "description": "是否开启注册验证码"
+          },
+          "forbiddenUsernames": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "禁止的用户名列表",
+            "items": {
+              "type": "string",
+              "description": "禁止的用户名列表"
+            }
+          },
+          "passwordMinLength": {
+            "type": "integer",
+            "description": "密码最小长度",
+            "format": "int32"
+          },
+          "passwordMaxLength": {
+            "type": "integer",
+            "description": "密码最大长度",
+            "format": "int32"
+          },
+          "passwordStrength": {
+            "type": "integer",
+            "description": "密码强度要求（0:无要求, 1:必须包含数字和字母, 2:必须包含数字、字母和特殊字符）",
+            "format": "int32"
+          }
+        },
+        "description": "注册配置"
+      },
+      "PermissionCreateCmd": {
+        "type": "object",
+        "properties": {
+          "parentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "permName": {
+            "type": "string"
+          },
+          "perms": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "permType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "permOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "MailTestCmd": {
+        "required": ["content", "subject", "to"],
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "description": "收件人邮箱"
+          },
+          "from": {
+            "type": "string",
+            "description": "自定义发件人"
+          },
+          "subject": {
+            "type": "string",
+            "description": "邮件主题"
+          },
+          "content": {
+            "type": "string",
+            "description": "邮件内容"
+          },
+          "html": {
+            "type": "boolean",
+            "description": "是否HTML内容"
+          }
+        },
+        "description": "邮件发送测试命令"
+      },
+      "MailTemplateDTO": {
+        "required": ["content", "subject"],
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string",
+            "description": "模板主题"
+          },
+          "content": {
+            "type": "string",
+            "description": "模板内容"
+          },
+          "html": {
+            "type": "boolean",
+            "description": "是否HTML内容"
+          },
+          "description": {
+            "type": "string",
+            "description": "模板说明"
+          }
+        },
+        "description": "邮件模板"
+      },
+      "TemplateTestCmd": {
+        "required": ["to"],
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "description": "收件人邮箱"
+          },
+          "variables": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "模板变量"
+            },
+            "description": "模板变量"
+          }
+        },
+        "description": "模板邮件测试命令"
+      },
+      "MailConfigDTO": {
+        "type": "object",
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "defaultFrom": {
+            "type": "string"
+          },
+          "auth": {
+            "type": "boolean"
+          },
+          "starttlsEnable": {
+            "type": "boolean"
+          },
+          "protocol": {
+            "type": "string"
+          }
+        }
+      },
+      "EmailListConfigDTO": {
+        "type": "object",
+        "properties": {
+          "allowedDomains": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "blockedDomains": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "LoginConfigDTO": {
+        "type": "object",
+        "properties": {
+          "enablePhoneCodeLogin": {
+            "type": "boolean",
+            "description": "是否开启手机验证码登录"
+          },
+          "enableEmailCodeLogin": {
+            "type": "boolean",
+            "description": "是否开启邮箱验证码登录"
+          },
+          "enablePasswordLogin": {
+            "type": "boolean",
+            "description": "是否开启账密登录"
+          },
+          "enableLoginCaptcha": {
+            "type": "boolean",
+            "description": "是否开启登录验证码"
+          },
+          "maxLoginFailCount": {
+            "type": "integer",
+            "description": "连续登录失败次数限制",
+            "format": "int32"
+          },
+          "loginLockMinutes": {
+            "type": "integer",
+            "description": "登录失败锁定时间（分钟）",
+            "format": "int32"
+          },
+          "enablePhoneResetPassword": {
+            "type": "boolean",
+            "description": "是否开启手机找回密码"
+          },
+          "enableEmailResetPassword": {
+            "type": "boolean",
+            "description": "是否开启邮箱找回密码"
+          }
+        },
+        "description": "登录配置"
+      },
+      "ThreadQuery": {
+        "type": "object",
+        "properties": {
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "forumName": {
+            "type": "string"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "keyword": {
+            "type": "string"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "orderBy": {
+            "type": "string"
+          },
+          "pageNo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "auditStatusV": {
+            "type": "string",
+            "enum": ["PASSED", "AUDITING", "REJECTED"]
+          },
+          "propertyTypeV": {
+            "type": "string",
+            "enum": ["TOP", "DIGEST", "CLOSED", "RECOMMEND"]
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "excludeThreadIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "days": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CommentCmd": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "threadId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "commentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CommentReplyCmd": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "replyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "replyUserId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "BanCreateCmd": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "expireTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SingleResponseBoolean": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ForumUserRoleCmd": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roleKey": {
+            "type": "string"
+          },
+          "expireTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CustomPageThreadVO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ThreadVO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SingleResponseCustomPageThreadVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageThreadVO"
+          }
+        }
+      },
+      "ThreadPropertyV": {
+        "type": "object",
+        "properties": {
+          "top": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "digest": {
+            "type": "boolean"
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "recommended": {
+            "type": "boolean"
+          },
+          "closed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ThreadVO": {
+        "type": "object",
+        "properties": {
+          "threadId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "forumName": {
+            "type": "string"
+          },
+          "forumNickName": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "top": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "closed": {
+            "type": "boolean"
+          },
+          "digest": {
+            "type": "boolean"
+          },
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "authorName": {
+            "type": "string"
+          },
+          "avatarUrl": {
+            "type": "string"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAuthorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updateAuthorName": {
+            "type": "string"
+          },
+          "updateAvatarUrl": {
+            "type": "string"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "brief": {
+            "type": "string"
+          },
+          "docType": {
+            "type": "string",
+            "format": "byte"
+          },
+          "views": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comments": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "likes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "liked": {
+            "type": "boolean"
+          },
+          "dislikes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "collections": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "commentOrder": {
+            "type": "string",
+            "format": "byte"
+          },
+          "imageCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "property": {
+            "$ref": "#/components/schemas/ThreadPropertyV"
+          },
+          "recommendProperty": {
+            "type": "boolean",
+            "writeOnly": true
+          }
+        }
+      },
+      "SingleResponseListUserVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserVO"
+            }
+          }
+        }
+      },
+      "AuthConfigVO": {
+        "type": "object",
+        "properties": {
+          "loginConfig": {
+            "$ref": "#/components/schemas/LoginConfigVO"
+          },
+          "registerConfig": {
+            "$ref": "#/components/schemas/RegisterConfigVO"
+          }
+        },
+        "description": "认证配置信息"
+      },
+      "LoginConfigVO": {
+        "type": "object",
+        "properties": {
+          "enablePhoneCodeLogin": {
+            "type": "boolean",
+            "description": "是否开启手机验证码登录"
+          },
+          "enableEmailCodeLogin": {
+            "type": "boolean",
+            "description": "是否开启邮箱验证码登录"
+          },
+          "enablePasswordLogin": {
+            "type": "boolean",
+            "description": "是否开启账密登录"
+          },
+          "enableLoginCaptcha": {
+            "type": "boolean",
+            "description": "是否开启登录验证码"
+          },
+          "enablePhoneResetPassword": {
+            "type": "boolean",
+            "description": "是否开启手机找回密码"
+          },
+          "enableEmailResetPassword": {
+            "type": "boolean",
+            "description": "是否开启邮箱找回密码"
+          }
+        },
+        "description": "登录配置"
+      },
+      "RegisterConfigVO": {
+        "type": "object",
+        "properties": {
+          "enableRegister": {
+            "type": "boolean",
+            "description": "是否开启注册功能"
+          },
+          "enableSmsRegister": {
+            "type": "boolean",
+            "description": "是否开启短信注册"
+          },
+          "enableEmailRegister": {
+            "type": "boolean",
+            "description": "是否开启邮箱注册"
+          },
+          "enableRegisterCaptcha": {
+            "type": "boolean",
+            "description": "是否开启注册验证码"
+          },
+          "passwordMinLength": {
+            "type": "integer",
+            "description": "密码最小长度",
+            "format": "int32"
+          },
+          "passwordMaxLength": {
+            "type": "integer",
+            "description": "密码最大长度",
+            "format": "int32"
+          },
+          "passwordStrength": {
+            "type": "integer",
+            "description": "密码强度要求（0:无要求, 1:必须包含数字和字母, 2:必须包含数字、字母和特殊字符）",
+            "format": "int32"
+          }
+        },
+        "description": "注册配置"
+      },
+      "SingleResponseAuthConfigVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuthConfigVO"
+          }
+        }
+      },
+      "SingleResponseListUserRoleDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRoleDTO"
+            }
+          }
+        }
+      },
+      "UserRoleDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "用户角色ID",
+            "format": "int64",
+            "example": 1
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int64",
+            "example": 1001
+          },
+          "roleKey": {
+            "type": "string",
+            "description": "角色Key",
+            "example": "ADMIN"
+          },
+          "roleScope": {
+            "type": "string",
+            "description": "角色范围",
+            "example": "GLOBAL"
+          },
+          "createBy": {
+            "type": "integer",
+            "description": "创建者ID",
+            "format": "int64",
+            "example": 1002
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "expireTime": {
+            "type": "string",
+            "description": "过期时间",
+            "format": "date-time"
+          }
+        }
+      },
+      "CustomPageUserRoleVO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserRoleVO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SingleResponseCustomPageUserRoleVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageUserRoleVO"
+          }
+        }
+      },
+      "UserRoleVO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int64",
+            "example": 1
+          },
+          "userName": {
+            "type": "string",
+            "description": "用户名",
+            "example": "admin"
+          },
+          "roleKey": {
+            "type": "string",
+            "description": "角色Key",
+            "example": "ADMIN"
+          },
+          "roleName": {
+            "type": "string",
+            "description": "角色名称",
+            "example": "ADMIN"
+          },
+          "roleScope": {
+            "type": "string",
+            "description": "角色范围",
+            "example": "GLOBAL"
+          },
+          "createUserName": {
+            "type": "string",
+            "description": "创建者用户名",
+            "example": "admin"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "expireTime": {
+            "type": "string",
+            "description": "过期时间",
+            "format": "date-time"
+          }
+        }
+      },
+      "SingleResponseSmsConfigDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SmsConfigDTO"
+          }
+        }
+      },
+      "CustomPageRoleDTO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleDTO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RoleDTO": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roleName": {
+            "type": "string"
+          },
+          "roleKey": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "roleStatus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "roleStatusDesc": {
+            "type": "string"
+          },
+          "perms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "priority": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SingleResponseCustomPageRoleDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageRoleDTO"
+          }
+        }
+      },
+      "SingleResponseRoleDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RoleDTO"
+          }
+        }
+      },
+      "RolePermissionPO": {
+        "type": "object",
+        "properties": {
+          "createBy": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateBy": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "roleKey": {
+            "type": "string"
+          },
+          "permId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "SingleResponseListRolePermissionPO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RolePermissionPO"
+            }
+          }
+        }
+      },
+      "SingleResponseRegisterConfigDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/RegisterConfigDTO"
+          }
+        }
+      },
+      "PermissionDTO": {
+        "type": "object",
+        "properties": {
+          "permId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "parentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "permName": {
+            "type": "string"
+          },
+          "permStatus": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "perms": {
+            "type": "string"
+          },
+          "remark": {
+            "type": "string"
+          },
+          "permType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "permOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SingleResponseListPermissionDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PermissionDTO"
+            }
+          }
+        }
+      },
+      "SingleResponsePermissionDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PermissionDTO"
+          }
+        }
+      },
+      "SingleResponseMailTemplateDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/MailTemplateDTO"
+          }
+        }
+      },
+      "SingleResponseMailConfigDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/MailConfigDTO"
+          }
+        }
+      },
+      "SingleResponseEmailListConfigDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EmailListConfigDTO"
+          }
+        }
+      },
+      "SingleResponseSetString": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SingleResponseLoginConfigDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginConfigDTO"
+          }
+        }
+      },
+      "ForumMenuItemVO": {
+        "type": "object",
+        "properties": {
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "iconName": {
+            "type": "string"
+          }
+        }
+      },
+      "ForumMenuVO": {
+        "type": "object",
+        "properties": {
+          "defaultForumName": {
+            "type": "string"
+          },
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ForumMenuItemVO"
+            }
+          }
+        }
+      },
+      "SingleResponseForumMenuVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ForumMenuVO"
+          }
+        }
+      },
+      "SingleResponseListForumMenuItemVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ForumMenuItemVO"
+            }
+          }
+        }
+      },
+      "ForumVO": {
+        "type": "object",
+        "properties": {
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "threadCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "followCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "shortBrief": {
+            "type": "string"
+          },
+          "brief": {
+            "type": "string"
+          },
+          "iconName": {
+            "type": "string"
+          },
+          "seoTitle": {
+            "type": "string"
+          },
+          "seoKeywords": {
+            "type": "string"
+          },
+          "seoContent": {
+            "type": "string"
+          },
+          "backgroundImage": {
+            "type": "string"
+          }
+        }
+      },
+      "SingleResponseForumVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ForumVO"
+          }
+        }
+      },
+      "SingleResponseWebsiteBaseInfoVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/WebsiteBaseInfoVO"
+          }
+        }
+      },
+      "CustomPageCustomPageVO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomPageVO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CustomPageVO": {
+        "type": "object",
+        "properties": {
+          "pageId": {
+            "type": "integer",
+            "description": "页面ID",
+            "format": "int64"
+          },
+          "pageName": {
+            "type": "string",
+            "description": "页面名称"
+          },
+          "pageCode": {
+            "type": "string",
+            "description": "页面编码"
+          },
+          "pageStatus": {
+            "type": "integer",
+            "description": "页面状态 0启用 1停用",
+            "format": "int32"
+          },
+          "accessLevel": {
+            "type": "integer",
+            "description": "访问权限 0公开 1登录用户 2指定角色",
+            "format": "int32"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updateTime": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time"
+          },
+          "content": {
+            "type": "string",
+            "description": "最新内容版本"
+          }
+        },
+        "description": "自定义页面视图对象"
+      },
+      "SingleResponseCustomPageCustomPageVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageCustomPageVO"
+          }
+        }
+      },
+      "CustomPageImageVO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageVO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ImageVO": {
+        "type": "object",
+        "properties": {
+          "imageId": {
+            "type": "integer",
+            "description": "图片ID",
+            "format": "int64"
+          },
+          "imagePath": {
+            "type": "string",
+            "description": "图片路径"
+          },
+          "imageType": {
+            "type": "integer",
+            "description": "图片类型（0帖子图片 1用户头像）",
+            "format": "int32"
+          },
+          "fileSize": {
+            "type": "integer",
+            "description": "文件大小(字节)",
+            "format": "int64"
+          },
+          "fileHash": {
+            "type": "string",
+            "description": "文件hash值"
+          },
+          "fileExt": {
+            "type": "string",
+            "description": "文件后缀"
+          },
+          "storageType": {
+            "type": "integer",
+            "description": "存储类型（0本地 1阿里云OSS 2腾讯云COS）",
+            "format": "int32"
+          },
+          "authorId": {
+            "type": "integer",
+            "description": "创建者",
+            "format": "int64"
+          },
+          "authorName": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          }
+        },
+        "description": "图片信息"
+      },
+      "SingleResponseCustomPageImageVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageImageVO"
+          }
+        }
+      },
+      "ForumItemVO": {
+        "type": "object",
+        "properties": {
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "iconName": {
+            "type": "string"
+          },
+          "showMenu": {
+            "type": "boolean"
+          },
+          "isSystem": {
+            "type": "boolean"
+          },
+          "menuOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "defaultForum": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SingleResponseListForumItemVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ForumItemVO"
+            }
+          }
+        }
+      },
+      "ForumPO": {
+        "type": "object",
+        "properties": {
+          "createBy": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateBy": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isDeleted": {
+            "type": "boolean"
+          },
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "shortBrief": {
+            "type": "string"
+          },
+          "brief": {
+            "type": "string"
+          },
+          "forumAccess": {
+            "type": "boolean"
+          },
+          "iconName": {
+            "type": "string"
+          },
+          "seoTitle": {
+            "type": "string"
+          },
+          "seoKeywords": {
+            "type": "string"
+          },
+          "seoContent": {
+            "type": "string"
+          },
+          "seoExt": {
+            "type": "string"
+          },
+          "backgroundImage": {
+            "type": "string"
+          },
+          "showMenu": {
+            "type": "boolean"
+          },
+          "isSystem": {
+            "type": "boolean"
+          },
+          "menuOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SingleResponseForumPO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ForumPO"
+          }
+        }
+      },
+      "SingleResponseListForumAccessDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ForumAccessDTO"
+            }
+          }
+        }
+      },
+      "BanVO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "operationUserName": {
+            "type": "string"
+          },
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "forumName": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "expireTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "operationType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CustomPageBanVO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BanVO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SingleResponseCustomPageBanVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageBanVO"
+          }
+        }
+      },
+      "SingleResponseAuditConfigSensitiveWordsDTO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuditConfigSensitiveWordsDTO"
+          }
+        }
+      },
+      "AuditConfigBlackWhiteUsersVO": {
+        "type": "object",
+        "properties": {
+          "whiteListUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserVO"
+            }
+          },
+          "blackListUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserVO"
+            }
+          }
+        }
+      },
+      "SingleResponseAuditConfigBlackWhiteUsersVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AuditConfigBlackWhiteUsersVO"
+          }
+        }
+      }
+    }
+  },
+  "x-openapi": {
+    "x-setting": {
+      "customCode": 200,
+      "language": "zh-CN",
+      "enableSwaggerModels": true,
+      "swaggerModelName": "Swagger Models",
+      "enableReloadCacheParameter": false,
+      "enableAfterScript": true,
+      "enableDocumentManage": true,
+      "enableVersion": false,
+      "enableRequestCache": true,
+      "enableFilterMultipartApis": false,
+      "enableFilterMultipartApiMethodType": "POST",
+      "enableHost": false,
+      "enableHostText": "",
+      "enableDynamicParameter": false,
+      "enableDebug": true,
+      "enableFooter": true,
+      "enableFooterCustom": false,
+      "enableSearch": true,
+      "enableOpenApi": true,
+      "enableHomeCustom": false,
+      "enableGroup": true,
+      "enableResponseCode": true
+    },
+    "x-markdownFiles": []
+  }
+}
