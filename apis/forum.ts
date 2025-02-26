@@ -47,6 +47,14 @@ export const getForumShowMenu = () => {
   return Http.get(`/v1/forums/menu`)
 }
 
+/**
+ * 获取用户版块列表
+ * @returns 
+ */
+export const getUserForumList = () => {
+  return Http.get(`/v1/forums/user`)
+}
+
 export const getUserForumMenu = () => {
   return Http.get(`/v1/forums/menu/user`)
 }

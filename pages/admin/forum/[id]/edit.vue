@@ -14,8 +14,8 @@
             <el-form-item label="版块简介" prop="shortBrief">
               <el-input
                 v-model="formData.shortBrief"
-                placeholder="请输入版块简介(20字以内)"
-                maxlength="20"
+                placeholder="请输入版块简介(30字以内)"
+                maxlength="30"
                 show-word-limit
               />
             </el-form-item>
@@ -59,7 +59,11 @@
 
         <!-- 权限设置标签页 -->
         <el-tab-pane label="权限设置" name="permissions">
-          <el-alert style="margin-bottom: 20px;" type="warning">当前版块：{{ formData.nickName }}，开启权限后，当前版块的用户组权限将覆盖论坛通用的用户权限</el-alert>
+          <el-alert style="margin-bottom: 20px" type="warning"
+            >当前版块：{{
+              formData.nickName
+            }}，开启权限后，当前版块的用户组权限将覆盖论坛通用的用户权限</el-alert
+          >
           <el-form :model="permissionForm" label-width="100px">
             <el-form-item label="启用权限">
               <el-switch v-model="permissionForm.enableForumAccess" />
@@ -115,14 +119,21 @@
 
         <!-- 用户组标签页 -->
         <el-tab-pane label="用户组" name="userRoles">
-          <el-alert style="margin-bottom: 20px;" type="warning">当前版块：{{ formData.nickName }}，仅显示当前版块的用户组</el-alert>
-          
+          <el-alert style="margin-bottom: 20px" type="warning"
+            >当前版块：{{ formData.nickName }}，仅显示当前版块的用户组</el-alert
+          >
+
           <el-form :inline="true" class="search-form">
             <el-form-item label="用户名">
               <el-input v-model="userRoleQuery.userName" placeholder="请输入用户名" />
             </el-form-item>
             <el-form-item label="用户组">
-              <el-select v-model="userRoleQuery.roleKey" class="min-w-[180px]" placeholder="请选择用户组" clearable>
+              <el-select
+                v-model="userRoleQuery.roleKey"
+                class="min-w-[180px]"
+                placeholder="请选择用户组"
+                clearable
+              >
                 <el-option label="版主" value="MODERATOR" />
                 <el-option label="内容创作者" value="CREATOR" />
                 <el-option label="禁言用户" value="MUTED_USER" />
@@ -143,7 +154,12 @@
             <el-table-column label="过期时间" prop="expireTime" />
             <el-table-column label="操作" width="120" fixed="right">
               <template #default="{ row }">
-                <el-button type="warning" link @click="handleUnban(row)" v-if="row.roleKey === 'MUTED_USER'">
+                <el-button
+                  type="warning"
+                  link
+                  @click="handleUnban(row)"
+                  v-if="row.roleKey === 'MUTED_USER'"
+                >
                   解除禁言
                 </el-button>
                 <el-button type="danger" link @click="handleCancelAuthorization(row)" v-else>
@@ -291,7 +307,7 @@ const rules = {
     { required: true, message: '请输入版块名称', trigger: 'blur' },
     { min: 2, max: 20, message: '长度在2到20个字符', trigger: 'blur' }
   ],
-  shortBrief: [{ max: 20, message: '简介不能超过20字', trigger: 'blur' }],
+  shortBrief: [{ max: 30, message: '简介不能超过20字', trigger: 'blur' }],
   seoKeywords: [
     {
       pattern: /^[^,]+(,[^,]+){0,5}$/,
@@ -441,9 +457,9 @@ const queryUserSearch = (
     cb([])
     return
   }
-  
+
   queryUsername(queryString)
-    .then(res => {
+    .then((res) => {
       if (res.data) {
         const suggestions: AutocompleteData[] = res.data.map((item: any) => ({
           userName: item.userName,
@@ -454,7 +470,7 @@ const queryUserSearch = (
         cb([])
       }
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('查询用户失败:', error)
       cb([])
     })
@@ -495,7 +511,7 @@ const handleAssignAuthorization = async () => {
 
   try {
     // 格式化过期时间
-    const expireTime = assignForm.expireTime 
+    const expireTime = assignForm.expireTime
       ? formatDateTime(new Date(assignForm.expireTime))
       : undefined
 

@@ -1,6 +1,6 @@
 <template></template>
-<script lang="ts" setup>
-definePageMeta({
-  layout: 'search'
-})
+<script setup lang="ts">
+if (import.meta.client) {
+  navigateTo('/')
+}
 </script>

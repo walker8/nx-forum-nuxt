@@ -3641,6 +3641,25 @@
         }
       }
     },
+    "/v1/forums/user": {
+      "get": {
+        "tags": ["版块"],
+        "summary": "获取所有用户版块",
+        "operationId": "getUserForumList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseListUserForumVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/forums/menu": {
       "get": {
         "tags": ["版块"],
@@ -6257,6 +6276,47 @@
           },
           "data": {
             "$ref": "#/components/schemas/LoginConfigDTO"
+          }
+        }
+      },
+      "SingleResponseListUserForumVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserForumVO"
+            }
+          }
+        }
+      },
+      "UserForumVO": {
+        "type": "object",
+        "properties": {
+          "threadCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "shortBrief": {
+            "type": "string"
+          },
+          "iconName": {
+            "type": "string"
           }
         }
       },

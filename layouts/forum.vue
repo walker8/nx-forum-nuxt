@@ -85,7 +85,11 @@ try {
   }
 }
 const onClickTab = ({ name }) => {
-  navigateTo(`/f/${name}`)
+  if (name === 'all') {
+    navigateTo('/all')
+  } else {
+    navigateTo(`/f/${name}`)
+  }
 }
 watch(
   () => route.params.id,
@@ -131,46 +135,3 @@ onMounted(() => {
   )
 })
 </script>
-<style lang="scss" scoped>
-.common-layout {
-  height: 100%;
-  width: fit-content;
-}
-.m-header {
-  width: 100%;
-  margin-bottom: 5px;
-}
-.m-header .el-card {
-  --el-card-padding: 10px;
-}
-.forum-main {
-  padding-top: 0px;
-  max-width: 720px;
-}
-@media screen and (max-width: 720px) {
-  .common-layout {
-    width: 100%;
-  }
-}
-@media screen and (max-width: 960px) {
-  .el-main {
-    padding: 0px;
-  }
-  .forum-main {
-    width: calc(100vw - 40px);
-  }
-}
-@media screen and (min-width: 960px) {
-  .forum-main {
-    width: 720px;
-  }
-}
-.forum-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* 让容器至少占据整个视口高度 */
-}
-.content {
-  flex-grow: 1; /* 让主要内容区域尽可能占据剩余空间 */
-}
-</style>

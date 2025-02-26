@@ -8,7 +8,6 @@
         <slot />
       </div>
       <el-footer><common-footer /></el-footer>
-      <common-tabbar />
     </el-container>
   </div>
 </template>

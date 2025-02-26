@@ -1,4 +1,4 @@
-import type { CustomPage, ForumInfo, Thread } from '~/types/global'
+import type { CustomPage, ForumInfo, Thread, ForumMenuItemVO } from '~/types/global'
 
 export const useForumPostPage = () =>
   useState<CustomPage<Thread>>('forumPostPage', () => ({
@@ -27,5 +27,5 @@ export const useForumInfo = () =>
 export const useForumMenu = () =>
   useState('forumMenu', () => ({
     selctedMenu: '',
-    menus: []
+    menus: [] as ForumMenuItemVO[]
   }))

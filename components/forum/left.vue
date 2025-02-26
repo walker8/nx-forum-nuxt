@@ -1,30 +1,37 @@
 <template>
-  <client-only>
-    <div class="relative z-1000" ref="navbarRef">
-      <div
-        :class="{ 'fixed mt-5 top-0': isSticky, 'overflow-y-auto h-full': true }"
-        style="width: 200px"
-      >
-        <el-menu :default-active="forumMenu.selctedMenu" class="el-menu-vertical-demo">
-          <el-menu-item
-            v-for="menu in forumMenu.menus"
-            :index="menu.name"
-            @click="goForum(menu.name)"
-          >
-            <el-icon size="16px" style="position: relative; top: 0px">
-              <Icon :name="menu.iconName" />
-            </el-icon>
-            <span>{{ menu.nickName }}</span>
-          </el-menu-item>
-        </el-menu>
+  <div class="relative z-1000" ref="navbarRef">
+    <div
+      :class="{ 'fixed mt-5 top-0': isSticky }"
+      class="w-[200px] overflow-y-auto bg-white shadow-sm"
+    >
+      <div class="flex flex-col w-full">
+        <div
+          v-for="menu in forumMenu.menus"
+          :key="menu.name"
+          :class="[
+            'flex items-center px-5 py-3.5 cursor-pointer transition-colors duration-300 text-gray-500 hover:bg-gray-50',
+            { 'text-gray-900 bg-gray-50': forumMenu.selctedMenu === menu.name }
+          ]"
+          @click="goForum(menu.name)"
+        >
+          <div class="flex items-center justify-center mr-3">
+            <Icon :name="menu.iconName" class="w-5 h-5" />
+          </div>
+          <span class="text-sm">{{ menu.nickName }}</span>
+        </div>
       </div>
     </div>
-  </client-only>
+  </div>
 </template>
 <script setup>
 const forumMenu = useForumMenu()
 const goForum = (path) => {
-  navigateTo(`/f/${path}`)
+  forumMenu.value.selctedMenu = path
+  if (path === 'all') {
+    navigateTo('/all')
+  } else {
+    navigateTo(`/f/${path}`)
+  }
 }
 
 const navbarRef = ref(null)
