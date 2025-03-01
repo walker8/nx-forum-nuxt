@@ -1,19 +1,9 @@
 <template>
   <el-card>
-    <h1 class="article-title" v-if="thread.subject">
-      <div
-        style="
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          column-gap: 4px;
-          margin-right: 8px;
-        "
-      >
-        <el-tag type="success" v-if="thread.digest"> 精华 </el-tag>
-      </div>
-      {{ thread.subject }}
-    </h1>
+    <div v-if="thread.subject">
+      <el-tag type="success" v-if="thread.digest" class="mr-1.5 mb-2.5"> 精华 </el-tag>
+      <h1 class="article-title">{{ thread.subject }}</h1>
+    </div>
     <div class="article-info">
       <el-space wrap>
         <div class="author" @click="open(`/user/${thread.author?.authorId}`)">
@@ -148,12 +138,12 @@ const processEmotions = computed(() => {
 <style lang="scss" scoped>
 .article-title {
   margin: 0 0 13px;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 600;
   line-height: 1.4;
   color: #1d2129;
   overflow-wrap: break-word;
-  display: flex;
+  display: inline;
 }
 
 .article-info {
@@ -192,6 +182,17 @@ const processEmotions = computed(() => {
     border-radius: 4px;
     font-size: 14px;
     color: #333;
+  }
+
+  :deep(pre:not(:has(code))) {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    background-color: #f6f8fa;
+    padding: 12px;
+    border-radius: 4px;
+    margin: 16px 0;
   }
 
   :deep(h2) {

@@ -8,12 +8,10 @@
         <van-tabbar-item
           name="notification"
           icon="envelop-o"
-          :badge="userNotification.totalCount"
-          v-if="userNotification.totalCount > 0"
+          :badge="userNotification.totalCount || ''"
         >
           消息
         </van-tabbar-item>
-        <van-tabbar-item name="notification" icon="envelop-o" v-else>消息</van-tabbar-item>
         <van-tabbar-item name="user" icon="user-o">用户</van-tabbar-item>
       </van-tabbar>
     </div>

@@ -3,7 +3,9 @@
     <el-card shadow="never">
       <div class="toolbar-wrapper">
         <div>
-          <el-button type="success" :icon="Plus" size="default" @click="showAddDialog">增加版块</el-button>
+          <el-button type="success" :icon="Plus" size="default" @click="showAddDialog"
+            >增加版块</el-button
+          >
         </div>
         <div>
           <el-tooltip content="刷新当前页">
@@ -71,12 +73,11 @@
           <el-table-column fixed="right" label="操作" width="150" align="center">
             <template #default="scope">
               <el-button-group>
-                <el-button 
-                  type="success" 
-                  text 
-                  bg 
-                  size="small" 
-                  v-if="!scope.row.isSystem"
+                <el-button
+                  type="success"
+                  text
+                  bg
+                  size="small"
                   @click="router.push(`/admin/forum/${scope.row.forumId}/edit`)"
                 >
                   编辑
@@ -98,12 +99,7 @@
       </div>
     </el-card>
     <el-dialog v-model="dialogVisible" title="新增版块" width="30%">
-      <el-form 
-        :model="formData" 
-        :rules="rules"
-        ref="formRef"
-        label-width="100px"
-      >
+      <el-form :model="formData" :rules="rules" ref="formRef" label-width="100px">
         <el-form-item label="版块号" prop="name" required>
           <el-input v-model="formData.name" placeholder="请输入版块号(2-20位字母数字)" />
         </el-form-item>
@@ -197,9 +193,9 @@ const rules = {
   name: [
     { required: true, message: '请输入版块号', trigger: 'blur' },
     { min: 2, max: 20, message: '长度在2到20个字符', trigger: 'blur' },
-    { 
-      pattern: /^[a-zA-Z0-9]+$/, 
-      message: '版块号只能包含字母和数字', 
+    {
+      pattern: /^[a-zA-Z0-9]+$/,
+      message: '版块号只能包含字母和数字',
       trigger: 'blur'
     }
   ],
@@ -233,11 +229,11 @@ const closeDialog = () => {
 
 const submitNewForum = async () => {
   if (!formRef.value) return
-  
+
   try {
     // 表单验证
     await formRef.value.validate()
-    
+
     await createForum({ ...formData })
     ElMessage.success('版块创建成功')
     dialogVisible.value = false

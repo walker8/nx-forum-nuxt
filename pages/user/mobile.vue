@@ -15,7 +15,7 @@
     </van-cell-group>
 
     <van-cell-group class="menu-group">
-      <van-cell title="我的主页" is-link @click="open(`/user/${user.userId}`)">
+      <van-cell title="我的主页" is-link @click="goUserHome(user.userId)">
         <template #icon>
           <van-icon name="home-o" class="menu-icon" />
         </template>
@@ -27,7 +27,7 @@
         </template>
       </van-cell>
 
-      <van-cell title="后台管理" is-link to="/admin">
+      <van-cell title="后台管理" is-link to="/admin" v-if="hasPermission('admin:manage')">
         <template #icon>
           <van-icon name="manager-o" class="menu-icon" />
         </template>
@@ -55,8 +55,13 @@
 
 <script setup lang="ts">
 const { user, handleLogout } = useCurrentUser()
-const open = (path: string) => {
-  window.open(path, '_blank')
+const { hasPermission } = await useUserAuth()
+const goUserHome = (userId: number) => {
+  if (userId && userId > 0) {
+    window.open(`/user/${userId}`, '_blank')
+  } else {
+    navigateTo('/uc/login')
+  }
 }
 </script>
 

@@ -6,7 +6,7 @@
       </div>
       <div class="flex items-center justify-end w-full">
         <client-only>
-          <el-space wrap alignment="center">
+          <div class="flex flex-wrap items-center gap-4">
             <div :class="{ 'hidden sm:block': type != 'search' }">
               <el-input
                 v-model="keyword"
@@ -108,7 +108,7 @@
                 </template>
               </el-dropdown>
             </div>
-          </el-space>
+          </div>
         </client-only>
       </div>
     </div>

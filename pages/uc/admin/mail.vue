@@ -116,7 +116,6 @@ const verifyCodeTest = reactive({
   to: '',
   variables: {
     code: '123456',
-    siteName: '测试站点',
     userName: '测试用户',
     expireMinutes: '5'
   }
@@ -125,8 +124,7 @@ const verifyCodeTest = reactive({
 const resetPasswordTest = reactive({
   to: '',
   variables: {
-    resetLink: 'https://example.com/reset-password?token=test',
-    siteName: '测试站点',
+    code: '123456',
     userName: '测试用户',
     expireMinutes: '30'
   }
@@ -136,7 +134,7 @@ const registerSuccessTest = reactive({
   to: '',
   variables: {
     userName: '测试用户',
-    siteName: '测试站点'
+    domain: 'http://localhost:3097'
   }
 })
 
@@ -490,9 +488,6 @@ const handleBlockedInputConfirm = () => {
               <el-form-item label="验证码">
                 <el-input v-model="verifyCodeTest.variables.code" />
               </el-form-item>
-              <el-form-item label="站点名称">
-                <el-input v-model="verifyCodeTest.variables.siteName" />
-              </el-form-item>
               <el-form-item label="用户名">
                 <el-input v-model="verifyCodeTest.variables.userName" />
               </el-form-item>
@@ -513,11 +508,8 @@ const handleBlockedInputConfirm = () => {
               <el-form-item label="收件人" prop="to" :rules="[emailRules]">
                 <el-input v-model="resetPasswordTest.to" />
               </el-form-item>
-              <el-form-item label="重置链接">
-                <el-input v-model="resetPasswordTest.variables.resetLink" />
-              </el-form-item>
-              <el-form-item label="站点名称">
-                <el-input v-model="resetPasswordTest.variables.siteName" />
+              <el-form-item label="验证码">
+                <el-input v-model="resetPasswordTest.variables.code" />
               </el-form-item>
               <el-form-item label="用户名">
                 <el-input v-model="resetPasswordTest.variables.userName" />
@@ -542,8 +534,8 @@ const handleBlockedInputConfirm = () => {
               <el-form-item label="用户名">
                 <el-input v-model="registerSuccessTest.variables.userName" />
               </el-form-item>
-              <el-form-item label="站点名称">
-                <el-input v-model="registerSuccessTest.variables.siteName" />
+              <el-form-item label="网站域名">
+                <el-input v-model="registerSuccessTest.variables.domain" />
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="testTemplate('REGISTER_SUCCESS')">

@@ -6,14 +6,16 @@
         :key="forum.name"
         class="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-200 hover:text-gray-500 transition-colors duration-300"
       >
-        <div class="text-xl flex items-center gap-2">
-          <Icon :name="forum.iconName" class="w-5 h-5" v-if="forum.iconName" />
-          <span>{{ forum.nickName }}</span>
+        <div @click="goForum(forum.name)">
+          <div class="text-xl flex items-center gap-2">
+            <Icon :name="forum.iconName" class="w-5 h-5" v-if="forum.iconName" />
+            <span>{{ forum.nickName }}</span>
+          </div>
+          <div class="mt-2">
+            <el-text line-clamp="2">{{ forum.shortBrief || '暂无简介' }}</el-text>
+          </div>
+          <p class="text-gray-500" v-if="forum.threadCount">主题数: {{ forum.threadCount }}</p>
         </div>
-        <div class="mt-2">
-          <el-text line-clamp="2">{{ forum.shortBrief || "暂无简介" }}</el-text>
-        </div>
-        <p class="text-gray-500" v-if="forum.threadCount">主题数: {{ forum.threadCount }}</p>
       </div>
     </div>
     <div v-else class="text-center">没有找到版块信息</div>
@@ -34,10 +36,13 @@ if (response && response.success) {
 } else {
   console.error('获取版块信息失败:', response?.errMessage)
 }
-</script>
 
-<style scoped>
-.container {
-  max-width: 1200px;
+const goForum = (name: string) => {
+  if (name) {
+    navigateTo(`/f/${name}`)
+  }
 }
-</style>
+useSeoMeta({
+  title: '全部版块'
+})
+</script>

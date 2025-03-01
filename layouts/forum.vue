@@ -11,14 +11,27 @@
           </el-aside>
           <el-main class="forum-main">
             <div class="hidden-lg-and-up m-header" v-if="forumMenu.menus?.length > 0">
-              <van-tabs
-                v-model:active="forumMenu.selctedMenu"
-                sticky
-                shrink
-                @click-tab="onClickTab"
-              >
-                <van-tab v-for="menu in forumMenu.menus" :title="menu.nickName" :name="menu.name" />
-              </van-tabs>
+              <div class="w-full border-b border-gray-10 bg-white">
+                <div class="flex overflow-x-auto no-scrollbar">
+                  <button
+                    v-for="menu in forumMenu.menus"
+                    :key="menu.name"
+                    :class="[
+                      'px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors duration-200 relative',
+                      forumMenu.selctedMenu === menu.name
+                        ? 'text-blue-500 font-medium'
+                        : 'text-gray-600 hover:text-gray-800'
+                    ]"
+                    @click="onClickTab({ name: menu.name })"
+                  >
+                    {{ menu.nickName }}
+                    <div 
+                      v-if="forumMenu.selctedMenu === menu.name" 
+                      class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500"
+                    ></div>
+                  </button>
+                </div>
+              </div>
             </div>
             <slot />
           </el-main>
@@ -84,7 +97,7 @@ try {
     }, 200)
   }
 }
-const onClickTab = ({ name }) => {
+const onClickTab = ({ name }: { name: string }) => {
   if (name === 'all') {
     navigateTo('/all')
   } else {
@@ -97,6 +110,7 @@ watch(
     let forumName = ''
     if (to) {
       forumName = String(to)
+      forumMenu.value.selctedMenu = forumName
     }
     getForumInfoByName(forumName).then((res) => {
       forumInfo.value = res.data
@@ -135,3 +149,14 @@ onMounted(() => {
   )
 })
 </script>
+
+<style scoped>
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+</style>

@@ -41,6 +41,7 @@
                   v-for="menu in userNotification.tabs"
                   :title="menu.label"
                   :name="menu.value"
+                  :dot="userNotificationCount[menu.count] > 0"
                 />
               </van-tabs>
             </div>
@@ -49,12 +50,10 @@
         </el-container>
       </div>
     </div>
-    <common-tabbar />
+    <CommonTabbar />
   </el-container>
 </template>
 <script setup lang="js">
-import { CommonTabbar } from '#components'
-
 const userNotification = useUserNotification()
 const userNotificationCount = useUserNotificationCount()
 const errorMsg = ref('')
@@ -62,7 +61,11 @@ const onClickTab = ({ name }) => {
   goNotificationTabs(name)
 }
 const goNotificationTabs = (name) => {
-  navigateTo(`/notification/${name}`)
+  if ('reply' === name) {
+    navigateTo(`/notification`)
+  } else {
+    navigateTo(`/notification/${name}`)
+  }
 }
 </script>
 <style lang="scss" scoped>

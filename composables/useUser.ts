@@ -52,10 +52,10 @@ export const useUserHome = () =>
 
 export const useUserNotification = () =>
   useState('userNotification', () => ({
-    selected: '',
+    selected: 'reply',
     tabs: [
       {
-        value: '',
+        value: 'reply',
         label: '评论消息',
         count: 'replyCount'
       },
@@ -122,32 +122,34 @@ export function useCurrentUser() {
       title: '提示',
       message: '确定要退出登录吗？',
       confirmButtonText: '退出',
-      cancelButtonText: '取消',
-    }).then(async() => {
-      // 用户点击确认
-      try {
-        await logout()
-        // 清空用户信息
-        user.value = {
-          userId: 0,
-          avatar: '',
-          userName: '',
-          intro: ''
-        }
-        // 清除token
-        const token = useCookie('x_token')
-        token.value = ''
-        ElMessage.success('退出登录成功')
-        // 跳转到首页
-        navigateTo('/')
-      } catch (error) {
-        ElMessage.error('退出登录失败')
-      }
-    }).catch(() => {
-      // 用户点击取消
+      cancelButtonText: '取消'
     })
+      .then(async () => {
+        // 用户点击确认
+        try {
+          await logout()
+          // 清空用户信息
+          user.value = {
+            userId: 0,
+            avatar: '',
+            userName: '',
+            intro: ''
+          }
+          // 清除token
+          const token = useCookie('x_token')
+          token.value = ''
+          ElMessage.success('退出登录成功')
+          // 跳转到首页
+          navigateTo('/')
+        } catch (error) {
+          ElMessage.error('退出登录失败')
+        }
+      })
+      .catch(() => {
+        // 用户点击取消
+      })
   }
-  return { user, handleLogout}
+  return { user, handleLogout }
 }
 
 export const useAuthConfig = async () => {

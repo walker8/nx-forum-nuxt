@@ -26,7 +26,6 @@
 <script setup>
 const forumMenu = useForumMenu()
 const goForum = (path) => {
-  forumMenu.value.selctedMenu = path
   if (path === 'all') {
     navigateTo('/all')
   } else {

@@ -29,7 +29,7 @@
           </div>
         </a>
         <div style="color: #8a919f; font-size: 13px; line-height: 22px">
-          <el-space wrap>
+          <div class="flex flex-wrap gap-2 items-center">
             <el-tag
               type="info"
               size="small"
@@ -52,7 +52,7 @@
             </div>
             <div class="text-gray-200">|</div>
             <div>{{ thread.createTime }}</div>
-          </el-space>
+          </div>
         </div>
         <el-divider style="margin: 0px; margin-top: 8px" />
       </div>
@@ -104,8 +104,6 @@ const goUserHome = (userId: number) => {
   window.open(`/user/${userId}`, '_blank')
 }
 const goForum = (forumName: string) => {
-  const menu = useForumMenu()
-  menu.value.selctedMenu = forumName
   navigateTo(`/f/${forumName}`)
 }
 </script>

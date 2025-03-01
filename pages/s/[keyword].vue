@@ -11,7 +11,7 @@
         class="hover:bg-[#f2f3f5] hover:cursor-pointer pl-2 pr-2 sm:pl-5 sm:pr-5"
       >
         <div style="padding-top: 12px">
-          <el-space wrap v-if="thread.subject">
+          <div class="flex flex-wrap gap-2" v-if="thread.subject">
             <span
               style="
                 color: #252933;
@@ -23,7 +23,7 @@
               "
               v-html="thread.subject"
             />
-          </el-space>
+          </div>
           <div v-if="thread.brief">
             <span
               style="
@@ -40,7 +40,7 @@
             />
           </div>
           <div style="color: #8a919f; font-size: 13px; line-height: 22px">
-            <el-space wrap>
+            <div class="flex flex-wrap items-center gap-2">
               <el-tag
                 type="info"
                 size="small"
@@ -51,13 +51,13 @@
               </el-tag>
               <div
                 class="max-w-25 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer hover:text-[#409eff]"
-                @click.stop="goUserHome(thread.authorId)"
+                @click.stop="goUserHome(thread.author?.authorId)"
               >
-                {{ thread.authorName }}
+                {{ thread.author?.authorName }}
               </div>
               <div class="text-gray-200">|</div>
               <div>{{ thread.createTime }}</div>
-            </el-space>
+            </div>
           </div>
         </div>
         <el-divider style="margin: 0px; margin-top: 8px" />
@@ -121,10 +121,16 @@ const clickThread = (thread: Thread) => {
     window.open('/t/' + thread.threadId, '_blank')
   }
 }
-const goUserHome = (userId: number) => {
-  window.open(`/user/${userId}`, '_blank')
+const goUserHome = (userId: number | null | undefined) => {
+  if (userId) {
+    window.open(`/user/${userId}`, '_blank')
+  }
 }
 const goForum = (forumName: string) => {
   navigateTo(`/f/${forumName}`)
 }
+
+useSeoMeta({
+  title: () => `搜索结果-${keyword}`
+})
 </script>
