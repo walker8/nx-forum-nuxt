@@ -228,7 +228,7 @@ if (!hasPermission('admin:manage')) {
   navigateTo('/')
 }
 // 创建路由到index的映射表
-const routeIndexMap = {
+const routeIndexMap: Record<string, string> = {
   '/admin': '0',
   '/admin/base': '1-0',
   '/admin/forum': '1-3',
@@ -255,7 +255,7 @@ const activeIndex = computed(() => {
     .sort((a, b) => b.length - a.length) // 优先匹配更长路径
     .find((key) => basePath.startsWith(key))
 
-  return matchedKey ? routeIndexMap[matchedKey] : '0'
+  return matchedKey ? routeIndexMap[matchedKey as keyof typeof routeIndexMap] : '0'
 })
 </script>
 
@@ -301,5 +301,19 @@ const activeIndex = computed(() => {
   line-height: 60px;
   text-align: center;
   color: white;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .el-menu-item, :deep(.el-sub-menu__title) {
+    height: 50px;
+    line-height: 50px;
+  }
+  
+  .logo {
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+  }
 }
 </style>

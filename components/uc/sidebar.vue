@@ -95,6 +95,21 @@ const props = withDefaults(defineProps<Props>(), {
 const go = (path: string) => {
   navigateTo(path)
 }
+
+// 检测是否为移动端
+const isMobile = ref(false)
+const checkIsMobile = () => {
+  isMobile.value = window.innerWidth < 768
+}
+
+onMounted(() => {
+  checkIsMobile()
+  window.addEventListener('resize', checkIsMobile)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', checkIsMobile)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -136,5 +151,19 @@ const go = (path: string) => {
   line-height: 60px;
   text-align: center;
   color: white;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .el-menu-item, :deep(.el-sub-menu__title) {
+    height: 50px;
+    line-height: 50px;
+  }
+  
+  .logo {
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+  }
 }
 </style>
