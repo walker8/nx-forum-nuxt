@@ -1315,6 +1315,36 @@
         }
       }
     },
+    "/v1/users/unfollow/{followUserId}": {
+      "post": {
+        "tags": ["用户中心"],
+        "summary": "取消关注",
+        "operationId": "unfollow",
+        "parameters": [
+          {
+            "name": "followUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/users/like": {
       "post": {
         "tags": ["用户中心"],
@@ -1337,6 +1367,35 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/SingleResponseInteger"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/follow": {
+      "post": {
+        "tags": ["用户中心"],
+        "summary": "关注用户",
+        "operationId": "follow",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserFollowCmd"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
                 }
               }
             }
@@ -2874,6 +2933,106 @@
         }
       }
     },
+    "/v1/users/{userId}/following": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "查询用户关注列表",
+        "operationId": "getFollowingList",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageUserFollowVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/followers": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "查询用户粉丝列表",
+        "operationId": "getFollowerList",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageUserFollowVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/users/{userId}/favorites": {
       "get": {
         "tags": ["用户中心"],
@@ -2967,6 +3126,36 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/is-following/{followUserId}": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "查询是否已关注",
+        "operationId": "isFollowing",
+        "parameters": [
+          {
+            "name": "followUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseBoolean"
                 }
               }
             }
@@ -4866,6 +5055,23 @@
           }
         }
       },
+      "SingleResponseBoolean": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "type": "boolean"
+          }
+        }
+      },
       "LikeCmd": {
         "required": ["targetId", "targetType"],
         "type": "object",
@@ -4895,6 +5101,19 @@
           "data": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "UserFollowCmd": {
+        "required": ["followUserId"],
+        "type": "object",
+        "properties": {
+          "followUserId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "remark": {
+            "type": "string"
           }
         }
       },
@@ -5444,23 +5663,6 @@
           }
         }
       },
-      "SingleResponseBoolean": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          },
-          "errCode": {
-            "type": "string"
-          },
-          "errMessage": {
-            "type": "string"
-          },
-          "data": {
-            "type": "boolean"
-          }
-        }
-      },
       "ForumUserRoleCmd": {
         "type": "object",
         "properties": {
@@ -5662,6 +5864,81 @@
             "writeOnly": true
           }
         }
+      },
+      "CustomPageUserFollowVO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserFollowVO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SingleResponseCustomPageUserFollowVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageUserFollowVO"
+          }
+        }
+      },
+      "UserFollowVO": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "description": "用户ID",
+            "format": "int64"
+          },
+          "userName": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "用户头像"
+          },
+          "intro": {
+            "type": "string",
+            "description": "用户简介"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "followTime": {
+            "type": "string",
+            "description": "关注时间",
+            "format": "date-time"
+          }
+        },
+        "description": "用户关注信息"
       },
       "SingleResponseListUserVO": {
         "type": "object",

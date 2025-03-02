@@ -33,19 +33,33 @@ export const useUserHome = () =>
     tabs: [
       {
         value: '',
-        label: '文章'
+        label: '文章',
+        icon: 'tabler:article'
       },
       {
         value: 'comment',
-        label: '评论'
+        label: '评论',
+        icon: 'tabler:message'
       },
       {
         value: 'favorite',
-        label: '收藏'
+        label: '收藏',
+        icon: 'tabler:bookmark'
+      },
+      {
+        value: 'following',
+        label: '关注',
+        icon: 'tabler:user-plus'
+      },
+      {
+        value: 'followers',
+        label: '粉丝',
+        icon: 'tabler:users'
       },
       {
         value: 'like',
-        label: '点赞'
+        label: '点赞',
+        icon: 'tabler:thumb-up'
       }
     ]
   }))
@@ -88,7 +102,8 @@ export const useUserInfo = () =>
     userName: '',
     avatar: '',
     intro: '',
-    createTime: ''
+    createTime: '',
+    followed: false
   }))
 
 let fetchPromise: Promise<void> | null = null

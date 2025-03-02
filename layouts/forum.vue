@@ -10,7 +10,7 @@
             <ForumLeft />
           </el-aside>
           <el-main class="forum-main">
-            <div class="hidden-lg-and-up m-header" v-if="forumMenu.menus?.length > 0">
+            <div class="hidden-lg-and-up m-header forum-menu" v-if="forumMenu.menus?.length > 0">
               <div class="w-full border-b border-gray-10 bg-white">
                 <div class="flex overflow-x-auto no-scrollbar">
                   <button
@@ -19,15 +19,15 @@
                     :class="[
                       'px-3 py-2 text-sm font-normal whitespace-nowrap transition-colors duration-200 relative',
                       forumMenu.selctedMenu === menu.name
-                        ? 'text-blue-500 font-medium'
+                        ? 'text-[#409eff] font-medium'
                         : 'text-gray-600 hover:text-gray-800'
                     ]"
                     @click="onClickTab({ name: menu.name })"
                   >
                     {{ menu.nickName }}
-                    <div 
-                      v-if="forumMenu.selctedMenu === menu.name" 
-                      class="absolute bottom-0 left-0 w-full h-0.5 bg-blue-500"
+                    <div
+                      v-if="forumMenu.selctedMenu === menu.name"
+                      class="absolute bottom-0 left-0 w-full h-0.5 bg-[#409eff]"
                     ></div>
                   </button>
                 </div>
@@ -149,14 +149,3 @@ onMounted(() => {
   )
 })
 </script>
-
-<style scoped>
-.no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari and Opera */
-}
-</style>

@@ -49,7 +49,7 @@ export const getForumShowMenu = () => {
 
 /**
  * 获取用户版块列表
- * @returns 
+ * @returns
  */
 export const getUserForumList = () => {
   return Http.get(`/v1/forums/user`)
@@ -113,31 +113,31 @@ export type UserRoleVO = {
 }
 
 // 查询版块用户角色
-export const queryForumUserRoles = (
-  params: {
-    forumId: number
-    pageNo?: number
-    pageSize?: number
-    roleKey?: string
-    userName?: string
-  }
-) => {
+export const queryForumUserRoles = (params: {
+  forumId: number
+  pageNo?: number
+  pageSize?: number
+  roleKey?: string
+  userName?: string
+}) => {
   return Http.get(`/v1/admin/auth/user-roles`, params)
 }
 
 // 授权版块用户角色
-export const assignForumUserRole = (
-  params: {
-    forumId: number
-    userId: number
-    roleKey: string
-    expireTime?: string
-  }
-) => {
+export const assignForumUserRole = (params: {
+  forumId: number
+  userId: number
+  roleKey: string
+  expireTime?: string
+}) => {
   return Http.post(`/v1/admin/auth/user-roles/assign`, params)
 }
 
 // 取消版块用户角色
 export const cancelForumUserRole = (forumId: number, roleKey: string) => {
   return Http.post(`/v1/admin/auth/user-roles/cancel?forumId=${forumId}&roleKey=${roleKey}`)
+}
+
+export const getForumUserInfo = (userId: number) => {
+  return Http.get(`/v1/users/${userId}/info`)
 }

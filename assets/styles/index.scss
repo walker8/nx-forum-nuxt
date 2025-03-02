@@ -158,6 +158,16 @@ div:focus {
     padding-top: 0px;
     max-width: 720px;
   }
+  .forum-menu {
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+  }
   @media screen and (max-width: 720px) {
     .common-layout {
       width: 100%;
@@ -178,5 +188,13 @@ div:focus {
   }
   .content {
     flex-grow: 1; /* 让主要内容区域尽可能占据剩余空间 */
+  }
+}
+.forum-user-layout {
+  .el-header {
+    --el-header-padding: 0px;
+  }
+  .el-main {
+    --el-main-padding: 0px;
   }
 }

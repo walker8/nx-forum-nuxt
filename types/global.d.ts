@@ -21,6 +21,7 @@ export interface Author {
   threads: null | number
   comments: null | number
   fans: null | number
+  followed: boolean
 }
 
 export interface Thread {
