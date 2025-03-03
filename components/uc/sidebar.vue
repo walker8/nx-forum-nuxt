@@ -7,14 +7,16 @@
         :collapse="collapse"
         :unique-opened="true"
         :collapse-transition="false"
+        class="el-menu-vertical"
+        :class="{ 'mobile-menu': isMobile }"
       >
-        <el-menu-item index="1" @click="go('/uc/admin')">
+        <el-menu-item index="1" @click="handleMenuClick('/uc/admin')">
           <el-icon size="16px">
             <Icon name="tabler:layout-grid" />
           </el-icon>
           <span>首页</span>
         </el-menu-item>
-        <el-menu-item index="2" @click="go('/uc/admin/users')">
+        <el-menu-item index="2" @click="handleMenuClick('/uc/admin/users')">
           <el-icon size="16px">
             <Icon name="tabler:users" />
           </el-icon>
@@ -27,25 +29,25 @@
             </el-icon>
             <span>登录注册</span>
           </template>
-          <el-menu-item index="3-1" @click="go('/uc/admin/login')">
+          <el-menu-item index="3-1" @click="handleMenuClick('/uc/admin/login')">
             <el-icon>
               <Icon name="tabler:login" />
             </el-icon>
             <span>登录设置</span>
           </el-menu-item>
-          <el-menu-item index="3-2" @click="go('/uc/admin/register')">
+          <el-menu-item index="3-2" @click="handleMenuClick('/uc/admin/register')">
             <el-icon>
               <Icon name="tabler:user-cog" />
             </el-icon>
             <span>注册设置</span>
           </el-menu-item>
-          <el-menu-item index="3-3" @click="go('/uc/admin/mail')">
+          <el-menu-item index="3-3" @click="handleMenuClick('/uc/admin/mail')">
             <el-icon>
               <Icon name="tabler:mail" />
             </el-icon>
             <span>邮件设置</span>
           </el-menu-item>
-          <el-menu-item index="3-4" @click="go('/uc/admin/sms')">
+          <el-menu-item index="3-4" @click="handleMenuClick('/uc/admin/sms')">
             <el-icon>
               <Icon name="tabler:message" />
             </el-icon>
@@ -59,19 +61,19 @@
             </el-icon>
             <span>角色权限</span>
           </template>
-          <el-menu-item index="4-1" @click="go('/uc/admin/roles')">
+          <el-menu-item index="4-1" @click="handleMenuClick('/uc/admin/roles')">
             <el-icon size="16px">
               <Icon name="tabler:user-cog" />
             </el-icon>
             <span>角色管理</span>
           </el-menu-item>
-          <el-menu-item index="4-2" @click="go('/uc/admin/permissions')">
+          <el-menu-item index="4-2" @click="handleMenuClick('/uc/admin/permissions')">
             <el-icon size="16px">
               <Icon name="tabler:shield-check" />
             </el-icon>
             <span>权限管理</span>
           </el-menu-item>
-          <el-menu-item index="4-3" @click="go('/uc/admin/role-users')">
+          <el-menu-item index="4-3" @click="handleMenuClick('/uc/admin/role-users')">
             <el-icon size="16px">
               <Icon name="tabler:shield-check" />
             </el-icon>
@@ -92,14 +94,23 @@ const props = withDefaults(defineProps<Props>(), {
   collapse: false
 })
 
-const go = (path: string) => {
-  navigateTo(path)
-}
+const emit = defineEmits(['close-sidebar'])
+const router = useRouter()
 
 // 检测是否为移动端
 const isMobile = ref(false)
 const checkIsMobile = () => {
   isMobile.value = window.innerWidth < 768
+}
+
+// 处理菜单点击事件
+const handleMenuClick = (path: string) => {
+  router.push(path)
+
+  // 在移动端点击菜单项后自动收起侧边栏
+  if (isMobile.value) {
+    emit('close-sidebar')
+  }
 }
 
 onMounted(() => {
@@ -155,15 +166,28 @@ onBeforeUnmount(() => {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-  .el-menu-item, :deep(.el-sub-menu__title) {
+  .el-menu-item,
+  :deep(.el-sub-menu__title) {
     height: 50px;
     line-height: 50px;
   }
-  
+
   .logo {
     height: 50px;
     line-height: 50px;
     font-size: 16px;
+  }
+
+  /* 移动端菜单样式 */
+  .mobile-menu {
+    .el-menu-item,
+    :deep(.el-sub-menu__title) {
+      padding-left: 15px !important;
+    }
+
+    .el-menu--inline .el-menu-item {
+      padding-left: 30px !important;
+    }
   }
 }
 </style>

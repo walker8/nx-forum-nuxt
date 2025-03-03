@@ -7,8 +7,10 @@
         :collapse="collapse"
         :unique-opened="true"
         :collapse-transition="false"
+        class="el-menu-vertical"
+        :class="{ 'mobile-menu': isMobile }"
       >
-        <el-menu-item index="0" @click="go('/admin')">
+        <el-menu-item index="0" @click="handleMenuClick('/admin')">
           <el-icon size="16px">
             <Icon name="tabler:layout-grid" />
           </el-icon>
@@ -23,7 +25,7 @@
           </template>
           <el-menu-item
             index="1-0"
-            @click="go('/admin/base')"
+            @click="handleMenuClick('/admin/base')"
             v-if="hasPermission('admin:system:basic')"
           >
             <el-icon><Icon name="tabler:settings-filled" /></el-icon>
@@ -31,7 +33,7 @@
           </el-menu-item>
           <el-menu-item
             index="1-3"
-            @click="go('/admin/forum')"
+            @click="handleMenuClick('/admin/forum')"
             v-if="hasPermission('admin:system:forum')"
           >
             <el-icon><Icon name="tabler:grid-dots" /></el-icon>
@@ -39,7 +41,7 @@
           </el-menu-item>
           <el-menu-item
             index="1-4"
-            @click="go('/admin/audit')"
+            @click="handleMenuClick('/admin/audit')"
             v-if="hasPermission('admin:system:audit')"
           >
             <template #title>
@@ -51,7 +53,7 @@
           </el-menu-item>
           <el-menu-item
             index="1-6"
-            @click="go('/admin/image')"
+            @click="handleMenuClick('/admin/image')"
             v-if="hasPermission('admin:system:image')"
           >
             <template #title>
@@ -63,7 +65,7 @@
           </el-menu-item>
           <el-menu-item
             index="1-5"
-            @click="go('/admin/custom-page')"
+            @click="handleMenuClick('/admin/custom-page')"
             v-if="hasPermission('admin:system:page')"
           >
             <template #title>
@@ -88,21 +90,21 @@
             </template>
             <el-menu-item
               index="2-0-0"
-              @click="go('/admin/passed/thread')"
+              @click="handleMenuClick('/admin/passed/thread')"
               v-if="hasPermission('admin:thread:search')"
             >
               主题帖
             </el-menu-item>
             <el-menu-item
               index="2-0-1"
-              @click="go('/admin/passed/comment')"
+              @click="handleMenuClick('/admin/passed/comment')"
               v-if="hasPermission('admin:comment:search')"
             >
               评论
             </el-menu-item>
             <el-menu-item
               index="2-0-2"
-              @click="go('/admin/passed/reply')"
+              @click="handleMenuClick('/admin/passed/reply')"
               v-if="hasPermission('admin:comment:search')"
             >
               楼中楼
@@ -123,7 +125,7 @@
             </template>
             <el-menu-item
               index="2-1-0"
-              @click="go('/admin/auditing/thread')"
+              @click="handleMenuClick('/admin/auditing/thread')"
               v-if="hasPermission('admin:thread:search')"
             >
               主题帖
@@ -138,7 +140,7 @@
             </el-menu-item>
             <el-menu-item
               index="2-1-1"
-              @click="go('/admin/auditing/comment')"
+              @click="handleMenuClick('/admin/auditing/comment')"
               v-if="hasPermission('admin:comment:search')"
             >
               评论
@@ -153,7 +155,7 @@
             </el-menu-item>
             <el-menu-item
               index="2-1-2"
-              @click="go('/admin/auditing/reply')"
+              @click="handleMenuClick('/admin/auditing/reply')"
               v-if="hasPermission('admin:comment:search')"
             >
               楼中楼
@@ -174,20 +176,20 @@
             </template>
             <el-menu-item
               index="2-2-0"
-              @click="go('/admin/recycle/thread')"
+              @click="handleMenuClick('/admin/recycle/thread')"
               v-if="hasPermission('admin:thread:search')"
               >主题帖
             </el-menu-item>
             <el-menu-item
               index="2-2-1"
-              @click="go('/admin/recycle/comment')"
+              @click="handleMenuClick('/admin/recycle/comment')"
               v-if="hasPermission('admin:comment:search')"
             >
               评论
             </el-menu-item>
             <el-menu-item
               index="2-2-2"
-              @click="go('/admin/recycle/reply')"
+              @click="handleMenuClick('/admin/recycle/reply')"
               v-if="hasPermission('admin:comment:search')"
             >
               楼中楼
@@ -199,7 +201,7 @@
             <el-icon><Icon name="tabler:users" /></el-icon>
             <span>用户管理</span>
           </template>
-          <el-menu-item index="3-1" @click="go('/admin/ban')"> 小黑屋 </el-menu-item>
+          <el-menu-item index="3-1" @click="handleMenuClick('/admin/ban')"> 小黑屋 </el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-scrollbar>
@@ -216,8 +218,23 @@ const props = withDefaults(defineProps<Props>(), {
   collapse: true
 })
 
-const go = (path: string) => {
-  navigateTo(`${path}`)
+const emit = defineEmits(['close-sidebar'])
+const router = useRouter()
+
+// 检测是否为移动端
+const isMobile = ref(false)
+const checkIsMobile = () => {
+  isMobile.value = window.innerWidth < 768
+}
+
+// 处理菜单点击事件
+const handleMenuClick = (path: string) => {
+  navigateTo(path)
+
+  // 在移动端点击菜单项后自动收起侧边栏
+  if (isMobile.value) {
+    emit('close-sidebar')
+  }
 }
 
 const auditingCount = useAuditingCount()
@@ -256,6 +273,15 @@ const activeIndex = computed(() => {
     .find((key) => basePath.startsWith(key))
 
   return matchedKey ? routeIndexMap[matchedKey as keyof typeof routeIndexMap] : '0'
+})
+
+onMounted(() => {
+  checkIsMobile()
+  window.addEventListener('resize', checkIsMobile)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', checkIsMobile)
 })
 </script>
 
@@ -305,15 +331,28 @@ const activeIndex = computed(() => {
 
 /* 移动端适配 */
 @media (max-width: 768px) {
-  .el-menu-item, :deep(.el-sub-menu__title) {
+  .el-menu-item,
+  :deep(.el-sub-menu__title) {
     height: 50px;
     line-height: 50px;
   }
-  
+
   .logo {
     height: 50px;
     line-height: 50px;
     font-size: 16px;
+  }
+
+  /* 移动端菜单样式 */
+  .mobile-menu {
+    .el-menu-item,
+    :deep(.el-sub-menu__title) {
+      padding-left: 15px !important;
+    }
+
+    .el-menu--inline .el-menu-item {
+      padding-left: 30px !important;
+    }
   }
 }
 </style>

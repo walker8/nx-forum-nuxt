@@ -10,7 +10,7 @@
       :width="isCollapse ? '64px' : '200px'"
       :style="isMobile && isCollapse ? 'width: 0 !important; min-width: 0;' : ''"
     >
-      <UcSidebar :collapse="isCollapse" />
+      <UcSidebar :collapse="isCollapse" @close-sidebar="isCollapse = true" />
     </el-aside>
 
     <el-container>
