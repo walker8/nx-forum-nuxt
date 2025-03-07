@@ -106,9 +106,7 @@
               node-key="permId"
               :props="{
                 label: (data: any) => {
-                  return data.perms 
-                    ? `${data.permName} (${data.perms})`
-                    : data.permName
+                  return data.perms ? `${data.permName} (${data.perms})` : data.permName
                 },
                 children: 'children',
                 disabled: (data: any) => data.permStatus === 1
@@ -220,7 +218,7 @@ const permissionMap = computed(() => {
 const convertPermsToIds = (perms: string[]) => {
   const ids: number[] = []
   const traverse = (nodes: any[]) => {
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       // 只处理叶子节点或明确包含权限标识的节点
       if (node.perms && perms.includes(node.perms)) {
         // 排除有子节点的父级权限（半选状态）
@@ -315,7 +313,7 @@ const editRole = (row: any) => {
     .then((res: any) => {
       Object.assign(form, res.data)
       // 添加转换逻辑
-      form.permIds = convertPermsToIds(res.data.perms || [])
+      permIds = form.permIds = convertPermsToIds(res.data.perms || [])
       dialogVisible.value = true
       treeKey.value++
       nextTick(() => {
