@@ -15,9 +15,8 @@
       <div class="table-wrapper">
         <el-table :data="tableData" v-loading="loading" border row-key="permId">
           <el-table-column prop="permName" label="权限名称" min-width="160" />
-          <el-table-column prop="permId" label="权限ID" width="100" align="center" />
-          <el-table-column prop="permOrder" label="排序id" width="100" align="center" />
-          <el-table-column prop="perms" label="权限编码" min-width="120" align="center" />
+          <el-table-column prop="permOrder" label="排序id" width="80" align="center" />
+          <el-table-column prop="perms" label="权限编码" min-width="180" align="center" />
           <el-table-column prop="permType" label="权限类型" width="100" align="center">
             <template #default="scope">
               <el-tag :type="getPermTypeTag(scope.row.permType)">

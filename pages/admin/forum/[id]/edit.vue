@@ -79,8 +79,8 @@
               <el-table-column label="访问版块" align="center" width="120">
                 <template #default="{ row }">
                   <el-checkbox
-                    :checked="row.perms?.includes('section:visit')"
-                    @change="(checked) => handlePermChange(checked, row, 'section:visit')"
+                    :checked="row.perms?.includes('forum:visit:section')"
+                    @change="(checked) => handlePermChange(checked, row, 'forum:visit:section')"
                   />
                 </template>
               </el-table-column>
@@ -391,7 +391,7 @@ const submitPermissionForm = async () => {
     // 移除多余的权限标识
     permissionForm.permissions.forEach((item: any) => {
       item.perms = item.perms?.filter((perm: string) =>
-        ['thread:new', 'thread:view', 'section:visit', 'comment:new'].includes(perm)
+        ['thread:new', 'thread:view', 'forum:visit:section', 'comment:new'].includes(perm)
       )
     })
     await batchUpdateForumAccess(

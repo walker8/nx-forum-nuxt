@@ -19,6 +19,7 @@
               style="width: 220px"
               filterable
               clearable
+              :disabled="forumId !== undefined && forumId > 0"
             >
               <el-option
                 v-for="item in forumMenus"
@@ -69,7 +70,7 @@
               type="primary"
               size="default"
               @click="restoreBatch()"
-              v-if="hasPermission('admin:thread:restore')"
+              v-if="hasPermission('admin:thread:restore', forumId)"
             >
               还原
             </el-button>
@@ -79,7 +80,7 @@
               type="success"
               size="default"
               @click="passBatch()"
-              v-if="hasPermission('admin:thread:pass')"
+              v-if="hasPermission('admin:thread:pass', forumId)"
             >
               通过
             </el-button>
@@ -87,7 +88,7 @@
               type="danger"
               size="default"
               @click="rejectBatch()"
-              v-if="hasPermission('admin:thread:reject')"
+              v-if="hasPermission('admin:thread:reject', forumId)"
             >
               拒绝
             </el-button>
@@ -97,7 +98,7 @@
               type="danger"
               size="default"
               @click="deleteBatch()"
-              v-if="hasPermission('admin:thread:delete')"
+              v-if="hasPermission('admin:thread:delete', forumId)"
             >
               删除
             </el-button>
@@ -105,7 +106,7 @@
               type="primary"
               size="default"
               @click="topBatch()"
-              v-if="hasPermission('admin:thread:top')"
+              v-if="hasPermission('admin:thread:top', forumId)"
             >
               置顶
             </el-button>
@@ -113,7 +114,7 @@
               type="warning"
               size="default"
               @click="closeBatch()"
-              v-if="hasPermission('admin:thread:close')"
+              v-if="hasPermission('admin:thread:close', forumId)"
             >
               关闭
             </el-button>
@@ -121,7 +122,7 @@
               type="success"
               size="default"
               @click="digestBatch()"
-              v-if="hasPermission('admin:thread:digest')"
+              v-if="hasPermission('admin:thread:digest', forumId)"
             >
               精华
             </el-button>
@@ -129,7 +130,7 @@
               type="primary"
               size="default"
               @click="recommendBatch()"
-              v-if="hasPermission('admin:thread:recommend')"
+              v-if="hasPermission('admin:thread:recommend', forumId)"
             >
               推荐
             </el-button>
@@ -137,7 +138,7 @@
               type="info"
               size="default"
               @click="transferBatch()"
-              v-if="hasPermission('admin:thread:transfer')"
+              v-if="hasPermission('admin:thread:transfer', forumId)"
             >
               转移
             </el-button>
@@ -231,7 +232,7 @@
                   bg
                   size="small"
                   @click="restoreBatch([scope.row.threadId])"
-                  v-if="hasPermission('admin:thread:restore')"
+                  v-if="hasPermission('admin:thread:restore', forumId)"
                 >
                   还原
                 </el-button>
@@ -243,7 +244,7 @@
                   bg
                   size="small"
                   @click="passBatch([scope.row.threadId])"
-                  v-if="hasPermission('admin:thread:pass')"
+                  v-if="hasPermission('admin:thread:pass', forumId)"
                 >
                   通过
                 </el-button>
@@ -253,7 +254,7 @@
                   bg
                   size="small"
                   @click="rejectBatch([scope.row.threadId])"
-                  v-if="hasPermission('admin:thread:reject')"
+                  v-if="hasPermission('admin:thread:reject', forumId)"
                 >
                   拒绝
                 </el-button>
@@ -265,7 +266,7 @@
                   bg
                   size="small"
                   @click="go(`/editor/t/${scope.row.threadId}`)"
-                  v-if="hasPermission('admin:thread:edit')"
+                  v-if="hasPermission('admin:thread:edit', forumId)"
                 >
                   编辑
                 </el-button>
@@ -275,7 +276,7 @@
                   bg
                   size="small"
                   @click="deleteBatch([scope.row.threadId])"
-                  v-if="hasPermission('admin:thread:delete')"
+                  v-if="hasPermission('admin:thread:delete', forumId)"
                 >
                   删除
                 </el-button>
@@ -314,7 +315,13 @@ import type { Thread } from '~/types/global'
 definePageMeta({
   layout: 'admin'
 })
-const { hasPermission } = await useUserAuth()
+
+const route = useRoute()
+const forumId = computed<number | undefined>(() => {
+  const forumId = route.query.forumId
+  return forumId ? Number(forumId) : undefined
+})
+const { hasPermission } = await useUserAuth(forumId.value)
 const go = (path: string) => {
   navigateTo(path)
 }
@@ -323,7 +330,7 @@ const open = (path: string) => {
 }
 const searchData = reactive({
   authorName: '',
-  forumId: '',
+  forumId: forumId.value,
   keyword: '',
   ip: '',
   propertyType: '',

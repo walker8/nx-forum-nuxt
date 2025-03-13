@@ -7,9 +7,19 @@
         class="bg-white shadow-md rounded-lg p-4 cursor-pointer hover:bg-gray-200 hover:text-gray-500 transition-colors duration-300"
       >
         <div @click="goForum(forum.name)">
-          <div class="text-xl flex items-center gap-2">
-            <Icon :name="forum.iconName" class="w-5 h-5" v-if="forum.iconName" />
-            <span>{{ forum.nickName }}</span>
+          <div class="text-xl flex items-center gap-2 justify-between">
+            <div class="flex items-center gap-2">
+              <Icon :name="forum.iconName" class="w-5 h-5" v-if="forum.iconName" />
+              <span>{{ forum.nickName }}</span>
+            </div>
+            <el-button
+              v-if="forum.isAdmin"
+              type="primary"
+              link
+              @click.stop="goForumAdmin(forum.forumId)"
+            >
+              后台管理
+            </el-button>
           </div>
           <div class="mt-2">
             <el-text line-clamp="2">{{ forum.shortBrief || '暂无简介' }}</el-text>
@@ -24,6 +34,7 @@
 
 <script lang="ts" setup>
 import { getUserForumList } from '@/apis/forum'
+
 definePageMeta({
   layout: 'all'
 })
@@ -42,6 +53,13 @@ const goForum = (name: string) => {
     navigateTo(`/f/${name}`)
   }
 }
+
+const goForumAdmin = (forumId: number) => {
+  if (forumId) {
+    window.open(`/admin?forumId=${forumId}`, '_blank')
+  }
+}
+
 useSeoMeta({
   title: '全部版块'
 })
