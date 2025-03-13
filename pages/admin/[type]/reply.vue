@@ -16,6 +16,7 @@
               style="width: 220px"
               filterable
               clearable
+              :disabled="forumId !== undefined && forumId > 0"
             >
               <el-option
                 v-for="item in forumMenus"
@@ -39,14 +40,42 @@
       <div class="toolbar-wrapper">
         <div>
           <el-button-group v-if="deleted">
-            <el-button type="primary" size="default" @click="restoreBatch()">批量还原</el-button>
+            <el-button
+              type="primary"
+              size="default"
+              @click="restoreBatch()"
+              v-if="hasPermission('admin:comment:restore', forumId)"
+            >
+              批量还原
+            </el-button>
           </el-button-group>
           <el-button-group v-else-if="auditStatus === AuditStatus.AUDITING">
-            <el-button type="success" size="default" @click="passBatch()">批量通过</el-button>
-            <el-button type="danger" size="default" @click="rejectBatch()">批量拒绝</el-button>
+            <el-button
+              type="success"
+              size="default"
+              @click="passBatch()"
+              v-if="hasPermission('admin:comment:pass', forumId)"
+            >
+              批量通过
+            </el-button>
+            <el-button
+              type="danger"
+              size="default"
+              @click="rejectBatch()"
+              v-if="hasPermission('admin:comment:reject', forumId)"
+            >
+              批量拒绝
+            </el-button>
           </el-button-group>
           <el-button-group v-else>
-            <el-button type="danger" size="default" @click="deleteBatch()">批量删除</el-button>
+            <el-button
+              type="danger"
+              size="default"
+              @click="deleteBatch()"
+              v-if="hasPermission('admin:comment:delete', forumId)"
+            >
+              批量删除
+            </el-button>
           </el-button-group>
         </div>
         <div>
@@ -66,7 +95,7 @@
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column prop="message" label="回帖内容" min-width="500" align="left">
             <template #default="scope">
-              <el-space wrap>
+              <el-space wrap class="cursor-pointer" @click="toComment(scope.row)">
                 <el-text line-clamp="2">{{ scope.row.message }}</el-text>
               </el-space>
             </template>
@@ -118,6 +147,7 @@
                   bg
                   size="small"
                   @click="restoreBatch([scope.row.replyId])"
+                  v-if="hasPermission('admin:comment:restore', forumId)"
                 >
                   还原
                 </el-button>
@@ -129,6 +159,7 @@
                   bg
                   size="small"
                   @click="passBatch([scope.row.replyId])"
+                  v-if="hasPermission('admin:comment:pass', forumId)"
                 >
                   通过
                 </el-button>
@@ -138,6 +169,7 @@
                   bg
                   size="small"
                   @click="rejectBatch([scope.row.replyId])"
+                  v-if="hasPermission('admin:comment:reject', forumId)"
                 >
                   拒绝
                 </el-button>
@@ -149,6 +181,7 @@
                   bg
                   size="small"
                   @click="deleteBatch([scope.row.replyId])"
+                  v-if="hasPermission('admin:comment:delete', forumId)"
                 >
                   删除
                 </el-button>
@@ -189,9 +222,15 @@ import { AuditStatus } from '~/composables/useAdmin'
 definePageMeta({
   layout: 'admin'
 })
+const route = useRoute()
+const forumId = computed<number | undefined>(() => {
+  const forumId = route.query.forumId
+  return forumId ? Number(forumId) : undefined
+})
+const { hasPermission } = await useUserAuth(forumId.value)
 const searchData = reactive({
   authorName: '',
-  forumId: '',
+  forumId: forumId.value,
   ip: ''
 })
 const tableData = ref([])
@@ -200,6 +239,10 @@ const tableRef = ref()
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
 const { auditStatus, deleted } = useAuditStatus()
+const toComment = (row: any) => {
+  window.open(`/c/${row.commentId}?replyId=${row.replyId}`)
+}
+
 const getTableData = () => {
   loading.value = true
   queryCommentRepliesByAdmin({

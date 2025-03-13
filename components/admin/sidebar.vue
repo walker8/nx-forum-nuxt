@@ -10,7 +10,11 @@
         class="el-menu-vertical"
         :class="{ 'mobile-menu': isMobile }"
       >
-        <el-menu-item index="0" @click="handleMenuClick('/admin')">
+        <el-menu-item
+          index="0"
+          @click="handleMenuClick('/admin')"
+          v-if="hasPermission('admin:home', forumId)"
+        >
           <el-icon size="16px">
             <Icon name="tabler:layout-grid" />
           </el-icon>
@@ -76,7 +80,7 @@
             </template>
           </el-menu-item>
         </el-sub-menu>
-        <el-sub-menu index="2" v-if="hasPermission('admin:thread')">
+        <el-sub-menu index="2" v-if="hasPermission('admin:thread', forumId)">
           <template #title>
             <el-icon size="16px">
               <Icon name="tabler:article" />
@@ -91,21 +95,21 @@
             <el-menu-item
               index="2-0-0"
               @click="handleMenuClick('/admin/passed/thread')"
-              v-if="hasPermission('admin:thread:search')"
+              v-if="hasPermission('admin:thread:search', forumId)"
             >
               主题帖
             </el-menu-item>
             <el-menu-item
               index="2-0-1"
               @click="handleMenuClick('/admin/passed/comment')"
-              v-if="hasPermission('admin:comment:search')"
+              v-if="hasPermission('admin:comment:search', forumId)"
             >
               评论
             </el-menu-item>
             <el-menu-item
               index="2-0-2"
               @click="handleMenuClick('/admin/passed/reply')"
-              v-if="hasPermission('admin:comment:search')"
+              v-if="hasPermission('admin:comment:search', forumId)"
             >
               楼中楼
             </el-menu-item>
@@ -126,7 +130,7 @@
             <el-menu-item
               index="2-1-0"
               @click="handleMenuClick('/admin/auditing/thread')"
-              v-if="hasPermission('admin:thread:search')"
+              v-if="hasPermission('admin:thread:search', forumId)"
             >
               主题帖
               <van-tag
@@ -141,7 +145,7 @@
             <el-menu-item
               index="2-1-1"
               @click="handleMenuClick('/admin/auditing/comment')"
-              v-if="hasPermission('admin:comment:search')"
+              v-if="hasPermission('admin:comment:search', forumId)"
             >
               评论
               <van-tag
@@ -156,7 +160,7 @@
             <el-menu-item
               index="2-1-2"
               @click="handleMenuClick('/admin/auditing/reply')"
-              v-if="hasPermission('admin:comment:search')"
+              v-if="hasPermission('admin:comment:search', forumId)"
             >
               楼中楼
               <van-tag
@@ -177,31 +181,38 @@
             <el-menu-item
               index="2-2-0"
               @click="handleMenuClick('/admin/recycle/thread')"
-              v-if="hasPermission('admin:thread:search')"
-              >主题帖
+              v-if="hasPermission('admin:thread:search', forumId)"
+            >
+              主题帖
             </el-menu-item>
             <el-menu-item
               index="2-2-1"
               @click="handleMenuClick('/admin/recycle/comment')"
-              v-if="hasPermission('admin:comment:search')"
+              v-if="hasPermission('admin:comment:search', forumId)"
             >
               评论
             </el-menu-item>
             <el-menu-item
               index="2-2-2"
               @click="handleMenuClick('/admin/recycle/reply')"
-              v-if="hasPermission('admin:comment:search')"
+              v-if="hasPermission('admin:comment:search', forumId)"
             >
               楼中楼
             </el-menu-item>
           </el-sub-menu>
         </el-sub-menu>
-        <el-sub-menu index="3">
+        <el-sub-menu index="3" v-if="hasPermission('admin:user', forumId)">
           <template #title>
             <el-icon><Icon name="tabler:users" /></el-icon>
             <span>用户管理</span>
           </template>
-          <el-menu-item index="3-1" @click="handleMenuClick('/admin/ban')"> 小黑屋 </el-menu-item>
+          <el-menu-item
+            index="3-1"
+            @click="handleMenuClick('/admin/ban')"
+            v-if="hasPermission('admin:user:ban', forumId)"
+          >
+            小黑屋
+          </el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-scrollbar>
@@ -219,7 +230,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits(['close-sidebar'])
-const router = useRouter()
 
 // 检测是否为移动端
 const isMobile = ref(false)
@@ -227,9 +237,15 @@ const checkIsMobile = () => {
   isMobile.value = window.innerWidth < 768
 }
 
+const route = useRoute()
+const forumId = computed<number | undefined>(() => {
+  const forumId = route.query.forumId
+  return forumId ? Number(forumId) : undefined
+})
+
 // 处理菜单点击事件
 const handleMenuClick = (path: string) => {
-  navigateTo(path)
+  navigateTo(path + (forumId.value ? '?forumId=' + forumId.value : ''))
 
   // 在移动端点击菜单项后自动收起侧边栏
   if (isMobile.value) {
@@ -239,9 +255,8 @@ const handleMenuClick = (path: string) => {
 
 const auditingCount = useAuditingCount()
 
-const route = useRoute()
-const { hasPermission } = await useUserAuth()
-if (!hasPermission('admin:manage')) {
+const { hasPermission } = await useUserAuth(forumId.value)
+if (!hasPermission('admin:manage', forumId.value)) {
   navigateTo('/')
 }
 // 创建路由到index的映射表

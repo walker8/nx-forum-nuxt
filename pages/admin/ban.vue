@@ -20,6 +20,7 @@
               style="width: 220px"
               filterable
               clearable
+              :disabled="forumId !== undefined && forumId > 0"
             >
               <el-option
                 v-for="item in forumMenus"
@@ -42,7 +43,14 @@
       </div>
       <div class="toolbar-wrapper">
         <div>
-          <el-button type="primary" size="default" @click="showBanDialog">添加禁言</el-button>
+          <el-button
+            type="primary"
+            size="default"
+            @click="showBanDialog"
+            v-if="hasPermission('admin:user:ban', forumId)"
+          >
+            添加禁言
+          </el-button>
         </div>
         <div>
           <el-tooltip content="刷新当前页">
@@ -134,6 +142,7 @@
             style="width: 100%"
             filterable
             clearable
+            :disabled="forumId !== undefined && forumId > 0"
           >
             <el-option
               v-for="item in forumMenus"
@@ -183,10 +192,16 @@ definePageMeta({
   layout: 'admin'
 })
 
+const route = useRoute()
+const forumId = computed<number | undefined>(() => {
+  const forumId = route.query.forumId
+  return forumId ? Number(forumId) : undefined
+})
+const { hasPermission } = await useUserAuth(forumId.value)
 const searchData = reactive({
   userId: undefined as number | undefined,
   userName: '',
-  forumId: undefined
+  forumId: forumId.value
 })
 
 const tableData = ref([])
@@ -234,7 +249,7 @@ const banFormRef = ref()
 const banForm = reactive({
   userName: '',
   userId: undefined as number | undefined,
-  forumId: undefined,
+  forumId: forumId.value,
   reason: '',
   expireTime: undefined
 })
@@ -246,7 +261,7 @@ const rules = {
 
 const showBanDialog = () => {
   banForm.userId = undefined
-  banForm.forumId = undefined
+  banForm.forumId = forumId.value
   banForm.reason = ''
   banForm.userName = ''
   banForm.expireTime = undefined

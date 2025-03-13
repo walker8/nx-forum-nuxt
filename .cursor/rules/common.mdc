@@ -1,3 +1,8 @@
+---
+description: 项目规范文档
+globs: 
+alwaysApply: true
+---
 # NX-Forum-Nuxt3 项目规范文档
 
 ## 项目架构
@@ -5,31 +10,6 @@
 - 基于 Nuxt3 + TypeScript + tailwindcss + Element-Plus 和 vant-ui 的前端架构
 - 采用模块化设计，清晰的目录结构和职责划分
 - 统一的错误处理和状态管理机制
-
-## 快速启动
-
-### 环境要求
-
-- Node.js v18+
-
-### 安装依赖
-
-```bash
-yarn install
-```
-
-### 开发模式
-
-```bash
-yarn dev
-```
-
-### 生产构建
-
-```bash
-yarn run build
-yarn run preview
-```
 
 ## 目录结构规范
 

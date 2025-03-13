@@ -33,7 +33,7 @@
           <div class="comment-item" v-for="(comment, index) in comments" :key="index">
             <client-only>
               <div style="padding-right: 10px">
-                <el-avatar :size="40" :src="comment.avatarUrl" />
+                <el-avatar :size="40" :src="comment.avatarUrl || '/img/avatar.png'" />
               </div>
               <div style="width: 100%">
                 <div class="comment-user">
