@@ -2,7 +2,7 @@
   <div class="h-[55px] bg-white">
     <div class="flex items-center h-[55px] mx-auto max-w-[1200px] px-[10px]">
       <div class="cursor-pointer" @click="goHome">
-        <img class="h-[55px]" src="/logo.png" alt="logo" />
+        <NuxtImg class="h-[55px]" src="/logo.png" alt="logo" />
       </div>
       <div class="flex items-center justify-end w-full">
         <client-only>

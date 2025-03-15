@@ -7,4 +7,6 @@ _.log_
 .env
 dist
 .idea
-public
+public/prismjs
+public/tinymce
+public/uploads

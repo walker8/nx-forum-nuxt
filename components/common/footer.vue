@@ -9,7 +9,10 @@
       <div class="text-gray-300">|</div>
       <div @click="go('/privacy')" class="cursor-pointer">隐私政策</div>
     </div>
-    <div>2025 © Powered by <b>nx-forum</b></div>
+    <div>
+      2025 © Powered by
+      <a href="https://github.com/walker8/nx-forum" target="_blank"><b>nx-forum</b></a>
+    </div>
   </div>
 </template>
 <script setup lang="ts">

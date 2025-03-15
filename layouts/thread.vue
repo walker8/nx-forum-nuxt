@@ -11,13 +11,13 @@
     </el-card>
     <div v-else class="common-layout" ref="commonLayout">
       <el-container>
-        <el-aside width="70px" class="hidden-md-and-down">
+        <el-aside width="70px" class="hidden md:block">
           <threadLeftNav />
         </el-aside>
         <el-main class="thread-main">
           <slot />
         </el-main>
-        <el-aside width="270px" class="hidden-sm-and-down right-aside">
+        <el-aside width="270px" class="hidden-md-and-down right-aside">
           <thread-author :author="thread.author" />
           <client-only>
             <thread-catalog :content="thread.content" />
@@ -25,12 +25,13 @@
         </el-aside>
       </el-container>
     </div>
+    <!-- 移动端底部导航 -->
+    <thread-mobile-nav />
   </el-container>
 </template>
 
 <script setup lang="ts">
 import { getThreadForView } from '@/apis/thread'
-
 const thread = useThread()
 const route = useRoute()
 const threadId = Number(route.params.id)
@@ -82,7 +83,7 @@ const goHome = () => {
     padding: 0px;
   }
   .thread-main {
-    width: calc(100vw - 40px);
+    width: calc(100vw - 100px);
   }
 }
 @media screen and (min-width: 960px) {

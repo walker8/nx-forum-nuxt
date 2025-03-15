@@ -361,4 +361,10 @@ const handleLike = async (comment: CommentVO) => {
     cursor: pointer;
   }
 }
+/* 移动端底部导航空间 */
+@media screen and (max-width: 767px) {
+  .comment {
+    margin-bottom: 50px;
+  }
+}
 </style>

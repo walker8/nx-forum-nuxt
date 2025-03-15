@@ -50,6 +50,12 @@
               </el-icon>
               <div style="margin-left: 2px">{{ thread.comments }}</div>
             </div>
+            <div class="flex items-center justify-center">
+              <el-icon>
+                <Icon name="tabler:thumb-up" />
+              </el-icon>
+              <div style="margin-left: 2px">{{ thread.likes }}</div>
+            </div>
             <div class="text-gray-200">|</div>
             <div>{{ thread.createTime }}</div>
           </div>

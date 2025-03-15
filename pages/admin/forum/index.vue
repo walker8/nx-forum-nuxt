@@ -3,9 +3,9 @@
     <el-card shadow="never">
       <div class="toolbar-wrapper">
         <div>
-          <el-button type="success" :icon="Plus" size="default" @click="showAddDialog"
-            >增加版块</el-button
-          >
+          <el-button type="success" :icon="Plus" size="default" @click="showAddDialog">
+            增加版块
+          </el-button>
         </div>
         <div>
           <el-tooltip content="刷新当前页">
@@ -18,6 +18,18 @@
             />
           </el-tooltip>
         </div>
+      </div>
+      <div class="mb-3">
+        <el-alert>
+          Tabler图标地址
+          <a
+            href="https://icon-sets.iconify.design/tabler/"
+            target="_blank"
+            class="hover:text-blue-400"
+          >
+            https://icon-sets.iconify.design/tabler/
+          </a>
+        </el-alert>
       </div>
       <div class="table-wrapper">
         <el-table :data="tableData" border>
@@ -259,7 +271,7 @@ const router = useRouter()
 .toolbar-wrapper {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .pager-wrapper {
   margin-top: 20px;

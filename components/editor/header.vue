@@ -2,7 +2,7 @@
   <div class="header">
     <div class="main">
       <div class="left">
-        <img class="h-[55px]" src="/logo.png" alt="logo" />
+        <NuxtImg class="h-[55px]" src="/logo.png" alt="logo" />
       </div>
       <div class="right">
         <el-space wrap>
