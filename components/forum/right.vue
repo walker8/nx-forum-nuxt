@@ -1,7 +1,7 @@
 <template>
   <div class="w-67.5">
     <el-card v-if="forumInfo.brief" class="mb-4">
-      <div class="text-gray-500 text-xs font-normal leading-6" v-html="forumInfo.brief" />
+      <div class="text-gray-500 text-sm font-normal leading-6" v-html="forumInfo.brief" />
     </el-card>
     <el-card v-if="hotPosts.length >= 3" class="article-hot">
       <template #header>
