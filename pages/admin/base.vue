@@ -71,9 +71,13 @@ const websiteBaseInfo = reactive({
 const rules = reactive<FormRules<WebsiteBaseInfoVO>>({
   websiteName: [{ required: true, message: '请填写网站名称', trigger: 'blur' }]
 })
-getWebsiteBaseInfoByAdmin().then((res) => {
-  Object.assign(websiteBaseInfo, res.data)
-})
+getWebsiteBaseInfoByAdmin()
+  .then((res) => {
+    Object.assign(websiteBaseInfo, res.data)
+  })
+  .catch((error) => {
+    ElMessage.error(error || '获取网站基本信息失败')
+  })
 const onSubmit = () => {
   formRef.value?.validate((valid, fields) => {
     if (valid) {

@@ -314,13 +314,9 @@ const handleLogin = async () => {
         httpOnly: global.httpOnly
       })
       token.value = res.data.token
-      // // 设置用户信息
-      // user.value = {
-      //   userId: res.data.userId,
-      //   authorName: res.data.userName,
-      //   avatar: res.data.avatar || '',
-      //   intro: res.data.intro || ''
-      // }
+      // 清除用户权限
+      const { refreshUserAuth } = await useUserAuth()
+      refreshUserAuth()
       ElMessage.success('登录成功')
       router.push('/')
     } catch (error: any) {

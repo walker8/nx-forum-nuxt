@@ -141,9 +141,13 @@ definePageMeta({
 })
 const tableData = ref<ForumItemVO[]>([])
 const getTableData = () => {
-  getAllForumByAdmin().then((res) => {
-    tableData.value = res.data
-  })
+  getAllForumByAdmin()
+    .then((res) => {
+      tableData.value = res.data
+    })
+    .catch((errMsg) => {
+      ElMessage.error(errMsg)
+    })
 }
 getTableData()
 

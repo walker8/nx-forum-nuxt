@@ -153,6 +153,9 @@ export function useCurrentUser() {
           // 清除token
           const token = useCookie('x_token')
           token.value = ''
+          // 清除用户权限
+          const { refreshUserAuth } = await useUserAuth()
+          refreshUserAuth()
           ElMessage.success('退出登录成功')
           // 跳转到首页
           navigateTo('/')
@@ -190,15 +193,21 @@ export const useUserAuth = async (forumId: number = 0) => {
   const userAuth = useState('userAuth', () => ({
     permissionMap: new Map()
   }))
-  // 获取用户权限
-  if (!forumId || forumId < 10) {
-    // 10 以下为系统板块
-    forumId = 0
+
+  const getUserAuth = async () => {
+    // 获取用户权限
+    if (!forumId || forumId < 10) {
+      // 10 以下为系统板块
+      forumId = 0
+    }
+    if (!userAuth.value.permissionMap.get(forumId)) {
+      let res = await queryPermissions(forumId)
+      userAuth.value.permissionMap.set(forumId, res.data)
+    }
   }
-  if (!userAuth.value.permissionMap.get(forumId)) {
-    let res = await queryPermissions(forumId)
-    userAuth.value.permissionMap.set(forumId, res.data)
-  }
+
+  await getUserAuth()
+
   const hasPermission = (permission: string, forumId: number = 0) => {
     if (!forumId || forumId < 10) {
       // 10 以下为系统板块
@@ -209,5 +218,9 @@ export const useUserAuth = async (forumId: number = 0) => {
     }
     return false
   }
-  return { userAuth, hasPermission }
+  const refreshUserAuth = () => {
+    userAuth.value.permissionMap.clear()
+    getUserAuth()
+  }
+  return { userAuth, hasPermission, refreshUserAuth }
 }
