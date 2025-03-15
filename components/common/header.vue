@@ -189,6 +189,7 @@ watch(
   (userId) => {
     if (userId && userId > 0) {
       fetchNotificationCount()
+      useUserAuth()
     } else {
       // 用户未登录或登出时，清空通知计数
       userNotification.value = {

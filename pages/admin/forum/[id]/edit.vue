@@ -58,9 +58,9 @@
         </el-tab-pane>
 
         <!-- 权限设置标签页 -->
-        <el-tab-pane label="权限设置" name="permissions">
-          <el-alert style="margin-bottom: 20px" type="warning"
-            >当前版块：{{
+        <el-tab-pane label="权限设置" name="permissions" v-if="formData.forumId > 10">
+          <el-alert style="margin-bottom: 20px" type="warning">
+            当前版块：{{
               formData.nickName
             }}，开启权限后，当前版块的用户组权限将覆盖论坛通用的用户权限</el-alert
           >
@@ -118,10 +118,10 @@
         </el-tab-pane>
 
         <!-- 用户组标签页 -->
-        <el-tab-pane label="用户组" name="userRoles">
-          <el-alert style="margin-bottom: 20px" type="warning"
-            >当前版块：{{ formData.nickName }}，仅显示当前版块的用户组</el-alert
-          >
+        <el-tab-pane label="用户组" name="userRoles" v-if="formData.forumId > 10">
+          <el-alert style="margin-bottom: 20px" type="warning">
+            当前版块：{{ formData.nickName }}，仅显示当前版块的用户组
+          </el-alert>
 
           <el-form :inline="true" class="search-form">
             <el-form-item label="用户名">
