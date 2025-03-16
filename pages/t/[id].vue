@@ -199,7 +199,7 @@ const processEmotions = computed(() => {
     font-size: 24px;
     font-weight: 600;
     line-height: 1.4;
-    margin: 0 0 13px;
+    margin: 13px 0;
     color: #1d2129;
     padding-bottom: 12px;
     border-bottom: 1px solid #e4e6eb;
@@ -209,7 +209,7 @@ const processEmotions = computed(() => {
     font-size: 20px;
     font-weight: 600;
     line-height: 1.4;
-    margin: 0 0 13px;
+    margin: 10px 0;
     color: #1d2129;
   }
 
@@ -217,8 +217,90 @@ const processEmotions = computed(() => {
     font-size: 18px;
     font-weight: 600;
     line-height: 1.4;
-    margin: 0 0 13px;
+    margin: 8px 0;
     color: #1d2129;
+  }
+
+  :deep(h5) {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 8px 0;
+    color: #1d2129;
+  }
+
+  :deep(h6) {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 6px 0;
+    color: #1d2129;
+  }
+
+  // 优化ol ul li的样式
+  :deep(ul), :deep(ol) {
+    padding-left: 20px;
+    margin: 12px 0;
+  }
+
+  :deep(ul) {
+    list-style-type: disc;
+  }
+
+  :deep(ol) {
+    list-style-type: decimal;
+  }
+
+  :deep(li) {
+    margin-bottom: 8px;
+    line-height: 1.6;
+    position: relative;
+  }
+
+  :deep(ul ul), :deep(ol ul) {
+    list-style-type: circle;
+    margin: 8px 0 8px 16px;
+  }
+
+  :deep(ul ol), :deep(ol ol) {
+    list-style-type: lower-alpha;
+    margin: 8px 0 8px 16px;
+  }
+
+  :deep(ul ul ul), :deep(ol ul ul), :deep(ul ol ul), :deep(ol ol ul) {
+    list-style-type: square;
+  }
+
+  :deep(ul ol ol), :deep(ol ol ol), :deep(ul ul ol), :deep(ol ul ol) {
+    list-style-type: lower-roman;
+  }
+
+  // 优化 blockquote 样式
+  :deep(blockquote) {
+    margin: 16px 0;
+    padding: 12px 16px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #1e80ff;
+    color: #5a6270;
+    font-size: 15px;
+    line-height: 1.7;
+    border-radius: 0 4px 4px 0;
+    position: relative;
+    overflow: hidden;
+    
+    p {
+      margin: 0;
+      position: relative;
+    }
+    
+    p:not(:last-child) {
+      margin-bottom: 8px;
+    }
+    
+    blockquote {
+      margin-left: 16px;
+      border-left-color: #409eff;
+    }
   }
 }
 

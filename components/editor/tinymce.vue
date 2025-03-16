@@ -83,6 +83,7 @@ const initEditor = {
   },
   toolbar_items_size: 'small',
   codesample_languages: [
+    { text: 'Bash', value: 'bash' },
     { text: 'C', value: 'c' },
     { text: 'Java', value: 'java' },
     { text: 'Python', value: 'python' },
