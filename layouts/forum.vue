@@ -66,7 +66,6 @@ let threadQuery: ThreadQuery = {
 forumPostPage.value.loading = false
 const queryForumThreads = (forumName: string, canLoading = false) => {
   forumPostPage.value.errMsg = ''
-  forumPostPage.value.records = []
   // 查询帖子列表
   threadQuery.forumName = forumName
   if (canLoading) {
