@@ -3,7 +3,7 @@
     <el-header class="p-0">
       <common-header />
     </el-header>
-    <div class="h-full mx-auto mt-2.5 w-fit">
+    <div class="h-full mx-auto mt-2.5 w-full sm:w-fit">
       <div v-if="errorMsg">
         <el-empty :description="errorMsg" />
       </div>

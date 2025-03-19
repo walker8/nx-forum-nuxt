@@ -5,6 +5,7 @@ export const useForumPostPage = () =>
     total: 0,
     size: 0,
     current: 0,
+    loading: false,
     hasNext: false,
     errMsg: '',
     records: []

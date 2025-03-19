@@ -10,6 +10,7 @@ export interface CustomPage<T> {
   size: number
   current: number
   hasNext: boolean
+  loading: boolean
   errMsg: undefined | string
 }
 

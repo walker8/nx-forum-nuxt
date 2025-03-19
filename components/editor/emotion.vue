@@ -52,7 +52,7 @@
             <el-button
               type="primary"
               @click="submit"
-              :disabled="message === null || message.trim() === ''"
+              :disabled="(message === null || message.trim() === '') && fileList?.length <= 0"
             >
               回复
             </el-button>

@@ -46,6 +46,7 @@
   </el-container>
 </template>
 <script setup lang="ts">
+import { useDebounceFn } from '@vueuse/core'
 import { getForumInfoByName, getForumShowMenu } from '~/apis/forum'
 import { queryThreads, type ThreadQuery } from '~/apis/thread'
 const forumPostPage = useForumPostPage()
@@ -62,10 +63,14 @@ let threadQuery: ThreadQuery = {
   pageNo: 1,
   pageSize: 20
 }
-const queryForumThreads = (forumName: string) => {
+forumPostPage.value.loading = false
+const queryForumThreads = (forumName: string, canLoading = false) => {
   forumPostPage.value.errMsg = ''
   // 查询帖子列表
   threadQuery.forumName = forumName
+  if (canLoading) {
+    forumPostPage.value.loading = true
+  }
   queryThreads(threadQuery)
     .then((res) => {
       // 获取列表成功
@@ -79,24 +84,33 @@ const queryForumThreads = (forumName: string) => {
         goLoginPage(forumInfo.value.forumId)
       }
     })
+    .finally(() => {
+      if (canLoading) {
+        forumPostPage.value.loading = false
+      }
+    })
 }
 
-try {
-  let res = await getForumShowMenu()
-  const data = res.data
-  forumMenu.value.selctedMenu = route.params.id || data.defaultForumName
-  forumMenu.value.menus = data.records
-  res = await getForumInfoByName(forumMenu.value.selctedMenu)
-  forumInfo.value = res.data
-  queryForumThreads(forumMenu.value.selctedMenu)
-} catch (e) {
-  forumPostPage.value.errMsg = String(e)
-  if (import.meta.client) {
-    setTimeout(() => {
-      goLoginPage(forumInfo.value.forumId)
-    }, 200)
+if (forumMenu.value.selctedMenu !== 'all') {
+  // 不是从全部版块页面跳转而来的
+  try {
+    let res = await getForumShowMenu()
+    const data = res.data
+    forumMenu.value.selctedMenu = route.params.id || data.defaultForumName
+    forumMenu.value.menus = data.records
+    res = await getForumInfoByName(forumMenu.value.selctedMenu)
+    forumInfo.value = res.data
+    queryForumThreads(forumMenu.value.selctedMenu)
+  } catch (e) {
+    forumPostPage.value.errMsg = String(e)
+    if (import.meta.client) {
+      setTimeout(() => {
+        goLoginPage(forumInfo.value.forumId)
+      }, 200)
+    }
   }
 }
+
 const onClickTab = ({ name }: { name: string }) => {
   if (name === 'all') {
     navigateTo('/all')
@@ -106,17 +120,17 @@ const onClickTab = ({ name }: { name: string }) => {
 }
 watch(
   () => route.params.id,
-  (to) => {
+  useDebounceFn((to) => {
     let forumName = ''
     if (to) {
       forumName = String(to)
       forumMenu.value.selctedMenu = forumName
+      getForumInfoByName(forumName).then((res) => {
+        forumInfo.value = res.data
+      })
+      queryForumThreads(forumName, true)
     }
-    getForumInfoByName(forumName).then((res) => {
-      forumInfo.value = res.data
-    })
-    queryForumThreads(forumName)
-  },
+  }, 300),
   { flush: 'pre', immediate: false, deep: true }
 )
 

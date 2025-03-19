@@ -2,6 +2,7 @@
   <thread-list
     :forum-post-page="forumPostPage"
     :disable-load-more="disableLoadMore"
+    :loading="forumPostPage.loading"
     @load-more-threads="loadMoreThreads"
   />
 </template>

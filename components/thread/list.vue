@@ -1,6 +1,9 @@
 <template>
   <el-card class="thread-list pb-4">
-    <div v-if="forumPostPage.errMsg">
+    <template v-if="loading" class="pt-5 pl-3 pr-3">
+      <el-skeleton :rows="2" animated />
+    </template>
+    <div v-else-if="forumPostPage.errMsg">
       <el-empty :description="forumPostPage.errMsg" />
     </div>
     <div v-else>
@@ -79,6 +82,10 @@ import type { Thread } from '~/types/global'
 
 const props = defineProps({
   disableLoadMore: {
+    type: Boolean,
+    default: false
+  },
+  loading: {
     type: Boolean,
     default: false
   },
