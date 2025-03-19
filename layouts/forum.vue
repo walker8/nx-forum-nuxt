@@ -66,6 +66,7 @@ let threadQuery: ThreadQuery = {
 forumPostPage.value.loading = false
 const queryForumThreads = (forumName: string, canLoading = false) => {
   forumPostPage.value.errMsg = ''
+  forumPostPage.value.records = []
   // 查询帖子列表
   threadQuery.forumName = forumName
   if (canLoading) {
@@ -96,7 +97,7 @@ if (forumMenu.value.selctedMenu !== 'all') {
   try {
     let res = await getForumShowMenu()
     const data = res.data
-    forumMenu.value.selctedMenu = route.params.id || data.defaultForumName
+    forumMenu.value.selctedMenu = route.params.forumName || data.defaultForumName
     forumMenu.value.menus = data.records
     res = await getForumInfoByName(forumMenu.value.selctedMenu)
     forumInfo.value = res.data
@@ -119,7 +120,7 @@ const onClickTab = ({ name }: { name: string }) => {
   }
 }
 watch(
-  () => route.params.id,
+  () => route.params.forumName,
   useDebounceFn((to) => {
     let forumName = ''
     if (to) {

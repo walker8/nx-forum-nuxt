@@ -11,7 +11,7 @@ import { ElMessage } from 'element-plus'
 import { queryThreads, type ThreadQuery } from '~/apis/thread'
 const forumPostPage = useForumPostPage()
 const route = useRoute()
-const forumName = route.params.id ? String(route.params.id) : ''
+const forumName = route.params.forumName ? String(route.params.forumName) : ''
 const disableLoadMore = ref(false)
 let threadQuery: ThreadQuery = {
   forumName: forumName,
