@@ -31,6 +31,13 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item prop="status" label="状态">
+            <el-select v-model="searchData.status" placeholder="请选择状态" style="width: 220px">
+              <el-option label="已通过" value="passed" />
+              <el-option label="审核中" value="auditing" />
+              <el-option label="回收站" value="recycle" />
+            </el-select>
+          </el-form-item>
           <div class="el-form-item">
             <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
             <el-button :icon="Refresh" @click="resetSearch">重置</el-button>
@@ -95,8 +102,14 @@
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column prop="message" label="回帖内容" min-width="500" align="left">
             <template #default="scope">
-              <el-space wrap class="cursor-pointer" @click="toComment(scope.row)">
+              <el-space wrap class="hover:cursor-pointer" @click="toComment(scope.row)">
                 <el-text line-clamp="2">{{ scope.row.message }}</el-text>
+                <el-text type="success" v-if="scope.row.images?.length > 0">
+                  图{{ scope.row.images?.length }}
+                </el-text>
+                <el-text type="warning" v-if="scope.row.replyCount > 0">
+                  评论{{ scope.row.replyCount }}
+                </el-text>
               </el-space>
             </template>
           </el-table-column>
@@ -146,7 +159,7 @@
                   text
                   bg
                   size="small"
-                  @click="restoreBatch([scope.row.replyId])"
+                  @click="restoreBatch([scope.row.commentId])"
                   v-if="hasPermission('admin:comment:restore', forumId)"
                 >
                   还原
@@ -158,7 +171,7 @@
                   text
                   bg
                   size="small"
-                  @click="passBatch([scope.row.replyId])"
+                  @click="passBatch([scope.row.commentId])"
                   v-if="hasPermission('admin:comment:pass', forumId)"
                 >
                   通过
@@ -168,7 +181,7 @@
                   text
                   bg
                   size="small"
-                  @click="rejectBatch([scope.row.replyId])"
+                  @click="rejectBatch([scope.row.commentId])"
                   v-if="hasPermission('admin:comment:reject', forumId)"
                 >
                   拒绝
@@ -180,7 +193,7 @@
                   text
                   bg
                   size="small"
-                  @click="deleteBatch([scope.row.replyId])"
+                  @click="deleteBatch([scope.row.commentId])"
                   v-if="hasPermission('admin:comment:delete', forumId)"
                 >
                   删除
@@ -208,16 +221,17 @@
 <script setup lang="ts">
 import { Refresh, RefreshRight, Search } from '@element-plus/icons-vue'
 import { type FormInstance, ElMessage, ElMessageBox } from 'element-plus'
-import { getAuditingCount } from '~/apis/admin'
 import {
-  deleteCommentRepliesByAdmin,
-  passCommentRepliesByAdmin,
-  queryCommentRepliesByAdmin,
-  rejectCommentRepliesByAdmin,
-  restoreCommentRepliesByAdmin
+  deleteCommentsByAdmin,
+  passCommentsByAdmin,
+  queryCommentsByAdmin,
+  rejectCommentsByAdmin,
+  restoreCommentsByAdmin
 } from '~/apis/comment'
 import { getUserForumMenu } from '~/apis/forum'
+import type { ForumMenuItemVO } from '~/types/global'
 import { AuditStatus } from '~/composables/useAdmin'
+import { getAuditingCount } from '~/apis/admin'
 
 definePageMeta({
   layout: 'admin'
@@ -231,28 +245,40 @@ const { hasPermission } = await useUserAuth(forumId.value)
 const searchData = reactive({
   authorName: '',
   forumId: forumId.value,
-  ip: ''
+  ip: '',
+  status: ''
 })
+searchData.status = (route.query.status as string) || 'passed'
 const tableData = ref([])
 const searchFormRef = ref<FormInstance>()
 const tableRef = ref()
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination()
-const { auditStatus, deleted } = useAuditStatus()
+
+// 初始化 auditStatus 和 deleted
+const auditStatus = ref<AuditStatus | null>(null)
+const deleted = ref(false)
+const initAuditStatusAndDeleted = () => {
+  const { auditStatus: initAuditStatus, deleted: initDeleted } = useAuditStatus(searchData.status)
+  auditStatus.value = initAuditStatus
+  deleted.value = initDeleted
+}
+initAuditStatusAndDeleted()
+
 const toComment = (row: any) => {
-  window.open(`/c/${row.commentId}?replyId=${row.replyId}`)
+  window.open(`/t/${row.threadId}?commentId=${row.commentId}`)
 }
 
 const getTableData = () => {
   loading.value = true
-  queryCommentRepliesByAdmin({
+  queryCommentsByAdmin({
     pageNo: paginationData.currentPage,
     pageSize: paginationData.pageSize,
     authorName: searchData.authorName || undefined,
     ip: searchData.ip || undefined,
     forumId: Number(searchData.forumId) || undefined,
     auditStatus: auditStatus.value || undefined,
-    deleted: deleted || undefined
+    deleted: deleted.value || undefined
   })
     .then((res) => {
       const data = res.data
@@ -268,6 +294,8 @@ const getTableData = () => {
     })
 }
 const handleSearch = () => {
+  initAuditStatusAndDeleted()
+  
   if (paginationData.currentPage === 1) {
     getTableData()
   } else {
@@ -280,8 +308,9 @@ const resetSearch = () => {
 }
 
 const auditingCount = useAuditingCount()
-const rejectBatch = (replyIds?: number[]) => {
-  const ids = replyIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.replyId) || []
+const rejectBatch = (commentIds?: number[]) => {
+  const ids =
+    commentIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.commentId) || []
   if (ids.length === 0) {
     ElMessage.warning('请选择要拒绝的回复')
     return
@@ -289,7 +318,7 @@ const rejectBatch = (replyIds?: number[]) => {
   const reason = ref('')
   const notice = ref(true)
   ElMessageBox({
-    title: '拒绝回复',
+    title: '拒绝评论',
     message: () =>
       h('div', null, [
         h(ElInput, {
@@ -310,7 +339,7 @@ const rejectBatch = (replyIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    rejectCommentRepliesByAdmin(ids, 0, reason.value, notice.value).then(() => {
+    rejectCommentsByAdmin(ids, 0, reason.value, notice.value).then(() => {
       ElMessage.success('拒绝成功')
       getAuditingCount(0).then((res) => {
         auditingCount.value = res.data
@@ -320,15 +349,16 @@ const rejectBatch = (replyIds?: number[]) => {
   })
 }
 
-const passBatch = (replyIds?: number[]) => {
-  const ids = replyIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.replyId) || []
+const passBatch = (commentIds?: number[]) => {
+  const ids =
+    commentIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.commentId) || []
   if (ids.length === 0) {
-    ElMessage.warning('请选择要通过的评论')
+    ElMessage.warning('请选择要通过的回复')
     return
   }
   const notice = ref(true)
   ElMessageBox({
-    title: '通过回复',
+    title: '通过评论',
     message: () =>
       h('div', [
         h('div', { class: 'mt-3' }, '确定通过吗？'),
@@ -344,7 +374,7 @@ const passBatch = (replyIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    passCommentRepliesByAdmin(ids, 0, notice.value).then(() => {
+    passCommentsByAdmin(ids, 0, notice.value).then(() => {
       ElMessage.success('通过成功')
       getAuditingCount(0).then((res) => {
         auditingCount.value = res.data
@@ -354,16 +384,17 @@ const passBatch = (replyIds?: number[]) => {
   })
 }
 
-const deleteBatch = (replyIds?: number[]) => {
-  const ids = replyIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.replyId) || []
+const deleteBatch = (commentIds?: number[]) => {
+  const ids =
+    commentIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.commentId) || []
   if (ids.length === 0) {
-    ElMessage.warning('请选择要删除的评论')
+    ElMessage.warning('请选择要删除的回复')
     return
   }
   const reason = ref('')
   const notice = ref(true)
   ElMessageBox({
-    title: '删除回复',
+    title: '删除评论',
     message: () =>
       h('div', null, [
         h(ElInput, {
@@ -384,21 +415,22 @@ const deleteBatch = (replyIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    deleteCommentRepliesByAdmin(ids, 0, reason.value, notice.value).then(() => {
+    deleteCommentsByAdmin(ids, 0, reason.value, notice.value).then(() => {
       ElMessage.success('删除成功')
       getTableData()
     })
   })
 }
-const restoreBatch = (replyIds?: number[]) => {
-  const ids = replyIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.replyId) || []
+const restoreBatch = (commentIds?: number[]) => {
+  const ids =
+    commentIds || tableRef.value?.getSelectionRows()?.map((item: any) => item.commentId) || []
   if (ids.length === 0) {
-    ElMessage.warning('请选择要恢复的评论')
+    ElMessage.warning('请选择要恢复的回复')
     return
   }
   const notice = ref(true)
   ElMessageBox({
-    title: '恢复回复',
+    title: '恢复评论',
     message: () =>
       h('div', [
         h('div', { style: 'margin-bottom: 15px' }, '确定还原吗？'),
@@ -414,7 +446,7 @@ const restoreBatch = (replyIds?: number[]) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消'
   }).then(() => {
-    restoreCommentRepliesByAdmin(ids, 0, notice.value).then(() => {
+    restoreCommentsByAdmin(ids, 0, notice.value).then(() => {
       ElMessage.success('还原成功')
       getTableData()
     })

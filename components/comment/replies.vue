@@ -24,7 +24,7 @@
         </div>
         <div>：</div>
       </div>
-      <span v-html="replaceEmotions(reply.message)"></span>
+      <span class="break-words break-all" v-html="replaceEmotions(reply.message)"></span>
     </div>
     <div class="flex text-sm mt-1" style="color: rgb(145, 150, 161)">
       <div>{{ reply.createTime }}</div>

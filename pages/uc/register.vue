@@ -191,14 +191,15 @@ const accountPlaceholder = computed(() => {
 const handleSendCode = async () => {
   await registerFormRef.value?.validateField('account')
   try {
+    startCountdown()
     if (isPhone(registerForm.account)) {
       await sendPhoneVerifyCode(registerForm.account, 'register')
     } else {
       await sendEmailVerifyCode(registerForm.account, 'register')
     }
-    startCountdown()
     ElMessage.success('验证码已发送')
   } catch (error) {
+    countdown.value = 0
     ElMessage.error(error || '发送失败')
   }
 }

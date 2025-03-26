@@ -27,16 +27,40 @@
             </div>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="go('/admin/auditing/thread')">
-                  待审核
+                <el-dropdown-item @click="go('/admin/thread?status=auditing')">
+                  待审核主题
                   <el-tag
                     type="danger"
                     effect="dark"
                     size="small"
                     class="ml-2"
-                    v-if="auditingCount.totalAuditCount > 0"
+                    v-if="auditingCount.threadAuditCount > 0"
                   >
-                    {{ auditingCount.totalAuditCount }}
+                    {{ auditingCount.threadAuditCount }}
+                  </el-tag>
+                </el-dropdown-item>
+                <el-dropdown-item @click="go('/admin/comment?status=auditing')">
+                  待审核评论
+                  <el-tag
+                    type="danger"
+                    effect="dark"
+                    size="small"
+                    class="ml-2"
+                    v-if="auditingCount.commentAuditCount > 0"
+                  >
+                    {{ auditingCount.commentAuditCount }}
+                  </el-tag>
+                </el-dropdown-item>
+                <el-dropdown-item @click="go('/admin/reply?status=auditing')">
+                  待审核楼中楼
+                  <el-tag
+                    type="danger"
+                    effect="dark"
+                    size="small"
+                    class="ml-2"
+                    v-if="auditingCount.replyAuditCount > 0"
+                  >
+                    {{ auditingCount.replyAuditCount }}
                   </el-tag>
                 </el-dropdown-item>
               </el-dropdown-menu>

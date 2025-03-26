@@ -175,6 +175,14 @@ const processEmotions = computed(() => {
   font-size: 16px;
   line-height: 1.75;
   color: #333;
+  /* 允许在单词内换行 */
+  word-wrap: break-word;
+  /* 单词可以在任意字符间断开 */
+  word-break: break-word;
+  /* 超出显示省略号 */
+  white-space: normal;
+  /* 保持所有文字在一个方块内 */
+  overflow-wrap: break-word;
 
   :deep(code:not(pre code)) {
     background-color: #dfe0e1;
@@ -238,7 +246,8 @@ const processEmotions = computed(() => {
   }
 
   // 优化ol ul li的样式
-  :deep(ul), :deep(ol) {
+  :deep(ul),
+  :deep(ol) {
     padding-left: 20px;
     margin: 12px 0;
   }
@@ -257,21 +266,29 @@ const processEmotions = computed(() => {
     position: relative;
   }
 
-  :deep(ul ul), :deep(ol ul) {
+  :deep(ul ul),
+  :deep(ol ul) {
     list-style-type: circle;
     margin: 8px 0 8px 16px;
   }
 
-  :deep(ul ol), :deep(ol ol) {
+  :deep(ul ol),
+  :deep(ol ol) {
     list-style-type: lower-alpha;
     margin: 8px 0 8px 16px;
   }
 
-  :deep(ul ul ul), :deep(ol ul ul), :deep(ul ol ul), :deep(ol ol ul) {
+  :deep(ul ul ul),
+  :deep(ol ul ul),
+  :deep(ul ol ul),
+  :deep(ol ol ul) {
     list-style-type: square;
   }
 
-  :deep(ul ol ol), :deep(ol ol ol), :deep(ul ul ol), :deep(ol ul ol) {
+  :deep(ul ol ol),
+  :deep(ol ol ol),
+  :deep(ul ul ol),
+  :deep(ol ul ol) {
     list-style-type: lower-roman;
   }
 
@@ -287,19 +304,62 @@ const processEmotions = computed(() => {
     border-radius: 0 4px 4px 0;
     position: relative;
     overflow: hidden;
-    
+
     p {
       margin: 0;
       position: relative;
     }
-    
+
     p:not(:last-child) {
       margin-bottom: 8px;
     }
-    
+
     blockquote {
       margin-left: 16px;
       border-left-color: #409eff;
+    }
+  }
+
+  // 优化表格样式
+  :deep(table) {
+    width: 100%;
+    margin: 16px 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    display: block;
+    overflow-x: auto; // 在小屏幕上允许水平滚动
+
+    th,
+    td {
+      border: 1px solid #e4e6eb;
+      padding: 8px 12px;
+      text-align: left;
+      min-width: 120px; // 设置最小宽度防止内容挤压
+    }
+
+    th {
+      background-color: #f6f8fa;
+      font-weight: 600;
+      color: #1d2129;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f9f9fa;
+    }
+
+    tr:hover {
+      background-color: #f2f3f5;
+    }
+
+    // 移动端优化
+    @media (max-width: 768px) {
+      font-size: 14px;
+
+      th,
+      td {
+        padding: 6px 8px;
+        min-width: 100px;
+      }
     }
   }
 }

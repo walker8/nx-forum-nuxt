@@ -87,119 +87,57 @@
             </el-icon>
             <span>帖子管理</span>
           </template>
-          <el-sub-menu index="2-0">
-            <template #title>
-              <el-icon><Icon name="tabler:circle-check" /></el-icon>
-              <span>已通过</span>
-            </template>
-            <el-menu-item
-              index="2-0-0"
-              @click="handleMenuClick('/admin/passed/thread')"
-              v-if="hasPermission('admin:thread:search', forumId)"
+          <el-menu-item
+            index="2-0"
+            @click="handleMenuClick('/admin/thread')"
+            v-if="hasPermission('admin:thread:search', forumId)"
+          >
+            <el-icon><Icon name="tabler:article" /></el-icon>
+            <span>主题帖</span>
+            <el-tag
+              type="danger"
+              effect="dark"
+              size="small"
+              class="ml-2"
+              v-if="auditingCount.threadAuditCount > 0"
             >
-              主题帖
-            </el-menu-item>
-            <el-menu-item
-              index="2-0-1"
-              @click="handleMenuClick('/admin/passed/comment')"
-              v-if="hasPermission('admin:comment:search', forumId)"
+              {{ auditingCount.threadAuditCount }}
+            </el-tag>
+          </el-menu-item>
+          <el-menu-item
+            index="2-1"
+            @click="handleMenuClick('/admin/comment')"
+            v-if="hasPermission('admin:comment:search', forumId)"
+          >
+            <el-icon><Icon name="tabler:message" /></el-icon>
+            <span>评论</span>
+            <el-tag
+              type="danger"
+              effect="dark"
+              size="small"
+              class="ml-2"
+              v-if="auditingCount.commentAuditCount > 0"
             >
-              评论
-            </el-menu-item>
-            <el-menu-item
-              index="2-0-2"
-              @click="handleMenuClick('/admin/passed/reply')"
-              v-if="hasPermission('admin:comment:search', forumId)"
+              {{ auditingCount.commentAuditCount }}
+            </el-tag>
+          </el-menu-item>
+          <el-menu-item
+            index="2-2"
+            @click="handleMenuClick('/admin/reply')"
+            v-if="hasPermission('admin:comment:search', forumId)"
+          >
+            <el-icon><Icon name="tabler:messages" /></el-icon>
+            <span>楼中楼</span>
+            <el-tag
+              type="danger"
+              effect="dark"
+              size="small"
+              class="ml-2"
+              v-if="auditingCount.replyAuditCount > 0"
             >
-              楼中楼
-            </el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="2-1">
-            <template #title>
-              <el-icon><Icon name="tabler:clock" /></el-icon>
-              <span>审核中</span>
-              <van-tag
-                round
-                type="danger"
-                style="margin-left: 5px"
-                v-if="auditingCount?.totalAuditCount > 0"
-              >
-                {{ auditingCount?.totalAuditCount }}
-              </van-tag>
-            </template>
-            <el-menu-item
-              index="2-1-0"
-              @click="handleMenuClick('/admin/auditing/thread')"
-              v-if="hasPermission('admin:thread:search', forumId)"
-            >
-              主题帖
-              <van-tag
-                round
-                type="danger"
-                style="margin-left: 5px"
-                v-if="auditingCount?.threadAuditCount > 0"
-              >
-                {{ auditingCount?.threadAuditCount }}
-              </van-tag>
-            </el-menu-item>
-            <el-menu-item
-              index="2-1-1"
-              @click="handleMenuClick('/admin/auditing/comment')"
-              v-if="hasPermission('admin:comment:search', forumId)"
-            >
-              评论
-              <van-tag
-                round
-                type="danger"
-                style="margin-left: 5px"
-                v-if="auditingCount?.commentAuditCount > 0"
-              >
-                {{ auditingCount?.commentAuditCount }}
-              </van-tag>
-            </el-menu-item>
-            <el-menu-item
-              index="2-1-2"
-              @click="handleMenuClick('/admin/auditing/reply')"
-              v-if="hasPermission('admin:comment:search', forumId)"
-            >
-              楼中楼
-              <van-tag
-                round
-                type="danger"
-                style="margin-left: 5px"
-                v-if="auditingCount.replyAuditCount > 0"
-              >
-                {{ auditingCount.replyAuditCount }}
-              </van-tag>
-            </el-menu-item>
-          </el-sub-menu>
-          <el-sub-menu index="2-2">
-            <template #title>
-              <el-icon><Icon name="tabler:trash" /></el-icon>
-              <span>回收站</span>
-            </template>
-            <el-menu-item
-              index="2-2-0"
-              @click="handleMenuClick('/admin/recycle/thread')"
-              v-if="hasPermission('admin:thread:search', forumId)"
-            >
-              主题帖
-            </el-menu-item>
-            <el-menu-item
-              index="2-2-1"
-              @click="handleMenuClick('/admin/recycle/comment')"
-              v-if="hasPermission('admin:comment:search', forumId)"
-            >
-              评论
-            </el-menu-item>
-            <el-menu-item
-              index="2-2-2"
-              @click="handleMenuClick('/admin/recycle/reply')"
-              v-if="hasPermission('admin:comment:search', forumId)"
-            >
-              楼中楼
-            </el-menu-item>
-          </el-sub-menu>
+              {{ auditingCount.replyAuditCount }}
+            </el-tag>
+          </el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3" v-if="hasPermission('admin:user', forumId)">
           <template #title>
@@ -267,15 +205,9 @@ const routeIndexMap: Record<string, string> = {
   '/admin/audit': '1-4',
   '/admin/image': '1-6',
   '/admin/custom-page': '1-5',
-  '/admin/passed/thread': '2-0-0',
-  '/admin/passed/comment': '2-0-1',
-  '/admin/passed/reply': '2-0-2',
-  '/admin/auditing/thread': '2-1-0',
-  '/admin/auditing/comment': '2-1-1',
-  '/admin/auditing/reply': '2-1-2',
-  '/admin/recycle/thread': '2-2-0',
-  '/admin/recycle/comment': '2-2-1',
-  '/admin/recycle/reply': '2-2-2',
+  '/admin/thread': '2-0',
+  '/admin/comment': '2-1',
+  '/admin/reply': '2-2',
   '/admin/ban': '3-1'
 }
 

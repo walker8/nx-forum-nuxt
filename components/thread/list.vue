@@ -1,8 +1,8 @@
 <template>
   <el-card class="thread-list pb-4">
-    <template v-if="loading" class="pt-5 pl-3 pr-3">
+    <div v-if="loading" class="pt-5 pl-3 pr-3">
       <el-skeleton :rows="2" animated />
-    </template>
+    </div>
     <div v-else-if="forumPostPage.errMsg">
       <el-empty :description="forumPostPage.errMsg" />
     </div>

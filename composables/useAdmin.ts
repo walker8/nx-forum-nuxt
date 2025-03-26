@@ -3,23 +3,22 @@ export enum AuditStatus {
   AUDITING,
   REJECTED
 }
-export const useAuditStatus = () => {
+export const useAuditStatus = (status: string) => {
   const route = useRoute()
-  const type = route.params.type
-  let auditStatus = ref<AuditStatus | null>(null)
+  let auditStatus: AuditStatus | null = null
   let deleted = false
-  switch (type) {
+  switch (status) {
     case 'recycle':
       deleted = true
       break
     case 'auditing':
-      auditStatus.value = AuditStatus.AUDITING
+      auditStatus = AuditStatus.AUDITING
       break
     default:
-      auditStatus.value = AuditStatus.PASSED
+      auditStatus = AuditStatus.PASSED
       break
   }
-  return { auditStatus, deleted }
+  return { status, auditStatus, deleted }
 }
 
 export const useAuditingCount = () =>

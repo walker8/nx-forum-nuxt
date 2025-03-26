@@ -292,6 +292,14 @@ const handleLike = async (comment: CommentVO) => {
   overflow-wrap: break-word;
   font-size: 15px;
   line-height: 20px;
+  /* 允许在单词内换行 */
+  word-wrap: break-word;
+  /* 单词可以在任意字符间断开 */
+  word-break: break-word;
+  /* 超出显示省略号 */
+  white-space: normal;
+  /* 保持所有文字在一个方块内 */
+  overflow-wrap: break-word;
   :deep(.gallery) {
     display: flex;
     flex-wrap: wrap;

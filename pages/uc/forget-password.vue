@@ -160,6 +160,9 @@ const accountPlaceholder = computed(() => {
 const handleSendCode = async () => {
   await formRef.value?.validateField('account')
   try {
+    // 提前启动倒计时，禁用按钮
+    startCountdown()
+    
     if (isPhone(form.account)) {
       if (!authConfig.value?.loginConfig?.enablePhoneResetPassword) {
         throw new Error('手机找回密码功能未开启')
@@ -171,9 +174,11 @@ const handleSendCode = async () => {
       }
       await sendEmailVerifyCode(form.account, 'reset-password')
     }
-    startCountdown()
+    
     ElMessage.success('验证码已发送')
   } catch (error) {
+    // 如果发送失败，重置倒计时
+    countdown.value = 0
     ElMessage.error(error || '发送失败')
   }
 }
