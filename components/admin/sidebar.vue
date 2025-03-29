@@ -89,7 +89,11 @@
           </template>
           <el-menu-item
             index="2-0"
-            @click="handleMenuClick('/admin/thread')"
+            @click="
+              handleMenuClick(
+                '/admin/thread' + (auditingCount.threadAuditCount > 0 ? '?status=auditing' : '')
+              )
+            "
             v-if="hasPermission('admin:thread:search', forumId)"
           >
             <el-icon><Icon name="tabler:article" /></el-icon>
@@ -106,7 +110,11 @@
           </el-menu-item>
           <el-menu-item
             index="2-1"
-            @click="handleMenuClick('/admin/comment')"
+            @click="
+              handleMenuClick(
+                '/admin/comment' + (auditingCount.commentAuditCount > 0 ? '?status=auditing' : '')
+              )
+            "
             v-if="hasPermission('admin:comment:search', forumId)"
           >
             <el-icon><Icon name="tabler:message" /></el-icon>
@@ -123,7 +131,11 @@
           </el-menu-item>
           <el-menu-item
             index="2-2"
-            @click="handleMenuClick('/admin/reply')"
+            @click="
+              handleMenuClick(
+                '/admin/reply' + (auditingCount.replyAuditCount > 0 ? '?status=auditing' : '')
+              )
+            "
             v-if="hasPermission('admin:comment:search', forumId)"
           >
             <el-icon><Icon name="tabler:messages" /></el-icon>
