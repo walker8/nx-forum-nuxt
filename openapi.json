@@ -2387,6 +2387,35 @@
         }
       }
     },
+    "/v1/custom/parse": {
+      "post": {
+        "tags": ["用户自定义控制器"],
+        "summary": "采集外部网站的文章",
+        "operationId": "parse",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LocationDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/comments": {
       "get": {
         "tags": ["评论管理"],
@@ -2933,6 +2962,36 @@
         }
       }
     },
+    "/v1/users/{userId}/info": {
+      "get": {
+        "tags": ["用户中心"],
+        "summary": "获取用户基本信息",
+        "operationId": "getForumUserInfo",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/users/{userId}/following": {
       "get": {
         "tags": ["用户中心"],
@@ -3126,36 +3185,6 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/SingleResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/users/is-following/{followUserId}": {
-      "get": {
-        "tags": ["用户中心"],
-        "summary": "查询是否已关注",
-        "operationId": "isFollowing",
-        "parameters": [
-          {
-            "name": "followUserId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/SingleResponseBoolean"
                 }
               }
             }
@@ -3403,6 +3432,82 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/SingleResponseCustomPageUserRoleVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/uc/admin/user-logs": {
+      "get": {
+        "tags": ["用户日志管理"],
+        "summary": "查询用户日志",
+        "operationId": "queryUserLogs",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "ipAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "logType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          },
+          {
+            "name": "pageNo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleResponseCustomPageUserLogVO"
                 }
               }
             }
@@ -5605,6 +5710,18 @@
           }
         }
       },
+      "LocationDTO": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
       "CommentCmd": {
         "type": "object",
         "properties": {
@@ -5936,6 +6053,10 @@
             "type": "string",
             "description": "关注时间",
             "format": "date-time"
+          },
+          "followed": {
+            "type": "boolean",
+            "description": "当前用户是否已关注"
           }
         },
         "description": "用户关注信息"
@@ -6211,6 +6332,104 @@
             "format": "date-time"
           }
         }
+      },
+      "CustomPageUserLogVO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserLogVO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasNext": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SingleResponseCustomPageUserLogVO": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "errCode": {
+            "type": "string"
+          },
+          "errMessage": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomPageUserLogVO"
+          }
+        }
+      },
+      "UserLogVO": {
+        "type": "object",
+        "properties": {
+          "logId": {
+            "type": "integer",
+            "description": "日志ID",
+            "format": "int64"
+          },
+          "logType": {
+            "type": "integer",
+            "description": "日志类型（1登录 2注册 3信息修改 4密码修改）",
+            "format": "int32"
+          },
+          "logTypeDesc": {
+            "type": "string",
+            "description": "日志类型描述"
+          },
+          "logContent": {
+            "type": "string",
+            "description": "日志内容"
+          },
+          "ipAddress": {
+            "type": "string",
+            "description": "操作IP地址"
+          },
+          "userAgent": {
+            "type": "string",
+            "description": "用户代理信息"
+          },
+          "operationStatus": {
+            "type": "integer",
+            "description": "操作状态（0成功 1失败）",
+            "format": "int32"
+          },
+          "operationStatusDesc": {
+            "type": "string",
+            "description": "操作状态描述"
+          },
+          "userId": {
+            "type": "integer",
+            "description": "创建者（用户ID）",
+            "format": "int64"
+          },
+          "userName": {
+            "type": "string",
+            "description": "创建者用户名"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          }
+        },
+        "description": "用户日志展示对象"
       },
       "SingleResponseSmsConfigDTO": {
         "type": "object",
@@ -6579,6 +6798,10 @@
       "UserForumVO": {
         "type": "object",
         "properties": {
+          "forumId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "threadCount": {
             "type": "integer",
             "format": "int32"
@@ -6594,6 +6817,9 @@
           },
           "iconName": {
             "type": "string"
+          },
+          "isAdmin": {
+            "type": "boolean"
           }
         }
       },

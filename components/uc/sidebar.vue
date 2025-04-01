@@ -3,7 +3,7 @@
   <div>
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
-        default-active="1"
+        :default-active="activeIndex"
         :collapse="collapse"
         :unique-opened="true"
         :collapse-transition="false"
@@ -22,58 +22,64 @@
           </el-icon>
           <span>用户管理</span>
         </el-menu-item>
-        <el-sub-menu index="3">
+        <el-menu-item index="3" @click="handleMenuClick('/uc/admin/user-logs')">
+          <el-icon>
+            <Icon name="tabler:file-analytics" />
+          </el-icon>
+          <span>用户日志</span>
+        </el-menu-item>
+        <el-sub-menu index="4">
           <template #title>
             <el-icon size="16px">
               <Icon name="tabler:user-plus" />
             </el-icon>
             <span>登录注册</span>
           </template>
-          <el-menu-item index="3-1" @click="handleMenuClick('/uc/admin/login')">
+          <el-menu-item index="4-1" @click="handleMenuClick('/uc/admin/login')">
             <el-icon>
               <Icon name="tabler:login" />
             </el-icon>
             <span>登录设置</span>
           </el-menu-item>
-          <el-menu-item index="3-2" @click="handleMenuClick('/uc/admin/register')">
+          <el-menu-item index="4-2" @click="handleMenuClick('/uc/admin/register')">
             <el-icon>
               <Icon name="tabler:user-cog" />
             </el-icon>
             <span>注册设置</span>
           </el-menu-item>
-          <el-menu-item index="3-3" @click="handleMenuClick('/uc/admin/mail')">
+          <el-menu-item index="4-3" @click="handleMenuClick('/uc/admin/mail')">
             <el-icon>
               <Icon name="tabler:mail" />
             </el-icon>
             <span>邮件设置</span>
           </el-menu-item>
-          <el-menu-item index="3-4" @click="handleMenuClick('/uc/admin/sms')">
+          <el-menu-item index="4-4" @click="handleMenuClick('/uc/admin/sms')">
             <el-icon>
               <Icon name="tabler:message" />
             </el-icon>
             <span>短信设置</span>
           </el-menu-item>
         </el-sub-menu>
-        <el-sub-menu index="4">
+        <el-sub-menu index="5">
           <template #title>
             <el-icon size="16px">
               <Icon name="tabler:settings" />
             </el-icon>
             <span>角色权限</span>
           </template>
-          <el-menu-item index="4-1" @click="handleMenuClick('/uc/admin/roles')">
+          <el-menu-item index="5-1" @click="handleMenuClick('/uc/admin/roles')">
             <el-icon size="16px">
               <Icon name="tabler:user-cog" />
             </el-icon>
             <span>角色管理</span>
           </el-menu-item>
-          <el-menu-item index="4-2" @click="handleMenuClick('/uc/admin/permissions')">
+          <el-menu-item index="5-2" @click="handleMenuClick('/uc/admin/permissions')">
             <el-icon size="16px">
               <Icon name="tabler:shield-check" />
             </el-icon>
             <span>权限管理</span>
           </el-menu-item>
-          <el-menu-item index="4-3" @click="handleMenuClick('/uc/admin/role-users')">
+          <el-menu-item index="5-3" @click="handleMenuClick('/uc/admin/role-users')">
             <el-icon size="16px">
               <Icon name="tabler:shield-check" />
             </el-icon>
@@ -96,12 +102,38 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits(['close-sidebar'])
 const router = useRouter()
+const route = useRoute()
 
 // 检测是否为移动端
 const isMobile = ref(false)
 const checkIsMobile = () => {
   isMobile.value = window.innerWidth < 768
 }
+
+// 创建路由到index的映射表
+const routeIndexMap: Record<string, string> = {
+  '/uc/admin': '1',
+  '/uc/admin/users': '2',
+  '/uc/admin/user-logs': '3',
+  '/uc/admin/login': '4-1',
+  '/uc/admin/register': '4-2',
+  '/uc/admin/mail': '4-3',
+  '/uc/admin/sms': '4-4',
+  '/uc/admin/roles': '5-1',
+  '/uc/admin/permissions': '5-2',
+  '/uc/admin/role-users': '5-3'
+}
+
+// 计算当前活动菜单项
+const activeIndex = computed(() => {
+  // 使用path匹配基础路由
+  const basePath = route.path.replace(/\/$/, '') // 移除结尾的斜杠
+  const matchedKey = Object.keys(routeIndexMap)
+    .sort((a, b) => b.length - a.length) // 优先匹配更长路径
+    .find((key) => basePath.startsWith(key))
+
+  return matchedKey ? routeIndexMap[matchedKey] : '1'
+})
 
 // 处理菜单点击事件
 const handleMenuClick = (path: string) => {
