@@ -56,12 +56,12 @@
           </el-table-column>
           <el-table-column prop="email" label="邮箱地址" min-width="200" align="center" />
           <el-table-column prop="intro" label="个人介绍" show-overflow-tooltip min-width="200" />
-          <el-table-column prop="loginIp" label="登录地址" align="center" width="120">
+          <el-table-column prop="lastActiveIp" label="最后活跃地址" align="center" width="120">
             <template #default="scope">
               <el-tooltip
                 class="box-item"
                 effect="dark"
-                :content="scope.row.loginIp"
+                :content="scope.row.lastActiveIp"
                 placement="top-start"
               >
                 <el-text>{{ scope.row.location }}</el-text>
@@ -89,7 +89,7 @@
             align="center"
             width="150"
           />
-          <el-table-column prop="loginDate" label="登录时间" align="center" width="150" />
+          <el-table-column prop="lastActiveDate" label="最后活跃时间" align="center" width="150" />
           <el-table-column fixed="right" label="操作" width="150" align="center">
             <template #default="scope">
               <el-button type="primary" text bg size="small" @click="updateUser(scope.row)">
