@@ -77,7 +77,7 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item @click="go('/')">返回前台</el-dropdown-item>
-                <el-dropdown-item>退出登录</el-dropdown-item>
+                <el-dropdown-item @click="handleLogout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -103,7 +103,7 @@ getAuditingCount(0).then((res) => {
   auditingCount.value = res.data
 })
 
-const { user } = useCurrentUser()
+const { user, handleLogout } = useCurrentUser()
 const go = (path: string) => {
   navigateTo(`${path}`)
 }

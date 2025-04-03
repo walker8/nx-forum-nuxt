@@ -60,7 +60,7 @@
             min-width="250"
             show-overflow-tooltip
           />
-          <el-table-column prop="ipAddress" label="用户IP" align="center" width="120">
+          <el-table-column prop="ipAddress" label="用户IP" align="center" width="150">
             <template #default="scope">
               <el-tooltip
                 class="box-item"
