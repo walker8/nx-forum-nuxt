@@ -6,6 +6,13 @@
         <template #header>
           <div class="card-header">
             <div class="comment-num">评论 {{ thread.comments }}</div>
+            <div class="comment-sort">
+              <el-radio-group v-model="commentOrder" size="small">
+                <el-radio-button :value="0">正序</el-radio-button>
+                <el-radio-button :value="1">最新</el-radio-button>
+                <el-radio-button :value="2">热门</el-radio-button>
+              </el-radio-group>
+            </div>
           </div>
         </template>
         <div class="comment-editor" v-if="!disabled">
@@ -142,6 +149,7 @@ const props = defineProps({
   }
 })
 const { threadId, authorId, order, disabled, forumId } = props
+const commentOrder = ref(order)
 const thread = useThread()
 const imageViewer = ref()
 const comments = ref()
@@ -160,10 +168,15 @@ interface Comment extends CommentVO {
 
 const { hasPermission } = await useUserAuth(forumId)
 
+// 监听 commentOrder 变化
+watch(commentOrder, () => {
+  initComments()
+})
+
 const initComments = () => {
   if (thread.value.comments > 0) {
     pageNo = 1
-    queryComments(threadId, order, pageNo, pageSize)
+    queryComments(threadId, commentOrder.value, pageNo, pageSize)
       .then((res) => {
         const data = res.data
         comments.value = data.records
@@ -178,7 +191,7 @@ const initComments = () => {
 initComments()
 const loadMoreComments = () => {
   disableLoadMore.value = true
-  queryComments(threadId, order, pageNo, pageSize)
+  queryComments(threadId, commentOrder.value, pageNo, pageSize)
     .then((res) => {
       const data = res.data
       comments.value.push(...data.records)
@@ -253,6 +266,11 @@ const handleLike = async (comment: CommentVO) => {
 }
 .comment-item {
   margin-top: 10px;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .comment-num {
   color: black;

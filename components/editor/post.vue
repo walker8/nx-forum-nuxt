@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="threadCmd" label-width="50px">
+  <el-form :model="threadCmd" label-width="80px">
     <el-form-item label="版块">
       <el-select
         v-if="menus?.length > 0"
@@ -10,6 +10,16 @@
         <el-option v-for="menu in menus" :label="menu.nickName" :value="menu.forumId" />
       </el-select>
       <el-text v-else>-</el-text>
+      <div class="text-sm pt-1 text-gray-400" v-if="forumShortBrief">
+        {{ forumShortBrief }}
+      </div>
+    </el-form-item>
+    <el-form-item label="评论排序">
+      <el-select v-model="threadCmd.commentOrder" placeholder="请选择排序">
+        <el-option label="时间正序" :value="0" />
+        <el-option label="时间倒序" :value="1" />
+        <el-option label="热门排序" :value="2" />
+      </el-select>
     </el-form-item>
     <el-form-item>
       <div style="display: flex; justify-content: flex-end; margin-left: auto">
@@ -21,12 +31,12 @@
                 ? '更新中...'
                 : '发布中...'
               : threadCmd.threadId
-              ? submitDisabled
-                ? '禁止更新'
-                : '确认更新'
-              : submitDisabled
-              ? '禁止发布'
-              : '确定发布'
+                ? submitDisabled
+                  ? '禁止更新'
+                  : '确认更新'
+                : submitDisabled
+                  ? '禁止发布'
+                  : '确定发布'
           }}
         </el-button>
       </div>
@@ -54,6 +64,9 @@ getUserForumMenu().then((res) => {
       menus.value[0].forumId
     useUserAuth(threadCmd.value.forumId)
   }
+})
+const forumShortBrief = computed(() => {
+  return menus?.value.find((menu) => menu.forumId === threadCmd.value.forumId)?.shortBrief || ''
 })
 // 添加提交状态变量
 const isSubmitting = ref(false)

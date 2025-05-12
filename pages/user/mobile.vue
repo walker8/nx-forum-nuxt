@@ -6,7 +6,9 @@
           <div class="user-profile">
             <van-image round width="60" height="60" :src="user.avatar || '/img/avatar.png'" />
             <div>
-              <div class="user-name">{{ user.userName || '未登录' }}</div>
+              <div class="user-name" @click="goUserHome(user.userId)">
+                {{ user.userName || '未登录' }}
+              </div>
               <div v-if="user.intro">{{ user.intro }}</div>
             </div>
           </div>

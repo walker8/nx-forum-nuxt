@@ -108,6 +108,7 @@ export interface ThreadCmd {
   threadId?: number
   forumId: number
   categoryId?: number
+  commentOrder?: number
   content: string
   subject: string
 }

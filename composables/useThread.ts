@@ -38,6 +38,7 @@ export const useThreadCmd = () =>
     threadId: 0,
     forumId: 0,
     categoryId: 0,
+    commentOrder: 0,
     content: '',
     subject: ''
   }))
