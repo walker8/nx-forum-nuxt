@@ -142,6 +142,9 @@ export interface UserVO {
   userName: string
   avatar?: string
   intro?: string
+  createTime: string
+  followed: boolean
+  lastActiveDate?: string
 }
 
 export interface NotificationVO {

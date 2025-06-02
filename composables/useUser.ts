@@ -9,7 +9,10 @@ export const useUser = () =>
     userId: 0,
     avatar: '',
     userName: '',
-    intro: ''
+    intro: '',
+    createTime: '',
+    followed: false,
+    lastActiveDate: ''
   }))
 
 export const useUserSettings = () =>
@@ -97,13 +100,14 @@ export const useUserNotificationCount = () =>
 export const useUserMenus = () => useState<ForumMenuItemVO[]>('userMenus', () => [])
 
 export const useUserInfo = () =>
-  useState('userInfo', () => ({
+  useState<UserVO>('userInfo', () => ({
     userId: 0,
     userName: '',
     avatar: '',
     intro: '',
     createTime: '',
-    followed: false
+    followed: false,
+    lastActiveDate: ''
   }))
 
 let fetchPromise: Promise<void> | null = null
@@ -148,7 +152,10 @@ export function useCurrentUser() {
             userId: 0,
             avatar: '',
             userName: '',
-            intro: ''
+            intro: '',
+            createTime: '',
+            followed: false,
+            lastActiveDate: ''
           }
           // 清除token
           const token = useCookie('x_token')

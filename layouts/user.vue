@@ -37,7 +37,14 @@
                   {{ userInfo.intro }}
                 </el-text>
                 <el-text type="info" :line-clamp="1" class="block mt-1.5 w-full">
-                  注册于 {{ userInfo.createTime }}
+                  <span class="inline-flex items-center">
+                    <Icon name="tabler:calendar" class="mr-1 w-4 h-4" />
+                    注册于 {{ userInfo.createTime }}
+                  </span>
+                  <span class="hidden md:inline-flex items-center ml-4">
+                    <Icon name="tabler:clock" class="mr-1 w-4 h-4" />
+                    活跃于 {{ userInfo.lastActiveDate }}
+                  </span>
                 </el-text>
               </div>
             </div>
@@ -153,7 +160,7 @@ watch(
           userInfo.value.avatar = userInfo.value.avatar || '/img/avatar.png'
         })
         .catch((err) => {
-          errorMsg.value = err
+          errorMsg.value = err.message || '获取用户信息失败'
         })
     }
   },
