@@ -115,6 +115,8 @@ export interface ThreadCmd {
 
 export interface ForumInfo {
   forumId: number
+  name: string
+  nickName: string
   threadCount: number
   followCount: number
   shortBrief: string
@@ -124,6 +126,8 @@ export interface ForumInfo {
   seoKeywords: string
   seoContent: string
   backgroundImage: string
+  isCurrentUserAdmin?: boolean
+  followed?: boolean
 }
 
 export interface ForumMenuItemVO {

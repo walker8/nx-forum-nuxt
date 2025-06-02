@@ -91,6 +91,7 @@ const initEditor = {
     { text: 'C#', value: 'csharp' },
     { text: 'JavaScript', value: 'javascript' },
     { text: 'PHP', value: 'php' },
+    { text: 'JSON', value: 'json5' },
     { text: 'R', value: 'r' },
     { text: 'SQL', value: 'sql' },
     { text: 'Groovy', value: 'groovy' },

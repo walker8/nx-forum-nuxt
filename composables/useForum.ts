@@ -13,6 +13,9 @@ export const useForumPostPage = () =>
 
 export const useForumInfo = () =>
   useState<ForumInfo>('forumInfo', () => ({
+    forumId: 0,
+    name: '',
+    nickName: '',
     threadCount: 0,
     followCount: 0,
     shortBrief: '',
@@ -22,7 +25,8 @@ export const useForumInfo = () =>
     seoKeywords: '',
     seoContent: '',
     backgroundImage: '',
-    forumId: 0
+    isCurrentUserAdmin: false,
+    followed: false
   }))
 
 export const useForumMenu = () =>
