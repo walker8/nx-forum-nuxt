@@ -30,7 +30,7 @@
     <div class="reply">
       <el-card class="mt-2">
         <div class="text-xs">{{ comment.replyCount }}条回复</div>
-        <comment-replies :comment="comment" :order="CommentOrderV.TIME_DESC" />
+        <comment-replies :comment="comment" :order="CommentOrderV.TIME_DESC" :reply-id="replyId" />
       </el-card>
     </div>
     <common-image-viewer ref="imageViewer" />
@@ -66,7 +66,12 @@ useSeoMeta({
 })
 const route = useRoute()
 const commentId = route.params.id ? Number(route.params.id) : 0
-getCommentVOById(commentId)
+const replyId = computed(() => {
+  const id = route.query.replyId
+  return id ? Number(id) : undefined
+})
+
+getCommentVOById(commentId, replyId.value)
   .then((res) => {
     Object.assign(comment, res.data)
     comment.pageNo = 1

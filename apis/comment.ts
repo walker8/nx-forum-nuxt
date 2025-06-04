@@ -54,18 +54,22 @@ export const queryCommentReplies = (
   commentId: number,
   order: number,
   pageNo: number,
-  pageSize: number
+  pageSize: number,
+  replyId?: number
 ) => {
   return Http.get(`/v1/comments/${commentId}/replies`, {
     commentId,
     order,
     pageNo,
-    pageSize
+    pageSize,
+    replyId
   })
 }
 
-export const getCommentVOById = (commentId: number) => {
-  return Http.get(`/v1/comments/${commentId}`)
+export const getCommentVOById = (commentId: number, replyId?: number) => {
+  return Http.get(`/v1/comments/${commentId}`, {
+    replyId
+  })
 }
 
 /**
