@@ -41,7 +41,8 @@ const commentPage = reactive<CustomPage<CommentVO>>({
   current: 0,
   hasNext: false,
   errMsg: '',
-  records: []
+  records: [],
+  loading: false
 })
 const route = useRoute()
 const userId = Number(route.params.userId)

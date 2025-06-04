@@ -69,6 +69,7 @@ const commentId = route.params.id ? Number(route.params.id) : 0
 getCommentVOById(commentId)
   .then((res) => {
     Object.assign(comment, res.data)
+    comment.pageNo = 1
     errorMsg.value = ''
   })
   .catch((errMsg) => {

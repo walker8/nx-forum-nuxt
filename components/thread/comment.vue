@@ -37,7 +37,13 @@
           </client-only>
         </div>
         <div class="comment-list">
-          <div class="comment-item" v-for="(comment, index) in comments" :key="index">
+          <div 
+            class="comment-item" 
+            v-for="(comment, index) in comments" 
+            :key="index"
+            :id="`comment-${comment.commentId}`"
+            :class="{ 'comment-highlight': commentId && commentId === comment.commentId }"
+          >
             <client-only>
               <div style="padding-right: 10px">
                 <el-avatar :size="40" :src="comment.avatarUrl || '/img/avatar.png'" />
@@ -159,6 +165,23 @@ let pageNo = 1
 const pageSize = 10
 const { user } = useCurrentUser()
 const { replaceEmotions } = useEmotions()
+const route = useRoute()
+const commentId = computed(() => {
+  const id = route.query.commentId
+  return id ? Number(id) : undefined
+})
+
+// 滚动到指定评论
+const scrollToComment = () => {
+  if (commentId.value && comments.value?.length) {
+    nextTick(() => {
+      const commentElement = document.getElementById(`comment-${commentId.value}`)
+      if (commentElement) {
+        commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    })
+  }
+}
 
 // 添加类型定义
 interface Comment extends CommentVO {
@@ -176,12 +199,14 @@ watch(commentOrder, () => {
 const initComments = () => {
   if (thread.value.comments > 0) {
     pageNo = 1
-    queryComments(threadId, commentOrder.value, pageNo, pageSize)
+    queryComments(threadId, commentOrder.value, pageNo, pageSize, commentId.value)
       .then((res) => {
         const data = res.data
         comments.value = data.records
         hasNext.value = data.hasNext
         pageNo++
+        // 滚动到指定评论
+        scrollToComment()
       })
       .catch((err) => {
         ElMessage.error(err)
@@ -191,7 +216,7 @@ const initComments = () => {
 initComments()
 const loadMoreComments = () => {
   disableLoadMore.value = true
-  queryComments(threadId, commentOrder.value, pageNo, pageSize)
+  queryComments(threadId, commentOrder.value, pageNo, pageSize, commentId.value)
     .then((res) => {
       const data = res.data
       comments.value.push(...data.records)
@@ -386,6 +411,11 @@ const handleLike = async (comment: CommentVO) => {
     color: #409eff;
     cursor: pointer;
   }
+}
+.comment-highlight {
+  background-color: rgba(64, 158, 255, 0.1);
+  transition: background-color 0.5s ease;
+  padding: 5px;
 }
 /* 移动端底部导航空间 */
 @media screen and (max-width: 767px) {

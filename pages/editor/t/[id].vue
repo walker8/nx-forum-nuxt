@@ -33,6 +33,7 @@ getThreadForEdit(threadId)
     threadCmd.value.subject = data.subject
     threadCmd.value.content = data.content
     threadCmd.value.forumId = data.forumId
+    threadCmd.value.commentOrder = data.commentOrder
     tinymceEditor?.value?.initContent(res.data.content)
     errorMsg.value = ''
   })

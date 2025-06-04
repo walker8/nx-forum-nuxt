@@ -27,19 +27,22 @@ export type CommentReplyQuery = {
  * @param order
  * @param pageNo
  * @param pageSize
+ * @param commentId 指定评论ID
  * @returns
  */
 export const queryComments = (
   threadId: number,
   order: number,
   pageNo: number,
-  pageSize: number
+  pageSize: number,
+  commentId?: number
 ) => {
   return Http.get(`/v1/comments`, {
     threadId,
     order,
     pageNo,
-    pageSize
+    pageSize,
+    commentId
   })
 }
 
