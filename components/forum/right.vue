@@ -65,7 +65,7 @@ const hotPosts = ref<Thread[]>([])
 const getHotPosts = async () => {
   try {
     const { data } = await getHotPostsApi({
-      days: 7,
+      days: 14,
       limit: 8
     })
     hotPosts.value = data
