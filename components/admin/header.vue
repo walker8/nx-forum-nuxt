@@ -63,6 +63,18 @@
                     {{ auditingCount.replyAuditCount }}
                   </el-tag>
                 </el-dropdown-item>
+                <el-dropdown-item @click="go('/admin/report?status=pending')">
+                  待处理举报
+                  <el-tag
+                    type="danger"
+                    effect="dark"
+                    size="small"
+                    class="ml-2"
+                    v-if="auditingCount.pendingReportCount > 0"
+                  >
+                    {{ auditingCount.pendingReportCount }}
+                  </el-tag>
+                </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>

@@ -150,6 +150,27 @@
               {{ auditingCount.replyAuditCount }}
             </el-tag>
           </el-menu-item>
+          <el-menu-item
+            index="2-3"
+            @click="
+              handleMenuClick(
+                '/admin/report' + (auditingCount.pendingReportCount > 0 ? '?status=pending' : '')
+              )
+            "
+            v-if="hasPermission('admin:user:report', forumId)"
+          >
+            <el-icon><Icon name="tabler:flag" /></el-icon>
+            <span>举报管理</span>
+            <el-tag
+              type="danger"
+              effect="dark"
+              size="small"
+              class="ml-2"
+              v-if="auditingCount.pendingReportCount > 0"
+            >
+              {{ auditingCount.pendingReportCount }}
+            </el-tag>
+          </el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="3" v-if="hasPermission('admin:user', forumId)">
           <template #title>
@@ -195,7 +216,15 @@ const forumId = computed<number | undefined>(() => {
 
 // 处理菜单点击事件
 const handleMenuClick = (path: string) => {
-  navigateTo(path + (forumId.value ? '?forumId=' + forumId.value : ''))
+  let fullPath = path
+  if (forumId.value) {
+    if (fullPath.includes('?')) {
+      fullPath += `&forumId=${forumId.value}`
+    } else {
+      fullPath += `?forumId=${forumId.value}`
+    }
+  }
+  navigateTo(fullPath)
 
   // 在移动端点击菜单项后自动收起侧边栏
   if (isMobile.value) {
@@ -220,6 +249,7 @@ const routeIndexMap: Record<string, string> = {
   '/admin/thread': '2-0',
   '/admin/comment': '2-1',
   '/admin/reply': '2-2',
+  '/admin/report': '2-3',
   '/admin/ban': '3-1'
 }
 

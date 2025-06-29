@@ -242,3 +242,59 @@ declare interface LikeCmd {
   targetType: number
   targetId: number
 }
+
+interface UserInfo {
+  userId?: number
+  userName?: string
+  avatar?: string
+  [key: string]: any
+}
+
+interface CreateReportCommand {
+  targetId: number
+  targetType: 'THREAD' | 'COMMENT' | 'REPLY'
+  forumId: number
+  reportType: 'SPAM' | 'PORN' | 'HATE_SPEECH' | 'COPYRIGHT' | 'DISORDERLY' | 'VIOLATION' | 'OTHER'
+  reportReason?: string
+}
+
+interface PagingQuery {
+  pageNo?: number
+  pageSize?: number
+  orderByColumn?: string
+  isAsc?: boolean
+}
+
+interface ReportInfo {
+  reportId: number
+  targetId: number
+  targetType: 'THREAD' | 'COMMENT' | 'REPLY'
+  forumId: number
+  reportType: 'SPAM' | 'PORN' | 'HATE_SPEECH' | 'COPYRIGHT' | 'DISORDERLY' | 'VIOLATION' | 'OTHER'
+  reportReason?: string
+  handleStatus: 'PENDING' | 'APPROVED' | 'REJECTED'
+  handleReason?: string
+  createBy: number
+  createTime: string
+  updateBy?: number
+  updateTime?: string
+  reporterName?: string
+  handlerName?: string
+  forumName?: string
+  targetContent?: any
+}
+
+interface HandleReportCommand {
+  reportId: number
+  handleStatus: 'APPROVED' | 'REJECTED'
+  handleReason?: string
+  notifyUser?: boolean
+}
+
+interface ReportQuery extends PagingQuery {
+  targetType?: 'THREAD' | 'COMMENT' | 'REPLY'
+  forumId?: number
+  handleStatus?: 'PENDING' | 'APPROVED' | 'REJECTED'
+  reporterId?: number
+  handlerId?: number
+}

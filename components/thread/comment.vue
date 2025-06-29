@@ -50,9 +50,9 @@
               </div>
               <div style="width: 100%">
                 <div class="comment-user">
-                  <span class="author-name" @click="open(`/user/${comment.authorId}`)">{{
-                    comment.authorName
-                  }}</span>
+                  <span class="author-name" @click="open(`/user/${comment.authorId}`)">
+                    {{ comment.authorName }}
+                  </span>
                   <van-tag plain type="primary" v-if="comment.authorId == authorId" class="ml-1">
                     作者
                   </van-tag>
@@ -63,7 +63,7 @@
                   @click="clickComment($event, comment.message)"
                 ></div>
                 <div class="comment-other">
-                  <el-space wrap>
+                  <div class="flex text-sm mt-1 gap-2" style="color: rgb(145, 150, 161)">
                     <div class="commnet-time">{{ comment.createTime }}</div>
                     <div
                       :class="{ 'comment-thumb': true, 'text-[#409eff]': comment.liked }"
@@ -93,7 +93,14 @@
                         回复
                       </div>
                     </div>
-                  </el-space>
+                    <div
+                      v-if="user.userId"
+                      class="ml-auto cursor-pointer hover:text-[#409eff]"
+                      @click="onReportComment(comment)"
+                    >
+                      举报
+                    </div>
+                  </div>
                 </div>
                 <div style="width: 100%; margin-top: 7px" v-if="comment.showEditor">
                   <editor-emotion
@@ -104,7 +111,12 @@
                   />
                 </div>
                 <div class="comment-reply-list" v-if="comment.replies?.length">
-                  <comment-replies :comment="comment" :author-id="authorId" :disabled="disabled" />
+                  <comment-replies
+                    :comment="comment"
+                    :author-id="authorId"
+                    :disabled="disabled"
+                    :forum-id="forumId"
+                  />
                 </div>
               </div>
             </client-only>
@@ -130,6 +142,7 @@ import { ElMessage } from 'element-plus'
 import { CommentOrderV } from '~/constant'
 import { toggleLike } from '~/apis/like'
 import { useEmotions } from '~/composables/useEmotions'
+import { useReport } from '~/composables/useReport'
 
 const props = defineProps({
   threadId: {
@@ -166,6 +179,7 @@ const pageSize = 10
 const { user } = useCurrentUser()
 const { replaceEmotions } = useEmotions()
 const route = useRoute()
+const { openReportDialog } = useReport()
 const commentId = computed(() => {
   const id = route.query.commentId
   return id ? Number(id) : undefined
@@ -281,6 +295,14 @@ const handleLike = async (comment: CommentVO) => {
   } catch (err) {
     ElMessage.error(err as string)
   }
+}
+
+function onReportComment(comment: CommentVO) {
+  if (!user.value.userId) {
+    ElMessage.error('请登录后操作')
+    return
+  }
+  openReportDialog(comment.commentId, 'COMMENT', props.forumId)
 }
 </script>
 

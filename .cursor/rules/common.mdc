@@ -10,6 +10,7 @@ alwaysApply: true
 - 基于 Nuxt3 + TypeScript + tailwindcss + Element-Plus 和 vant-ui 的前端架构
 - 采用模块化设计，清晰的目录结构和职责划分
 - 统一的错误处理和状态管理机制
+- 移动端与PC端统一代码库，采用响应式设计
 
 ## 目录结构规范
 
@@ -25,20 +26,57 @@ alwaysApply: true
 │   └── ...
 ├── composables/        # 组合式函数
 ├── layouts/            # 布局组件
+├── middleware/         # 中间件目录
 ├── pages/              # 页面文件
+├── plugins/            # 插件目录
+├── public/             # 静态资源目录
+├── server/             # 服务器端代码
+├── stores/             # 状态管理
 ├── types/              # TypeScript 类型定义
 └── utils/              # 工具函数
 ```
 
 ## 代码规范
 
+### Nuxt 3 专项规范
+
+1. 利用 Nuxt 3 的自动导入功能，无需手动导入 'ref'、'useState' 或 'useRouter'
+2. 色彩模式管理使用内置的 '@nuxtjs/color-mode' 配合 'useColorMode()' 函数
+3. 善用 VueUse 函数增强响应性与性能（色彩模式管理除外）
+4. SEO 优化使用 useHead 和 useSeoMeta
+5. 路由使用基于文件系统的路由，遵循 Nuxt 3 的路由规范
+
 ### 组件开发规范
 
 1. 统一使用 `<script setup lang="ts">` 语法
-2. 组件文件采用 PascalCase 命名方式
+2. 组件文件采用小写加连字符命名方式（kebab-case）
 3. 组件属性必须定义类型
 4. 组件事件使用 emit 定义类型
 5. 复杂的组件逻辑抽离到 composables 中
+6. 组件划分原则：单一职责，高内聚低耦合
+7. 共享组件放在 common 目录，模块专用组件放在对应模块目录
+
+### 布局系统规范
+
+1. 使用 layouts 目录定义全局布局
+2. 布局文件命名采用 kebab-case 风格
+3. 页面通过 definePageMeta 指定布局
+4. 常见布局包括：
+   - default：默认布局（含顶部导航和底部）
+   - admin：管理后台布局
+   - empty：空布局
+   - forum：论坛布局
+   - user：用户中心布局
+
+### 中间件规范
+
+1. 中间件放置在 middleware 目录下
+2. 全局中间件以 `.global` 结尾
+3. 路由中间件通过 definePageMeta 指定
+4. 中间件主要用于：
+   - 权限控制
+   - 数据预加载
+   - 路由拦截与重定向
 
 ### API 层规范
 
@@ -47,16 +85,18 @@ alwaysApply: true
 3. 接口返回类型统一定义在 types 目录
 4. 错误处理统一在 request.ts 中处理
 5. 接口地址和请求参数在 openapi.json 文件中定义，使用 OpenApi 规范
+6. API 函数命名风格：动词+名词，如 getUsers、createThread
 
 ### 数据请求处理规范
 
 1. 客户端请求使用 $fetch
-2. SSR 场景使用 useFetch
+2. SSR 场景使用 useFetch 或 useAsyncData
 3. DELETE 请求不携带请求体
 4. 统一的错误处理机制：
    - 401：未授权处理
    - 500：服务器错误处理
    - 业务错误：统一提示
+5. 请求超时设置统一为 30 秒
 
 ### TypeScript 使用规范
 
@@ -69,8 +109,21 @@ alwaysApply: true
 
 1. 页面级状态使用 ref/reactive
 2. 跨组件状态使用 composables
-3. 全局状态使用 useState
+3. 全局状态使用 useState 或 Pinia
 4. 表单数据统一使用 reactive
+5. 避免过度使用全局状态，优先考虑局部状态和 props 传递
+
+### 插件规范
+
+1. 插件放置在 plugins 目录下
+2. 客户端插件以 .client.ts 结尾
+3. 服务端插件以 .server.ts 结尾
+4. 全局插件直接放在 plugins 目录下
+5. 插件主要用于：
+   - 第三方库集成
+   - 全局组件注册
+   - 全局指令注册
+   - 全局过滤器注册
 
 ### UI 组件使用规范
 
@@ -82,7 +135,9 @@ alwaysApply: true
 3. 弹窗表单统一使用 el-dialog
 4. 确认框统一使用 ElMessageBox
 5. 消息提示统一使用 ElMessage
-6. 使用 Tailwind CSS 实现响应式设计；使用移动优先的方法。
+6. 使用 Tailwind CSS 实现响应式设计；使用移动优先的方法
+7. 移动端优先使用 vant-ui 组件
+8. 自定义组件样式通过 CSS 变量实现主题定制
 
 ### 项目通用处理规范
 
@@ -100,17 +155,20 @@ alwaysApply: true
 
    - 重置时清空所有搜索条件
    - 搜索时重置到第一页
+   - 搜索条件持久化到 URL 查询参数
 
 3. 表格数据加载统一：
 
    - loading 状态控制
    - 错误处理
    - 数据为空时显示空状态
+   - 支持排序和筛选
 
 4. 弹窗处理统一：
    - 打开时重置表单
    - 关闭时清除验证
    - 提交时统一验证
+   - 使用 v-if 而非 v-show 控制弹窗显示，避免不必要的渲染
 
 ### 错误处理规范
 
@@ -120,6 +178,8 @@ alwaysApply: true
    - 权限错误
 2. 表单验证错误统一处理
 3. 异步操作错误统一处理
+4. 全局错误捕获机制
+5. 错误日志上报
 
 ### 性能优化规范
 
@@ -127,6 +187,10 @@ alwaysApply: true
 2. 大数据列表使用虚拟滚动
 3. 合理使用 computed 和 watch
 4. 避免不必要的组件重渲染
+5. 懒加载路由和组件
+6. 图片使用 nuxt/image 优化加载
+7. 合理使用 keep-alive 缓存组件
+8. 使用 shallowRef 和 shallowReactive 减少深层响应开销
 
 ### 安全规范
 
@@ -134,3 +198,54 @@ alwaysApply: true
 2. API 请求统一鉴权
 3. 防止 XSS 攻击
 4. 防止 CSRF 攻击
+5. 使用 CSP 策略
+6. 验证所有用户输入
+7. OAuth 和 JWT 规范使用
+
+### 构建与部署规范
+
+1. 使用 ecosystem.config.js 配置 PM2 部署
+2. 生产环境构建前优化依赖
+3. 按需引入第三方库
+4. 使用 Gzip/Brotli 压缩静态资源
+5. 使用环境变量区分开发、测试和生产环境
+6. 分环境构建与部署流程
+
+### Git 工作流规范
+
+1. 分支命名规范：
+   - main/master：主分支
+   - feature/*：功能分支
+   - hotfix/*：紧急修复分支
+   - release/*：发布分支
+2. 提交信息规范：
+   - feat: 新功能
+   - fix: 修复bug
+   - docs: 文档更新
+   - style: 代码风格修改
+   - refactor: 重构
+   - test: 测试相关
+   - chore: 构建过程或辅助工具的变动
+
+### 命名规范
+
+1. 文件名：
+   - 组件：kebab-case（例如：user-profile.vue）
+   - 工具函数：camelCase（例如：formatDate.ts）
+   - 类：PascalCase（例如：HttpClient.ts）
+2. 变量名：
+   - 普通变量：camelCase
+   - 常量：UPPER_SNAKE_CASE
+   - 私有变量：以下划线开头（_privateVar）
+3. 函数名：
+   - 普通函数：camelCase
+   - 组件事件处理函数：handle + 事件名
+   - Hook函数：use + 功能名
+
+### 文档规范
+
+1. 组件必须有注释说明功能和使用方式
+2. API 函数必须有参数和返回值说明
+3. 复杂逻辑必须有注释
+4. 重要的业务逻辑必须有流程说明
+5. README.md 必须包含项目描述、安装步骤和使用说明

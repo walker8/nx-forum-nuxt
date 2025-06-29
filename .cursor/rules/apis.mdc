@@ -1,0 +1,70 @@
+---
+description: 
+globs: apis/*.ts,apis/**/*.ts
+alwaysApply: false
+---
+# API 接口文档
+
+## 接口目录结构
+
+`apis` 目录包含了项目中所有的后端接口调用，按照功能模块进行划分：
+
+```
+apis/
+├── admin.ts            # 管理员相关接口
+├── audit.ts            # 审核相关接口
+├── auth.ts             # 认证相关接口
+├── ban.ts              # 禁言/封禁相关接口
+├── comment.ts          # 评论相关接口
+├── config.ts           # 系统配置相关接口
+├── custom-page.ts      # 自定义页面相关接口
+├── favorite.ts         # 收藏相关接口
+├── follow.ts           # 关注相关接口
+├── forum.ts            # 论坛版块相关接口
+├── image.ts            # 图片上传相关接口
+├── like.ts             # 点赞相关接口
+├── notification.ts     # 消息通知相关接口
+├── report.ts           # 举报相关接口
+├── thread.ts           # 主题帖子相关接口
+└── uc/                 # 用户中心相关接口
+    ├── log.ts          # 用户日志相关接口
+    ├── login.ts        # 登录相关接口
+    ├── permission.ts   # 权限相关接口
+    ├── register.ts     # 注册相关接口
+    ├── role.ts         # 角色相关接口
+    └── user.ts         # 用户相关接口
+```
+
+## API 接口规范
+
+### 接口请求规范
+
+所有 API 接口统一通过 `utils/request.ts` 中的 `Http` 类进行处理，该类封装了以下方法：
+
+- **Http.get(url, params)**: 处理 GET 请求，自动过滤空参数
+- **Http.post(url, body)**: 处理 POST 请求
+- **Http.put(url, body)**: 处理 PUT 请求
+- **Http.delete(url, body)**: 处理 DELETE 请求
+
+### 请求路径规范
+
+- 所有请求都基于 `/nx-forum` 的基础路径
+- API 路径遵循 RESTful 规范
+- 管理员接口通常包含 `/admin/` 路径
+- 版本号以 `/v1/` 开头
+
+### 接口返回处理
+
+- 所有接口不设置返回类型，统一在 `types/global.d.ts` 中定义
+- 接口统一返回 `ResponseConfig` 类型，包含 `success`, `data`, `errCode`, `errMessage` 字段
+- 错误处理统一在 `request.ts` 中进行，包括：
+  - 401 未授权处理
+  - 500 服务器错误处理
+  - 业务错误处理
+
+## 接口使用规范
+
+1. 接口定义统一在 `apis` 目录下，按模块划分
+2. 所有接口请求通过统一的 `Http` 类处理，不要直接使用 `$fetch` 或 `useFetch`
+3. 接口返回类型统一定义在 `types/global.d.ts` 中
+4. 错误处理统一在 `request.ts` 中处理

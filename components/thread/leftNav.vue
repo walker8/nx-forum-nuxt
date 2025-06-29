@@ -36,22 +36,41 @@
           </el-icon>
         </el-button>
       </el-badge>
+      <el-button circle size="large" @click="handleReport">
+        <el-icon :size="18">
+          <WarnTriangleFilled />
+        </el-icon>
+      </el-button>
     </el-space>
   </div>
 </template>
 <script setup lang="ts">
-import { ChatDotRound, Star } from '@element-plus/icons-vue'
+import { ChatDotRound, Star, WarnTriangleFilled } from '@element-plus/icons-vue'
 import { toggleLike } from '~/apis/like'
 import { ElMessage } from 'element-plus'
 import { toggleFavorite } from '~/apis/favorite'
 
 const thread = useThread()
+const { openReportDialog } = useReport()
+
 const goComments = () => {
   const element = document.getElementById('comment-all')
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' })
   }
 }
+
+const handleReport = () => {
+  const user = useUser()
+  if (user.value.userId === 0) {
+    ElMessage.warning('请先登录再举报')
+    return
+  }
+  
+  const currentThread = thread.value
+  openReportDialog(currentThread.threadId, 'THREAD', currentThread.forumId)
+}
+
 const handleLike = async (thread: any) => {
   const user = useUser()
   if (user.value.userId === 0) {

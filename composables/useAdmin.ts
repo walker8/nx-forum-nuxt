@@ -26,5 +26,6 @@ export const useAuditingCount = () =>
     threadAuditCount: 0,
     commentAuditCount: 0,
     replyAuditCount: 0,
-    totalAuditCount: 0
+    totalAuditCount: 0,
+    pendingReportCount: 0
   }))

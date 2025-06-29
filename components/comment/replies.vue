@@ -60,6 +60,13 @@
             回复
           </div>
         </div>
+        <div
+          v-if="user.userId"
+          class="ml-auto cursor-pointer hover:text-[#409eff] pr-1"
+          @click="onReportReply(reply)"
+        >
+          举报
+        </div>
       </div>
       <div style="width: 100%; margin-top: 7px" v-if="reply._showEditor">
         <editor-emotion
@@ -94,6 +101,7 @@ import { ArrowDown } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { CommentOrderV } from '~/constant'
 import { toggleLike } from '~/apis/like'
+import { useReport } from '~/composables/useReport'
 
 // 扩展CommentReplyVO类型，添加UI相关属性
 interface ExtendedCommentReplyVO extends CommentReplyVO {
@@ -152,6 +160,8 @@ const props = defineProps({
 const { comment, authorId, order, disabled, forumId, replyId } = props
 const { hasPermission } = await useUserAuth(forumId)
 const { replaceEmotions } = useEmotions()
+const { openReportDialog } = useReport()
+const { user } = useCurrentUser()
 
 // 在组件挂载后，如果有replyId，滚动到对应的回复
 onMounted(() => {
@@ -164,6 +174,14 @@ onMounted(() => {
     })
   }
 })
+
+function onReportReply(reply: CommentReplyVO) {
+  if (!user.value.userId) {
+    ElMessage.error('请登录后操作')
+    return
+  }
+  openReportDialog(reply.replyId, 'REPLY', props.forumId)
+}
 
 const toReply = (reply: ExtendedCommentReplyVO, authorId: number) => {
   if (authorId === reply.authorId) {

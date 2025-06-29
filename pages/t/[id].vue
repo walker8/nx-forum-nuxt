@@ -22,6 +22,11 @@
             "
           />
         </ClientOnly>
+        <ClientOnly>
+          <el-button v-if="user.userId" link type="danger" @click="onReport">
+            举报
+          </el-button>
+        </ClientOnly>
       </el-space>
     </div>
     <div v-if="thread.updateAuthor" class="edit-info">
@@ -60,6 +65,7 @@
 
 <script setup lang="ts">
 import { Edit, Warning } from '@element-plus/icons-vue'
+import { useReport } from '~/composables/useReport'
 
 definePageMeta({
   layout: 'thread'
@@ -69,6 +75,7 @@ const imageViewer = ref()
 const thread = useThread()
 const { user } = useCurrentUser()
 const { replaceEmotions } = useEmotions()
+const { openReportDialog } = useReport()
 
 const { hasPermission } = await useUserAuth(thread.value.forumId)
 
@@ -123,6 +130,12 @@ const editThread = () => {
 
 const open = (path: string) => {
   window.open(path, '_blank')
+}
+
+function onReport() {
+  if (!thread.value)
+    return
+  openReportDialog(thread.value.threadId, 'THREAD', thread.value.forumId)
 }
 
 const clickArticle = (element: any) => {
