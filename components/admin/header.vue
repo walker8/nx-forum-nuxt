@@ -110,8 +110,14 @@ interface Props {
 defineProps<Props>()
 defineEmits(['toggleSidebar'])
 
+const route = useRoute()
+const forumId = computed(() => {
+  const urlForumId = route.query.forumId
+  return urlForumId ? Number(urlForumId) : 0
+})
+
 const auditingCount = useAuditingCount()
-getAuditingCount(0).then((res) => {
+getAuditingCount(forumId.value).then((res) => {
   auditingCount.value = res.data
 })
 

@@ -339,9 +339,9 @@ const rejectBatch = (commentIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    rejectCommentsByAdmin(ids, 0, reason.value, notice.value).then(() => {
+    rejectCommentsByAdmin(ids, Number(searchData.forumId) || 0, reason.value, notice.value).then(() => {
       ElMessage.success('拒绝成功')
-      getAuditingCount(0).then((res) => {
+      getAuditingCount(Number(searchData.forumId) || 0).then((res) => {
         auditingCount.value = res.data
       })
       getTableData()
@@ -374,9 +374,9 @@ const passBatch = (commentIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    passCommentsByAdmin(ids, 0, notice.value).then(() => {
+    passCommentsByAdmin(ids, Number(searchData.forumId) || 0, notice.value).then(() => {
       ElMessage.success('通过成功')
-      getAuditingCount(0).then((res) => {
+      getAuditingCount(Number(searchData.forumId) || 0).then((res) => {
         auditingCount.value = res.data
       })
       getTableData()
@@ -415,7 +415,7 @@ const deleteBatch = (commentIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    deleteCommentsByAdmin(ids, 0, reason.value, notice.value).then(() => {
+    deleteCommentsByAdmin(ids, Number(searchData.forumId) || 0, reason.value, notice.value).then(() => {
       ElMessage.success('删除成功')
       getTableData()
     })
@@ -446,7 +446,7 @@ const restoreBatch = (commentIds?: number[]) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消'
   }).then(() => {
-    restoreCommentsByAdmin(ids, 0, notice.value).then(() => {
+    restoreCommentsByAdmin(ids, Number(searchData.forumId) || 0, notice.value).then(() => {
       ElMessage.success('还原成功')
       getTableData()
     })

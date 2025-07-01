@@ -450,7 +450,7 @@ const rejectBatch = (threadIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    handleOperation(OperationConstant.REJECT, ids, reason.value, notice.value)
+    handleOperation(OperationConstant.REJECT, ids, reason.value, notice.value, Number(searchData.forumId) || 0)
   })
 }
 
@@ -515,7 +515,7 @@ const passBatch = (threadIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    handleOperation(OperationConstant.PASS, ids, null, notice.value)
+    handleOperation(OperationConstant.PASS, ids, null, notice.value, Number(searchData.forumId) || 0)
   })
 }
 
@@ -550,7 +550,7 @@ const deleteBatch = (threadIds?: number[]) => {
     customClass: 'full-width-message',
     confirmButtonText: '确定'
   }).then(() => {
-    handleOperation(OperationConstant.DELETE, ids, reason.value, notice.value)
+    handleOperation(OperationConstant.DELETE, ids, reason.value, notice.value, Number(searchData.forumId) || 0)
   })
 }
 const restoreBatch = (threadIds?: number[]) => {
@@ -578,7 +578,7 @@ const restoreBatch = (threadIds?: number[]) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消'
   }).then(() => {
-    handleOperation(OperationConstant.RESTORE, ids, null, notice.value)
+    handleOperation(OperationConstant.RESTORE, ids, null, notice.value, Number(searchData.forumId) || 0)
   })
 }
 
@@ -593,7 +593,7 @@ const handleOperation = (
     .then((res) => {
       ElMessage.success(res.data)
       if (operation === OperationConstant.PASS || operation === OperationConstant.REJECT) {
-        getAuditingCount(0).then((res) => {
+        getAuditingCount(Number(searchData.forumId) || 0).then((res) => {
           auditingCount.value = res.data
         })
       }
