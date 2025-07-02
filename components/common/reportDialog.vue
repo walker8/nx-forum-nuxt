@@ -81,19 +81,23 @@ async function submitReport() {
     return
   }
   loading.value = true
-  try {
-    await createReport({
-      targetId: props.targetId,
-      targetType: props.targetType,
-      forumId: props.forumId,
-      reportType: reportForm.reportType,
-      reportReason: reportForm.reportReason
+  createReport({
+    targetId: props.targetId,
+    targetType: props.targetType,
+    forumId: props.forumId,
+    reportType: reportForm.reportType,
+    reportReason: reportForm.reportReason
+  })
+    .then(() => {
+      ElMessage.success('举报成功，感谢您的反馈')
+      dialogVisible.value = false
     })
-    ElMessage.success('举报成功，感谢您的反馈')
-    dialogVisible.value = false
-  } finally {
-    loading.value = false
-  }
+    .catch((err) => {
+      ElMessage.error(err || '举报失败，请稍后重试')
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 watch(dialogVisible, (val) => {
