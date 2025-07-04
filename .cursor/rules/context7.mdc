@@ -1,0 +1,30 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Context7优先规则
+
+## 代码编写和错误解决策略
+
+- 在编写新代码或解决代码错误时，**优先使用Context7 MCP工具**进行查询和解决
+- 使用流程：
+  1. 首先使用`resolve-library-id`查询相关库的Context7兼容ID
+  2. 然后使用`get-library-docs`获取最新、最准确的文档
+  3. 基于文档提供的最佳实践编写或修复代码
+- 当遇到与项目相关的框架/库问题时(如Nuxt3、Vue、Element-Plus、Vant-UI等)，应首先通过Context7获取相关文档，而非直接猜测或使用可能过时的知识
+
+## 应用场景
+
+- 框架API用法不确定时
+- 遇到复杂组件配置问题
+- 处理库版本兼容性问题
+- TypeScript类型错误修复
+- 性能优化实践查询
+
+## 工具调用示例
+
+当需要查询Nuxt3相关问题时：
+1. 先使用`resolve-library-id`查询"nuxt"
+2. 获得Context7兼容ID后，使用`get-library-docs`获取文档
+3. 基于文档解决问题
