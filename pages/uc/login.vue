@@ -85,7 +85,7 @@
         </template>
 
         <div class="flex justify-end mb-4">
-          <el-link type="primary" @click="go('/uc/forget-password')">忘记密码？</el-link>
+          <el-link type="primary" underline="hover" @click="go('/uc/forget-password')">忘记密码？</el-link>
         </div>
 
         <el-button type="primary" class="w-full" :loading="loading" @click="handleLogin">
@@ -94,7 +94,7 @@
 
         <div class="flex justify-between mt-4">
           <span class="text-gray-500 text-sm"></span>
-          <el-link v-if="showRegister" type="primary" @click="go('/uc/register')">立即注册</el-link>
+          <el-link v-if="showRegister" type="primary" underline="hover" @click="go('/uc/register')">立即注册</el-link>
         </div>
 
         <div class="third-party-login">
@@ -125,9 +125,9 @@
 
         <div class="agreement">
           注册登录即表示同意
-          <el-link type="primary" @click="go('/agreement')">《用户协议》</el-link>
+          <el-link type="primary" underline="hover" @click="go('/agreement')">《用户协议》</el-link>
           和
-          <el-link type="primary" @click="go('/privacy')">《隐私协议》</el-link>
+          <el-link type="primary" underline="hover" @click="go('/privacy')">《隐私协议》</el-link>
         </div>
       </el-form>
     </div>

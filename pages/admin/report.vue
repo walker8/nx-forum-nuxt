@@ -70,7 +70,7 @@
       <el-table :data="reports" v-loading="loading">
         <el-table-column label="举报内容" width="450">
           <template #default="{ row }">
-            <el-link :href="row.redirectUrl" target="_blank" type="primary" v-if="row.redirectUrl">
+            <el-link :href="row.redirectUrl" target="_blank" type="primary" underline="hover" v-if="row.redirectUrl">
               {{ row.reportedContent }}
             </el-link>
             <div v-else>

@@ -85,7 +85,7 @@
     v-if="comment.replies && comment.replyCount > comment.replies?.length"
     @click="loadMoreReplies(comment)"
   >
-    <el-link type="info" :underline="false">
+    <el-link type="info" underline="never">
       <span v-if="comment.loading">加载中...</span>
       <span v-else>
         查看全部 {{ comment.replyCount }} 条回复

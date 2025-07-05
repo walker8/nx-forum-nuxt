@@ -7,13 +7,13 @@
     <div class="article-info">
       <el-space wrap>
         <div class="author" @click="open(`/user/${thread.author?.authorId}`)">
-          <el-link :underline="false">{{ thread.author?.authorName ?? 'unkown' }}</el-link>
+          <el-link underline="never">{{ thread.author?.authorName ?? 'unkown' }}</el-link>
         </div>
         <div>发布于 {{ thread.createTime }}</div>
         <div>阅读 {{ thread.views }}</div>
         <ClientOnly>
           <el-link
-            :underline="false"
+            underline="never"
             :icon="Edit"
             @click="editThread"
             v-if="

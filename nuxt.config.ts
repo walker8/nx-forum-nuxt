@@ -4,6 +4,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver, VantResolver } from 'unplugin-vue-components/resolvers'
 import IconsResolver from 'unplugin-icons/resolver'
 import prismjs from 'vite-plugin-prismjs'
+import type { NuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   modules: [
@@ -14,6 +15,15 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/tailwindcss'
   ],
+
+  pinia: {
+    storesDirs: ['./stores/**']
+  },
+
+  piniaPersistedstate: {
+    storage: 'localStorage',
+    debug: false
+  },
 
   vant: {
     /** Options */
@@ -27,6 +37,7 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
+          // @ts-ignore - 忽略类型检查，scss的api选项在新版本中支持
           api: 'modern-compiler'
         }
       }
@@ -86,8 +97,16 @@ export default defineNuxtConfig({
     }
   },
 
+  // 配置应用程序选项
+  app: {
+    head: {
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+    }
+  },
+
+  // 避免内联style，减少document体积
   features: {
-    // 避免内联style，减少document体积
     inlineStyles: false
   },
 
@@ -143,5 +162,11 @@ export default defineNuxtConfig({
     }
   },
 
-  compatibilityDate: '2025-02-15'
-})
+  typescript: {
+    strict: false,
+    typeCheck: false
+  },
+
+  // 保持兼容性，避免API变更导致的问题
+  compatibilityDate: '2025-05-15'
+}) satisfies NuxtConfig

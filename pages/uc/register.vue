@@ -63,14 +63,14 @@
 
         <div class="flex justify-center mt-4">
           <span class="text-gray-500">已有账号？</span>
-          <el-link type="primary" @click="go('/uc/login')">立即登录</el-link>
+          <el-link type="primary" underline="hover" @click="go('/uc/login')">立即登录</el-link>
         </div>
 
         <div class="agreement mt-4">
           注册即表示同意
-          <el-link type="primary" @click="go('/agreement')">《用户协议》</el-link>
+          <el-link type="primary" underline="hover" @click="go('/agreement')">《用户协议》</el-link>
           和
-          <el-link type="primary" @click="go('/privacy')">《隐私协议》</el-link>
+          <el-link type="primary" underline="hover" @click="go('/privacy')">《隐私协议》</el-link>
         </div>
       </el-form>
     </div>

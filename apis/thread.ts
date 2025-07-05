@@ -1,4 +1,4 @@
-import { type ThreadCmd } from '~/types/global'
+import type { ThreadCmd } from '~/types/global'
 import Http from '../utils/request'
 
 export type ThreadQuery = {

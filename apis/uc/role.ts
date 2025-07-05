@@ -1,5 +1,5 @@
 import { type RoleCreateCmd, type RoleUpdateCmd } from '~/types/global'
-import Http from '@/utils/request'
+import Http from '../../utils/request'
 
 // 查询角色列表
 export const queryRoles = (params: any) => {

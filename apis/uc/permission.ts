@@ -1,5 +1,5 @@
 import { type PermissionCreateCmd, type PermissionUpdateCmd } from '~/types/global'
-import Http from '@/utils/request'
+import Http from '../../utils/request'
 
 // 获取权限列表
 export const getPermissionList = () => {

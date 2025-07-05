@@ -55,7 +55,7 @@
         </el-button>
 
         <div class="flex justify-center mt-4">
-          <el-link type="primary" @click="go('/uc/login')">返回登录</el-link>
+          <el-link type="primary" underline="hover" @click="go('/uc/login')">返回登录</el-link>
         </div>
       </el-form>
     </div>

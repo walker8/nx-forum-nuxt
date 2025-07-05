@@ -1,4 +1,4 @@
-import Http from '@/utils/request'
+import Http from '../../utils/request'
 
 export interface MailConfigDTO {
   host: string

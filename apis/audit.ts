@@ -1,5 +1,5 @@
-import request from '@/utils/request'
 import type { UserVO } from '~/types/global'
+import request from '../utils/request'
 
 // 根据openapi.json最新定义调整类型
 export interface AuditConfigSensitiveWordsDTO {
