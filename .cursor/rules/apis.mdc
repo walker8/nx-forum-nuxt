@@ -48,6 +48,7 @@ apis/
 
 ### 请求路径规范
 
+- 所有后端接口地址已在 `openapi.json` 文件中定义，遵循 OpenAPI 规范
 - 所有请求都基于 `/nx-forum` 的基础路径
 - API 路径遵循 RESTful 规范
 - 管理员接口通常包含 `/admin/` 路径
